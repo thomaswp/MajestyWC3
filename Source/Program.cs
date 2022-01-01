@@ -40,7 +40,7 @@ namespace Source
 			PlayerUnitEvents.Register(PlayerUnitEvent.UnitTypeIsCreated, () =>
 			{
 				unit unit = GetTriggerUnit();
-				if (IsUnitIdType(GetUnitTypeId(unit), UNIT_TYPE_STRUCTURE)) return;
+				if (unit.IsStructure()) return;
 
 				if (GetUnitTypeId(unit) == Constants.UNIT_PEASANT_WORKER)
                 {
@@ -54,6 +54,21 @@ namespace Source
 
 				//string name = GetUnitName(unit);
 				//Console.WriteLine($"Created {(unit == null ? "NONE" : name)}");
+			});
+			PlayerUnitEvents.Register(PlayerUnitEvent.UnitTypeFinishesTraining, () =>
+			{
+				//Console.WriteLine($"Trained: {GetTriggerUnit().GetName()}, {GetTrainedUnit().GetName()}");
+				unit unit = GetTrainedUnit();
+				unit building = GetTriggerUnit();
+				UnitAI ai = UnitAI.RegisterUnit(unit);
+				if (ai != null) ai.SetHome(building);
+			});
+
+			PlayerUnitEvents.Register(PlayerUnitEvent.UnitTypeAttacks, () =>
+			{
+				UnitAI.Trigger(PlayerUnitEvent.UnitTypeAttacks, GetAttacker());
+				UnitAI.Trigger(PlayerUnitEvent.UnitTypeIsAttacked, GetAttackedUnitBJ());
+				UnitAI.TriggerHomeAttacked(GetAttackedUnitBJ(), GetAttacker());
 			});
 
 

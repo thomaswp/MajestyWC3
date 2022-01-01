@@ -80,3 +80,9 @@ STRING 15
 Brador Solidfist,Kethon the Slicer,Duvane the Battlemaster,Wodenthal the Battlemaster,Dremenon Knightly,Talon Headlopper,Stal Son of Kolar,Spalwin Knightly,Palador Vunderson,Valian Quickparry, the Fairly Sw,Xayter of North Glen,Sarion the Courageous,Kraye the Slicer,Wodenthal of North Glen,Gerwyn of Kranal's Creek
 }
 
+STRING 16
+// Units: n005 (Kobold Tent), Name (Name)
+{
+Kobold Tent
+}
+

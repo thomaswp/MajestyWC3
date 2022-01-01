@@ -45,5 +45,35 @@ namespace Source
         {
             return n0 + (n1 - n0) * p;
         }
+
+        public static float GetSightRange(this unit unit)
+        {
+            return BlzGetUnitRealField(unit, UNIT_RF_SIGHT_RADIUS);
+        }
+
+        public static location GetLocation(this unit unit)
+        {
+            return GetUnitLoc(unit);
+        }
+
+        public static int GetHP(this unit unit)
+        {
+            return (int) Math.Round(GetUnitLifePercent(unit) * BlzGetUnitMaxHP(unit));
+        }
+
+        public static bool IsStructure(this unit unit)
+        {
+            return IsUnitIdType(GetUnitTypeId(unit), UNIT_TYPE_STRUCTURE);
+        }
+
+        public static bool IsDead(this unit unit)
+        {
+            return IsUnitDeadBJ(unit);
+        }
+
+        public static string GetName(this unit unit)
+        {
+            return GetUnitName(unit);
+        }
     }
 }

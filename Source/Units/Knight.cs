@@ -12,11 +12,12 @@ namespace Source.Units
 {
     public class Knight : Hero
     {
-
-        public override void Update()
+        protected override void AddBehaviors()
         {
-            //Console.WriteLine($"Updating knight");
-            UpdateExploration();
+            AddBehavior(Behaviors.Activity.Exploring, 3);
+            AddBehavior(Behaviors.Activity.DefendingHome);
+            AddBehavior(Behaviors.Activity.Fighting, 10);
+            //AddBehavior(Behaviors.Activity.Fleeing);
         }
     }
 }
