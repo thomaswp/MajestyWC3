@@ -1,0 +1,7 @@
+[Misc]
+MaxHeroLevel=100
+NeedHeroXP=20
+NeedHeroXPFormulaA=2.5
+NeedHeroXPFormulaB=0.0
+NeedHeroXPFormulaC=5.0
+

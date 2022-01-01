@@ -1,0 +1,82 @@
+﻿STRING 1
+{
+Majesty
+}
+
+STRING 2
+{
+Any
+}
+
+STRING 3
+{
+Nondescript
+}
+
+STRING 4
+{
+dud88_dud
+}
+
+STRING 5
+{
+Player 1
+}
+
+STRING 6
+{
+Force 1
+}
+
+STRING 7
+// Units: xxxx (Dummy), Name (Name)
+{
+Dummy
+}
+
+STRING 8
+// Units: h001 (Castle - Level 1), Name (Name)
+{
+Castle - Level 1
+}
+
+STRING 9
+// Units: H004 (Knight), Name (Name)
+{
+Knight
+}
+
+STRING 10
+// Units: e000 (Builder), Name (Name)
+{
+Builder
+}
+
+STRING 11
+{
+Player 2
+}
+
+STRING 12
+{
+Force 2
+}
+
+STRING 13
+// Units: h000 (Peasant Worker), Name (Name)
+{
+Peasant Worker
+}
+
+STRING 14
+// Units: n000 (Market), Name (Name)
+{
+Market
+}
+
+STRING 15
+// Units: H004 (Knight), Propernames (Proper Names)
+{
+Brador Solidfist,Kethon the Slicer,Duvane the Battlemaster,Wodenthal the Battlemaster,Dremenon Knightly,Talon Headlopper,Stal Son of Kolar,Spalwin Knightly,Palador Vunderson,Valian Quickparry, the Fairly Sw,Xayter of North Glen,Sarion the Courageous,Kraye the Slicer,Wodenthal of North Glen,Gerwyn of Kranal's Creek
+}
+
