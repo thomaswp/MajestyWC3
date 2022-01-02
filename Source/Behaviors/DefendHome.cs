@@ -14,11 +14,6 @@ namespace Source.Behaviors
     {
         public const int MIN_HOME_ATTACK_DIS = 800;
 
-        public override Activity GetActivity()
-        {
-            return Activity.DefendingHome;
-        }
-
         public override bool Update()
         {
             return !IsTargetValid();

@@ -10,28 +10,28 @@ using Source;
 
 namespace Source.Behaviors
 {
-    public class Fight : Behavior
+    public class Shop : Behavior
     {
 
-        protected unit targetEnemy;
+        protected unit targetShop;
 
         public override bool CanStart()
         {
             SelectTarget();
-            return targetEnemy != null;
+            return targetShop != null;
         }
 
         public override void Start()
         {
             SelectTarget();
-            if (targetEnemy == null) return;
-            IssueTargetOrder(AI.unit, "Attack", targetEnemy);
-            Console.WriteLine(AI.unit.GetName() + " targeting " + targetEnemy.GetName());
+            if (targetShop == null) return;
+            IssuePointOrderByIdLoc(AI.unit, Constants.ORDER_MOVE, targetShop.GetLocation());
+            Console.WriteLine($"{AI.unit.GetName()} shopping at {targetShop.GetName()}");
         }
 
         public override void Stop()
         {
-            targetEnemy = null;
+            targetShop = null;
         }
 
         public override bool Update()

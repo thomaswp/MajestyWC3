@@ -15,11 +15,6 @@ namespace Source.Behaviors
 
         protected unit buildingTarget;
 
-        public override Activity GetActivity()
-        {
-            return Activity.Building;
-        }
-
         public override bool CanStart()
         {
             SelectTarget();

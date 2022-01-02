@@ -29,16 +29,11 @@ namespace Source.Units
 
         protected abstract void AddBehaviors();
 
-        protected void AddBehavior(Activity activity, int weight = 0)
+        protected void AddBehavior(Behavior behavior, int weight = 0)
         {
-            Behavior b = Behavior.FromActivity(activity, this, weight);
-            if (b == null)
-            {
-                Console.WriteLine($"no behavior for {activity}");
-                return;
-            }
-            behaviors.Add(b);
-            Console.WriteLine($"Adding {activity} for {unit.GetName()}");
+            behavior.init(this, weight);
+            behaviors.Add(behavior);
+            Console.WriteLine($"Adding {behavior.GetName()} for {unit.GetName()}");
         }
 
         private void init(unit unit)

@@ -14,9 +14,10 @@ namespace Source.Units
     {
         protected override void AddBehaviors()
         {
-            AddBehavior(Behaviors.Activity.Exploring, 3);
-            AddBehavior(Behaviors.Activity.DefendingHome);
-            AddBehavior(Behaviors.Activity.Fighting, 10);
+            AddBehavior(new Behaviors.Explore(), 3);
+            AddBehavior(new Behaviors.DefendHome());
+            AddBehavior(new Behaviors.Fight(), 10);
+            AddBehavior(new Behaviors.Shop(), 5);
             //AddBehavior(Behaviors.Activity.Fleeing);
         }
     }

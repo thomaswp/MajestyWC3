@@ -16,11 +16,6 @@ namespace Source.Behaviors
 
         protected location exploringLocation;
 
-        public override Activity GetActivity()
-        {
-            return Activity.Exploring;
-        }
-
         public override bool CanStart()
         {
             SelectTarget();

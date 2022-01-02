@@ -14,7 +14,7 @@ namespace Source.Units
     {
         protected override void AddBehaviors()
         {
-            AddBehavior(Behaviors.Activity.Building, 1);
+            AddBehavior(new Behaviors.Build(), 1);
         }
     }
 }

@@ -86,3 +86,69 @@ STRING 16
 Kobold Tent
 }
 
+STRING 18
+// Abilities: A000 (Market Day), Name (Name)
+{
+Market Day
+}
+
+STRING 19
+// Upgrades: R000 (Animal War Training), Name (Name)
+{
+Health Potions
+}
+
+STRING 20
+// Upgrades: R000 (Animal War Training), Hotkey (Hotkey)
+{
+H
+}
+
+STRING 21
+// Upgrades: R000 (Animal War Training), Tip (Tooltip)
+{
+Allows heroes to purchase health potions.
+}
+
+STRING 22
+// Upgrades: R000 (Animal War Training), Ubertip (Tooltip - Extended)
+{
+Allows heroes to purchase health potions.
+}
+
+STRING 23
+// Abilities: A000 (Market Day), Tip (Tooltip - Normal)
+{
+Market Day
+}
+
+STRING 24
+// Upgrades: R001 (Animal War Training), Hotkey (Hotkey)
+{
+H
+}
+
+STRING 25
+// Upgrades: R001 (Animal War Training), Tip (Tooltip)
+{
+Allows the Market to use the Market Day ability.
+}
+
+STRING 26
+// Upgrades: R001 (Animal War Training), Ubertip (Tooltip - Extended)
+{
+Allows the Market to use the Market Day ability.
+}
+
+STRING 27
+// Upgrades: R001 (Animal War Training), Name (Name)
+{
+Market Day
+}
+
+STRING 31
+// Abilities: A001 (Item Healing (Lesser)), Name (Name)
+{
+Item Healing (Lesser)
+}
+

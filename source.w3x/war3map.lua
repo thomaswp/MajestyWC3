@@ -9,6 +9,7 @@ function CreateBuildingsForPlayer0()
     local t
     local life
     u = BlzCreateUnitWithSkin(p, FourCC("h001"), 512.0, -1216.0, 270.000, FourCC("h001"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n000"), -320.0, -1728.0, 270.000, FourCC("n000"))
     u = BlzCreateUnitWithSkin(p, FourCC("h002"), -64.0, -1152.0, 270.000, FourCC("h002"))
 end
 
@@ -31,7 +32,7 @@ function CreateNeutralHostileBuildings()
     local unitID
     local t
     local life
-    u = BlzCreateUnitWithSkin(p, FourCC("n005"), -736.0, -416.0, 270.000, FourCC("n005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n005"), -1376.0, 864.0, 270.000, FourCC("n005"))
 end
 
 function CreateNeutralHostile()
@@ -40,8 +41,9 @@ function CreateNeutralHostile()
     local unitID
     local t
     local life
-    u = BlzCreateUnitWithSkin(p, FourCC("n001"), -958.5, -234.3, 274.897, FourCC("n001"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n001"), -794.1, -168.9, 316.932, FourCC("n001"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n001"), -1569.6, 909.6, 217.294, FourCC("n001"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n001"), -1475.5, 998.4, 285.829, FourCC("n001"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n001"), -1283.8, 1045.1, 59.383, FourCC("n001"))
 end
 
 function CreatePlayerBuildings()
@@ -59,12 +61,13 @@ function CreateAllUnits()
     CreatePlayerUnits()
 end
 
-function Trig_Untitled_Trigger_001_Func001A()
+function Trig_Untitled_Trigger_001_Func003A()
     DoNothing()
 end
 
 function Trig_Untitled_Trigger_001_Actions()
-    ForGroupBJ(GetUnitsOfPlayerAll(Player(0)), Trig_Untitled_Trigger_001_Func001A)
+    SetPlayerStateBJ(Player(0), PLAYER_STATE_RESOURCE_GOLD, 1000)
+    ForGroupBJ(GetUnitsOfPlayerAll(Player(0)), Trig_Untitled_Trigger_001_Func003A)
 end
 
 function InitTrig_Untitled_Trigger_001()
@@ -74,6 +77,10 @@ end
 
 function InitCustomTriggers()
     InitTrig_Untitled_Trigger_001()
+end
+
+function RunInitializationTriggers()
+    ConditionalTriggerExecute(gg_trg_Untitled_Trigger_001)
 end
 
 function InitCustomPlayerSlots()
@@ -120,6 +127,7 @@ function main()
     InitBlizzard()
     InitGlobals()
     InitCustomTriggers()
+    RunInitializationTriggers()
 end
 
 function config()

@@ -1,5 +1,7 @@
 public static class Constants
 {
+	public const int ABILITY_MARKET_DAY = 1093677104;
+	public const int ABILITY_ITEM_HEALING_LESSER = 1093677105;
 	public const int UNIT_DUMMY = 2021161080;
 	public const int UNIT_CASTLE_LEVEL_1 = 1747988529;
 	public const int UNIT_KNIGHT = 1211117620;
@@ -7,6 +9,8 @@ public static class Constants
 	public const int UNIT_PEASANT_WORKER = 1747988528;
 	public const int UNIT_MARKET = 1848651824;
 	public const int UNIT_KOBOLD_TENT = 1848651829;
+	public const int UPGRADE_HEALTH_POTIONS = 1378889776;
+	public const int UPGRADE_MARKET_DAY = 1378889777;
 	public const int ORDER_OFFSET = 851970;
 	public const int ORDER_WAND_ILLUSION = 852274;
 	public const int ORDER_ABSORB = 852529;
