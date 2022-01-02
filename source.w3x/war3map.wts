@@ -146,9 +146,15 @@ STRING 27
 Market Day
 }
 
-STRING 31
-// Abilities: A001 (Item Healing (Lesser)), Name (Name)
+STRING 34
+// Items: I000 (Healing Potion (Level 1)), Name (Name)
 {
-Item Healing (Lesser)
+Healing Potion (Level 1)
+}
+
+STRING 35
+// Abilities: A001 (Item Healing (M)), Name (Name)
+{
+Item Healing (M)
 }
 
