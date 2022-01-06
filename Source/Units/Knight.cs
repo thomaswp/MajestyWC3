@@ -12,6 +12,19 @@ namespace Source.Units
 {
     public class Knight : Hero
     {
+        public static List<int> itemPriorities = new List<int>()
+        {
+            Constants.ITEM_HEALING_POTION_LEVEL_1,
+            Constants.ITEM_HEALING_POTION_LEVEL_1,
+            Constants.ITEM_HEALING_POTION_LEVEL_1,
+            Constants.ITEM_HEALING_POTION_LEVEL_1,
+        };
+
+        protected override IEnumerable<int> GetWantedItemsList()
+        {
+            return itemPriorities;
+        }
+
         protected override void AddBehaviors()
         {
             AddBehavior(new Behaviors.Explore(), 3);
@@ -20,5 +33,7 @@ namespace Source.Units
             AddBehavior(new Behaviors.Shop(), 5);
             //AddBehavior(Behaviors.Activity.Fleeing);
         }
+
+
     }
 }

@@ -7,11 +7,14 @@ using System.Threading.Tasks;
 using static War3Api.Common;
 using static War3Api.Blizzard;
 using Source;
+using Source.Items;
 
 namespace Source.Behaviors
 {
     public class Shop : Behavior
     {
+
+        public const int SHOP_RADIUS = 4000;
 
         protected unit targetShop;
 
@@ -46,23 +49,33 @@ namespace Source.Behaviors
 
         private bool IsValidTarget()
         {
-            return targetEnemy != null && !targetEnemy.IsDead();
+            // TODO
+            return true;
         }
 
         protected virtual void SelectTarget()
         {
-            if (IsValidTarget() && targetEnemy.DistanceTo(AI.unit) < AI.unit.GetSightRange()) return;
+            if (IsValidTarget()) return;
 
-            targetEnemy = null;
+            targetShop = null;
 
-            player neutral = Player(PLAYER_NEUTRAL_AGGRESSIVE);
-            var visible = GetUnitsInRangeOfLocAll(AI.unit.GetSightRange(), AI.unit.GetLocation()).ToList()
-                .Where(u => GetOwningPlayer(u) == neutral)
-                .Where(u => !u.IsDead());
+            var shops = GetUnitsInRangeOfLocAll(SHOP_RADIUS, AI.unit.GetLocation()).ToList()
+                .Where(u => u.IsShop() && u.GetPlayer() == AI.humanPlayer);
 
-            if (visible.Count() == 0) return;
+            foreach (int itemID in AI.GetWantedItems())
+            {
+                // TODO Get Item cost
+                //if (AI.gold < Itemcost) continue;
+                var selling = shops.Where(shop => shop.IsSelling(itemID));
+                if (selling.Count() == 0) continue;
+                targetShop = selling.OrderBy(shop => shop.DistanceTo(AI.unit)).First();
+                break;
+            }
 
-            targetEnemy = visible.OrderBy(u => (u.IsStructure() ? 1000 : 0) + u.DistanceTo(AI.unit)).First();
+            if (targetShop != null)
+            {
+                // TODO: Go to shop
+            }
         }
     }
 }

@@ -75,5 +75,15 @@ namespace Source
         {
             return GetUnitName(unit);
         }
+
+        public static int GetTypeID(this unit unit)
+        {
+            return GetUnitTypeId(unit);
+        }
+
+        public static player GetPlayer(this unit unit)
+        {
+            return GetOwningPlayer(unit);
+        }
     }
 }

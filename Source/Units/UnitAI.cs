@@ -8,6 +8,7 @@ using static War3Api.Blizzard;
 using Source;
 using WCSharp.Events;
 using Source.Behaviors;
+using Source.Items;
 
 namespace Source.Units
 {
@@ -19,6 +20,8 @@ namespace Source.Units
         public player humanPlayer { get; private set; }
 
         public unit home { get; private set; }
+
+        public int gold { get; set; }
 
         protected List<Behavior> behaviors = new List<Behavior>();
         protected Behavior behavior = null;
@@ -136,6 +139,31 @@ namespace Source.Units
             var units = homeMap[home];
             units.Add(this);
             OnHomeSet();
+        }
+        protected virtual IEnumerable<int> GetWantedItemsList()
+        {
+            return new List<int>();
+        }
+
+        public IEnumerable<int> GetWantedItems()
+        {
+            // TODO: Should probably cache
+            Dictionary<int, int> itemCounts = new Dictionary<int, int>();
+            foreach (int item in GetWantedItemsList())
+            {
+                if (!itemCounts.TryGetValue(item, out int count))
+                {
+                    count = itemCounts[item] = unit.GetItemCount(item);
+                }
+                if (count > 0)
+                {
+                    itemCounts[item]--;
+                }
+                else
+                {
+                    yield return item;
+                }
+            }
         }
 
         public virtual void OnAttack(unit target)
