@@ -104,18 +104,6 @@ STRING 20
 H
 }
 
-STRING 21
-// Upgrades: R000 (Animal War Training), Tip (Tooltip)
-{
-Allows heroes to purchase health potions.
-}
-
-STRING 22
-// Upgrades: R000 (Animal War Training), Ubertip (Tooltip - Extended)
-{
-Allows heroes to purchase health potions.
-}
-
 STRING 23
 // Abilities: A000 (Market Day), Tip (Tooltip - Normal)
 {
@@ -156,5 +144,17 @@ STRING 35
 // Abilities: A001 (Item Healing (M)), Name (Name)
 {
 Item Healing (M)
+}
+
+STRING 36
+// Upgrades: R000 (Animal War Training), Tip (Tooltip)
+{
+Allows heroes to purchase Level 1 Health Potions
+}
+
+STRING 37
+// Upgrades: R000 (Animal War Training), Ubertip (Tooltip - Extended)
+{
+Allows heroes to purchase Level 2 Health Potions
 }
 

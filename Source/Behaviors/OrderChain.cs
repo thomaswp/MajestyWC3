@@ -13,12 +13,16 @@ namespace Source.Behaviors
     public abstract class OrderChain
     {
         public UnitAI AI { get; private set; }
-        public bool Done { get; private set; }
         private OrderChain next;
+
         private bool started = false;
+        private bool done;
 
         protected virtual bool UpdateContinue() { return false; }
-        protected virtual void Start() { }
+        protected virtual void Start() 
+        {
+            Console.WriteLine($"{AI.Unit.GetName()} starting {GetType().Name}");
+        }
 
         public bool Update()
         {
@@ -27,16 +31,25 @@ namespace Source.Behaviors
                 Start();
                 started = true;
             }
-            Done |= !UpdateContinue();
-            if (!Done) return true;
-            return next == null || next.Update();
+            if (!done)
+            {
+                done |= !UpdateContinue();
+            }
+            if (!done) return true;
+            if (next == null) return false;
+            return next.Update();
+        }
+
+        public bool IsDone()
+        {
+            return done && (next == null || next.IsDone());
         }
 
         public OrderChain Then(OrderChain next)
         {
             if (this.next != null)
             {
-                next.Then(next);
+                this.next.Then(next);
             }
             else
             {
@@ -52,36 +65,54 @@ namespace Source.Behaviors
             if (next != null) next.Init(ai);
             return this;
         }
+
+        public override string ToString()
+        {
+            string name = GetType().Name;
+            if (next == null) return name;
+            return $"{GetType().Name}->{next}";
+        }
     }
 
-    public abstract class OrderMove : OrderChain
+    public class OrderMove : OrderChain
     {
-        private location destination;
-        private float threshold;
+        private readonly location destination;
+        private readonly float thresholdRadius;
 
-        public OrderMove(location destination, float threshold)
+        public const int BUILDING_RADIUS = 220;
+        float lastDistance;
+
+        public OrderMove(location destination, float thresholdRadius)
         {
             this.destination = destination;
-            this.threshold = threshold;
+            this.thresholdRadius = thresholdRadius;
         }
 
         protected override void Start()
         {
             base.Start();
             AI.Unit.OrderMoveTo(destination);
+            lastDistance = AI.Unit.DistanceTo(destination);
         }
 
         protected override bool UpdateContinue()
         {
-            return DistanceBetweenPoints(AI.Unit.GetLocation(), destination) > threshold;
+            // Still moving
+            if (GetUnitCurrentOrder(AI.Unit) == Constants.ORDER_MOVE) return true;
+            float dis = AI.Unit.DistanceTo(destination);
+            // We made it
+            if (dis <= thresholdRadius) return false;
+            // Haven't made it yet but still getting closer
+            if (dis < lastDistance)
+            {
+                Start();
+                return true;
+            }
+            // Stuck
+            // TODO: Handle failed orders...
+            Console.WriteLine($"{AI.Unit.GetName()} stuck, failed to move");
+            return false;
         }
-    }
-
-    public class OrderMoveToBuilding : OrderMove
-    {
-        public OrderMoveToBuilding(unit building)
-            : base(building.GetLocation(), BlzGetUnitCollisionSize(building) + 30)
-        { }
     }
 
     public class OrderEnter : OrderChain
@@ -124,6 +155,7 @@ namespace Source.Behaviors
         protected override void Start()
         {
             var timer = CreateTimer();
+            // TODO: Doesn't seem to work
             TimerStart(timer, seconds, false, () =>
             {
                 DestroyTimer(timer);

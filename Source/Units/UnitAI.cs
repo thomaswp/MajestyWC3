@@ -22,7 +22,26 @@ namespace Source.Units
         public unit Home { get; private set; }
         public unit InBuilding { get; set; }
 
-        public int gold { get; set; }
+        public int GoldTaxed { get; set; }
+        public int GoldUntaxed { get; set; }
+
+        public int Gold 
+        { 
+            get { return GoldTaxed + GoldUntaxed; } 
+            set
+            {
+                int oldGold = Gold;
+                // Gaining gold, goes to untaxed by default
+                if (value > oldGold) GoldUntaxed += value - oldGold;
+                else
+                {
+                    // Losing gold, comes from taxed first, then untaxed
+                    int loss = oldGold - value;
+                    if (loss > GoldTaxed) GoldUntaxed -= loss - GoldTaxed;
+                    GoldTaxed = Math.Max(0, GoldTaxed - loss);
+                }
+            }
+        }
 
         protected List<Behavior> behaviors = new List<Behavior>();
         protected Behavior behavior = null;
@@ -37,12 +56,12 @@ namespace Source.Units
         {
             behavior.init(this, weight);
             behaviors.Add(behavior);
-            Console.WriteLine($"Adding {behavior.GetName()} for {Unit.GetName()}");
+            //Console.WriteLine($"Adding {behavior.GetName()} for {Unit.GetName()}");
         }
 
-        private void init(unit unit)
+        protected virtual void Init(unit unit)
         {
-            this.Unit = unit;
+            Unit = unit;
             MyPlayer = GetOwningPlayer(unit);
             HumanPlayer = MyPlayer.GetHumanForAI();
             AddBehaviors();
@@ -57,8 +76,7 @@ namespace Source.Units
                 behavior = ChooseIdleBehavior();
                 if (behavior != null)
                 {
-                    //Console.WriteLine($"Starting {behavior.GetActivity()} for {unit.GetName()}");
-                    //Console.WriteLine("Starting!");
+                    Console.WriteLine($"Starting {behavior.GetName()} for {Unit.GetName()}");
                     behavior.Start();
                 }
             }
@@ -115,7 +133,7 @@ namespace Source.Units
                 if (ai != null)
                 {
                     Console.WriteLine($"Creating new AI for {unit.Name()}");
-                    ai.init(unit);
+                    ai.Init(unit);
                     unitMap[unit] = ai;
                 }
                 else
@@ -170,21 +188,24 @@ namespace Source.Units
         public bool TryPurchase(int itemID)
         {
             int cost = Items.Items.GetItemCost(itemID);
-            if (gold < cost) return false;
+            if (Gold < cost) return false;
             item item;
-            bool bought;
+            bool bought = false;
             if (Unit.HasItem(itemID))
             {
                 item = GetItemOfTypeFromUnitBJ(Unit, itemID);
+
                 SetItemCharges(item, GetItemCharges(item) + 1);
                 bought = true;
             }
-            else
+            else if (UnitInventoryCount(Unit) < 6)
             {
-                item = CreateItem(itemID, 0, 0);
-                bought = UnitAddItem(Unit, item);
+                UnitAddItemById(Unit, itemID);
+                bought = true;
             }
-            if (bought) gold -= cost;
+            if (bought) Gold -= cost;
+            Console.WriteLine($"{Unit.GetName()} bought {itemID} successful: {bought}");
+
             return bought;
         }
 

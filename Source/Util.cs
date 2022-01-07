@@ -22,6 +22,11 @@ namespace Source
             return DistanceBetweenPoints(GetUnitLoc(me), GetUnitLoc(other));
         }
 
+        public static float DistanceTo(this unit me, location other)
+        {
+            return DistanceBetweenPoints(GetUnitLoc(me), other);
+        }
+
         public static string Name(this unit unit)
         {
             return GetUnitName(unit);

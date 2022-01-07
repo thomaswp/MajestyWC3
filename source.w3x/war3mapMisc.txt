@@ -1,10 +1,13 @@
 [Misc]
+DisplayEnemyInventory=1
 GrantNormalXP=10
 GrantNormalXPFormulaA=1.5
 GrantNormalXPFormulaB=0.0
 GrantNormalXPFormulaC=0.0
 HeroFactorXP=100
+ItemStackingEnabled=1
 MaxHeroLevel=100
+MaxUnitLevel=100
 NeedHeroXP=20
 NeedHeroXPFormulaA=2.5
 NeedHeroXPFormulaB=0.0

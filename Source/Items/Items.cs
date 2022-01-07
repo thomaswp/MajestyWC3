@@ -47,11 +47,9 @@ namespace Source.Items
             if (!itemToSellerMap.TryGetValue(itemID, out int sellingID)) return false;
             if (sellingID != unit.GetTypeID()) return false;
             player player = unit.GetPlayer().GetHumanForAI();
-            if (itemToSellerMap.TryGetValue(itemID, out int researchID))
-            {
-                // TODO: Account for research levels?
-                if (GetPlayerTechResearched(player, researchID, false)) return false;
-            }
+            if (!itemToSellerMap.TryGetValue(itemID, out int researchID)) return false;
+            //Console.WriteLine($"{GetPlayerTechResearched(player, researchID, true)}/{GetPlayerTechResearched(player, researchID, false)} -- {GetPlayerTechCount(player, researchID, true)}");
+            if (!GetPlayerTechResearched(player, researchID, true)) return false;
             return true;
         }
 

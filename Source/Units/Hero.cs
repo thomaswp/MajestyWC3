@@ -13,6 +13,14 @@ namespace Source.Units
 {
     public abstract class Hero : UnitAI
     {
+        // TODO: Lower?
+        public const int STARTING_GOLD = 100;
+
+        protected override void Init(unit unit)
+        {
+            base.Init(unit);
+            Gold += STARTING_GOLD;
+        }
 
         public override void OnAttack(unit target)
         {
