@@ -27,7 +27,7 @@ namespace Source.Behaviors
             SelectTarget();
             if (exploringLocation == null) return;
             float ex = GetLocationX(exploringLocation), ey = GetLocationY(exploringLocation);
-            IssuePointOrderByIdLoc(AI.unit, Constants.ORDER_MOVE, exploringLocation);
+            IssuePointOrderByIdLoc(AI.Unit, Constants.ORDER_MOVE, exploringLocation);
             //PingMinimap(ex, ey, 1);
             Console.WriteLine($"Knight exploring {ex}, {ey}");
         }
@@ -43,37 +43,37 @@ namespace Source.Behaviors
 
             if (exploringLocation == null) return false;
 
-            location loc = GetUnitLoc(AI.unit);
+            location loc = GetUnitLoc(AI.Unit);
             float x = GetLocationX(loc), y = GetLocationY(loc);
             rect mapRect = GetPlayableMapRect();
 
 
             float ex = GetLocationX(exploringLocation), ey = GetLocationY(exploringLocation);
             float length = (float)Math.Sqrt(Math.Pow(x - ex, 2) + Math.Pow(y - ey, 2));
-            float sight = AI.unit.GetSightRange();
+            float sight = AI.Unit.GetSightRange();
             float perc = sight * 1.2f / length;
             location check = Location(Util.lerp(x, ex, perc), Util.lerp(y, ey, perc));
-            if (RectContainsLoc(mapRect, check) && IsLocationMaskedToPlayer(check, AI.humanPlayer))
+            if (RectContainsLoc(mapRect, check) && IsLocationMaskedToPlayer(check, AI.HumanPlayer))
             {
-                AddHeroXP(AI.unit, HERO_EXPLORE_TICK_XP, true);
+                AddHeroXP(AI.Unit, HERO_EXPLORE_TICK_XP, true);
             }
             //PingMinimapLocForPlayer(humanPlayer, check, 0.5f);
 
             // TODO: Configure continue exploring parameters
-            if (DistanceBetweenPoints(GetUnitLoc(AI.unit), exploringLocation) <= 50) return false;
+            if (DistanceBetweenPoints(GetUnitLoc(AI.Unit), exploringLocation) <= 50) return false;
 
             return true;
         }
 
         private bool isMasked(location check, rect mapRect)
         {
-            return RectContainsLoc(mapRect, check) && IsLocationMaskedToPlayer(check, AI.humanPlayer);
+            return RectContainsLoc(mapRect, check) && IsLocationMaskedToPlayer(check, AI.HumanPlayer);
         }
 
         private void SelectTarget()
         {
             rect mapRect = GetPlayableMapRect();
-            location loc = GetUnitLoc(AI.unit);
+            location loc = GetUnitLoc(AI.Unit);
             float x = GetLocationX(loc), y = GetLocationY(loc);
 
             if (exploringLocation != null)

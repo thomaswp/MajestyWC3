@@ -22,15 +22,15 @@ namespace Source.Behaviors
         private bool IsTargetValid()
         {
             return targetEnemy != null && !targetEnemy.IsDead() && 
-                targetEnemy.DistanceTo(AI.home) <= MIN_HOME_ATTACK_DIS;
+                targetEnemy.DistanceTo(AI.Home) <= MIN_HOME_ATTACK_DIS;
         }
 
         public void OnHomeAttacked(unit attacker)
         {
             if (IsTargetValid()) return;
             targetEnemy = attacker;
-            Console.WriteLine($"{AI.unit.GetName()} defending home from {targetEnemy.GetName()}");
-            IssueTargetOrder(AI.unit, "Attack", targetEnemy);
+            Console.WriteLine($"{AI.Unit.GetName()} defending home from {targetEnemy.GetName()}");
+            IssueTargetOrder(AI.Unit, "Attack", targetEnemy);
         }
 
         protected override void SelectTarget() { }

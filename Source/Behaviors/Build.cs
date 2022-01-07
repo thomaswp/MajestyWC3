@@ -26,7 +26,7 @@ namespace Source.Behaviors
             SelectTarget();
             if (buildingTarget == null) return;
             //Console.WriteLine($"Building {GetUnitName(buildingTarget)}");
-            IssueTargetOrderById(AI.unit, Constants.ORDER_REPAIR, buildingTarget);
+            IssueTargetOrderById(AI.Unit, Constants.ORDER_REPAIR, buildingTarget);
         }
 
         public override void Stop()
@@ -51,7 +51,7 @@ namespace Source.Behaviors
             buildingTarget = null;
 
             //Console.WriteLine("Start search...");
-            var units = GetUnitsOfPlayerAll(AI.humanPlayer).ToList();
+            var units = GetUnitsOfPlayerAll(AI.HumanPlayer).ToList();
             //Console.WriteLine($"Searching {units.Count} units...");
             var repairable = units
                 .Where(unit => IsUnitIdType(GetUnitTypeId(unit), UNIT_TYPE_STRUCTURE))
@@ -59,7 +59,7 @@ namespace Source.Behaviors
             //Console.WriteLine($"Found {repairable.Count()} repairable...");
             if (repairable.Count() == 0) return;
             buildingTarget = repairable
-                .OrderBy(other => AI.unit.DistanceTo(other))
+                .OrderBy(other => AI.Unit.DistanceTo(other))
                 .First();
         }
     }

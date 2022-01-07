@@ -15,11 +15,12 @@ namespace Source.Units
     public abstract class UnitAI
     {
 
-        public unit unit { get; private set; }
-        public player myPlayer { get; private set; }
-        public player humanPlayer { get; private set; }
+        public unit Unit { get; private set; }
+        public player MyPlayer { get; private set; }
+        public player HumanPlayer { get; private set; }
 
-        public unit home { get; private set; }
+        public unit Home { get; private set; }
+        public unit InBuilding { get; set; }
 
         public int gold { get; set; }
 
@@ -36,14 +37,14 @@ namespace Source.Units
         {
             behavior.init(this, weight);
             behaviors.Add(behavior);
-            Console.WriteLine($"Adding {behavior.GetName()} for {unit.GetName()}");
+            Console.WriteLine($"Adding {behavior.GetName()} for {Unit.GetName()}");
         }
 
         private void init(unit unit)
         {
-            this.unit = unit;
-            myPlayer = GetOwningPlayer(unit);
-            humanPlayer = myPlayer.GetHumanForAI();
+            this.Unit = unit;
+            MyPlayer = GetOwningPlayer(unit);
+            HumanPlayer = MyPlayer.GetHumanForAI();
             AddBehaviors();
         }
 
@@ -127,11 +128,11 @@ namespace Source.Units
 
         public void SetHome(unit home)
         {
-            if (this.home != null)
+            if (this.Home != null)
             {
-                homeMap[this.home].Remove(this);
+                homeMap[this.Home].Remove(this);
             }
-            this.home = home;
+            this.Home = home;
             if (!homeMap.ContainsKey(home))
             {
                 homeMap[home] = new List<UnitAI>();
@@ -153,7 +154,7 @@ namespace Source.Units
             {
                 if (!itemCounts.TryGetValue(item, out int count))
                 {
-                    count = itemCounts[item] = unit.GetItemCount(item);
+                    count = itemCounts[item] = Unit.GetItemCount(item);
                 }
                 if (count > 0)
                 {
@@ -164,6 +165,27 @@ namespace Source.Units
                     yield return item;
                 }
             }
+        }
+
+        public bool TryPurchase(int itemID)
+        {
+            int cost = Items.Items.GetItemCost(itemID);
+            if (gold < cost) return false;
+            item item;
+            bool bought;
+            if (Unit.HasItem(itemID))
+            {
+                item = GetItemOfTypeFromUnitBJ(Unit, itemID);
+                SetItemCharges(item, GetItemCharges(item) + 1);
+                bought = true;
+            }
+            else
+            {
+                item = CreateItem(itemID, 0, 0);
+                bought = UnitAddItem(Unit, item);
+            }
+            if (bought) gold -= cost;
+            return bought;
         }
 
         public virtual void OnAttack(unit target)
@@ -205,7 +227,7 @@ namespace Source.Units
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Error with {GetUnitName(ai.unit)} event {ev}: {e.Message}");
+                Console.WriteLine($"Error with {GetUnitName(ai.Unit)} event {ev}: {e.Message}");
             }
         }
 
@@ -234,7 +256,7 @@ namespace Source.Units
                     unit.Update();
                 } catch (Exception e)
                 {
-                    Console.WriteLine($"Error updating {GetUnitName(unit.unit)}: {e.Message}");
+                    Console.WriteLine($"Error updating {GetUnitName(unit.Unit)}: {e.Message}");
                 }
             }
         }

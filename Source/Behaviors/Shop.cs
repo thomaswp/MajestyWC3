@@ -18,6 +18,8 @@ namespace Source.Behaviors
 
         protected unit targetShop;
 
+        private OrderChain orders;
+
         public override bool CanStart()
         {
             SelectTarget();
@@ -28,8 +30,8 @@ namespace Source.Behaviors
         {
             SelectTarget();
             if (targetShop == null) return;
-            IssuePointOrderByIdLoc(AI.unit, Constants.ORDER_MOVE, targetShop.GetLocation());
-            Console.WriteLine($"{AI.unit.GetName()} shopping at {targetShop.GetName()}");
+            IssuePointOrderByIdLoc(AI.Unit, Constants.ORDER_MOVE, targetShop.GetLocation());
+            Console.WriteLine($"{AI.Unit.GetName()} shopping at {targetShop.GetName()}");
         }
 
         public override void Stop()
@@ -42,15 +44,13 @@ namespace Source.Behaviors
             if (!IsValidTarget()) return false;
 
             // TODO: Check for danger...
-            //int totalEnemyHP = visible.Where(u => !u.IsStructure()).Select(u => u.GetHP()).Sum();
 
-            return true;
+            return orders.Update();
         }
 
         private bool IsValidTarget()
         {
-            // TODO
-            return true;
+            return orders != null && !targetShop.IsDead() && !orders.Done;
         }
 
         protected virtual void SelectTarget()
@@ -58,23 +58,39 @@ namespace Source.Behaviors
             if (IsValidTarget()) return;
 
             targetShop = null;
+            orders = null;
 
-            var shops = GetUnitsInRangeOfLocAll(SHOP_RADIUS, AI.unit.GetLocation()).ToList()
-                .Where(u => u.IsShop() && u.GetPlayer() == AI.humanPlayer);
+            var shops = GetUnitsInRangeOfLocAll(SHOP_RADIUS, AI.Unit.GetLocation()).ToList()
+                .Where(u => u.IsShop() && u.GetPlayer() == AI.HumanPlayer);
 
             foreach (int itemID in AI.GetWantedItems())
             {
-                // TODO Get Item cost
-                //if (AI.gold < Itemcost) continue;
+                if (AI.gold < Items.Items.GetItemCost(itemID)) continue;
                 var selling = shops.Where(shop => shop.IsSelling(itemID));
                 if (selling.Count() == 0) continue;
-                targetShop = selling.OrderBy(shop => shop.DistanceTo(AI.unit)).First();
+                targetShop = selling.OrderBy(shop => shop.DistanceTo(AI.Unit)).First();
                 break;
             }
 
             if (targetShop != null)
             {
-                // TODO: Go to shop
+                Action action = () =>
+                {
+                    foreach (int itemID in AI.GetWantedItems())
+                    {
+                        if (!targetShop.IsSelling(itemID)) continue;
+                        AI.TryPurchase(itemID);
+                    }
+                };
+                orders =
+                    new OrderMoveToBuilding(targetShop)
+                    .Init(AI)
+                    .Then(new OrderEnter(targetShop))
+                    .Then(new OrderWait(1))
+                    .Then(new OrderDo(action))
+                    .Then(new OrderExit())
+                    ;
+                    
             }
         }
     }

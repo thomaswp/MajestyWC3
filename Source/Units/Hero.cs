@@ -19,7 +19,7 @@ namespace Source.Units
             base.OnAttack(target);
 
             int exp = GetUnitLevel(target);
-            AddHeroXP(unit, exp, true);
+            AddHeroXP(Unit, exp, true);
         }
 
         public override void OnAttacked(unit attacker)

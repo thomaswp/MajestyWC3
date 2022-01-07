@@ -85,5 +85,10 @@ namespace Source
         {
             return GetOwningPlayer(unit);
         }
+
+        public static void OrderMoveTo(this unit unit, location loc)
+        {
+            IssuePointOrderByIdLoc(unit, Constants.ORDER_MOVE, loc);
+        }
     }
 }
