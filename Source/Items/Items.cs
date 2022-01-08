@@ -29,13 +29,14 @@ namespace Source.Items
         };
         private static readonly Dictionary<int, int> itemToSellerMap = new Dictionary<int, int>()
         {
-            { Constants.ITEM_HEALING_POTION_LEVEL_1, Constants.UNIT_MARKET },
-            { Constants.ITEM_HEALING_POTION_LEVEL_2, Constants.UNIT_MARKET },
+            // TODO: Handle building upgrades
+            { Constants.ITEM_HEALING_POTION_LEVEL_1, Constants.UNIT_MARKET_LEVEL_1 },
+            { Constants.ITEM_HEALING_POTION_LEVEL_2, Constants.UNIT_MARKET_LEVEL_2 },
         };
         private static readonly List<int> itemIDs = new List<int>(itemToResearchMap.Keys);
         private static readonly List<int> shopIDs = new List<int>
         {
-            Constants.UNIT_MARKET,
+            Constants.UNIT_MARKET_LEVEL_1, Constants.UNIT_MARKET_LEVEL_2,
         };
         private static readonly Dictionary<int, int> itemCostMap = new Dictionary<int, int>();
         

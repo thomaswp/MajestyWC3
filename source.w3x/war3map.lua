@@ -9,7 +9,7 @@ function CreateBuildingsForPlayer0()
     local t
     local life
     u = BlzCreateUnitWithSkin(p, FourCC("h001"), 512.0, -1216.0, 270.000, FourCC("h001"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n000"), -320.0, -1728.0, 270.000, FourCC("n000"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n003"), -448.0, -1600.0, 270.000, FourCC("n003"))
     u = BlzCreateUnitWithSkin(p, FourCC("h002"), -64.0, -1152.0, 270.000, FourCC("h002"))
 end
 
@@ -63,6 +63,7 @@ end
 
 function Trig_Untitled_Trigger_001_Actions()
     SetPlayerStateBJ(Player(0), PLAYER_STATE_RESOURCE_GOLD, 1000)
+    SetPlayerStateBJ(Player(0), PLAYER_STATE_RESOURCE_LUMBER, 1000)
 end
 
 function InitTrig_Untitled_Trigger_001()

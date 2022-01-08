@@ -10,8 +10,9 @@ public static class Constants
 	public const int UNIT_KNIGHT = 1211117620;
 	public const int UNIT_BUILDER = 1697656880;
 	public const int UNIT_PEASANT_WORKER = 1747988528;
-	public const int UNIT_MARKET = 1848651824;
 	public const int UNIT_KOBOLD_TENT = 1848651829;
+	public const int UNIT_MARKET_LEVEL_2 = 1848651824;
+	public const int UNIT_MARKET_LEVEL_1 = 1848651827;
 	public const int UPGRADE_HEALTH_POTIONS = 1378889776;
 	public const int UPGRADE_MARKET_DAY = 1378889777;
 	public const int ORDER_OFFSET = 851970;

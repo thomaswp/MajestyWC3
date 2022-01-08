@@ -68,12 +68,6 @@ STRING 13
 Peasant Worker
 }
 
-STRING 14
-// Units: n000 (Market), Name (Name)
-{
-Market
-}
-
 STRING 15
 // Units: H004 (Knight), Propernames (Proper Names)
 {
@@ -168,5 +162,17 @@ STRING 40
 // Abilities: A002 (Item Healing (Level 1)), Name (Name)
 {
 Item Healing (Level 1)
+}
+
+STRING 41
+// Units: n000 (Market - Level 2), Name (Name)
+{
+Market - Level 2
+}
+
+STRING 42
+// Units: n003 (Market - Level 1), Name (Name)
+{
+Market - Level 1
 }
 
