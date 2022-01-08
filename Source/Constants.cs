@@ -1,8 +1,10 @@
 public static class Constants
 {
 	public const int ABILITY_MARKET_DAY = 1093677104;
-	public const int ABILITY_ITEM_HEALING_M = 1093677105;
+	public const int ABILITY_ITEM_HEALING_LEVEL_2 = 1093677105;
+	public const int ABILITY_ITEM_HEALING_LEVEL_1 = 1093677106;
 	public const int ITEM_HEALING_POTION_LEVEL_1 = 1227894832;
+	public const int ITEM_HEALING_POTION_LEVEL_2 = 1227894834;
 	public const int UNIT_DUMMY = 2021161080;
 	public const int UNIT_CASTLE_LEVEL_1 = 1747988529;
 	public const int UNIT_KNIGHT = 1211117620;

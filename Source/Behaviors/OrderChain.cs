@@ -21,7 +21,7 @@ namespace Source.Behaviors
         protected virtual bool UpdateContinue() { return false; }
         protected virtual void Start() 
         {
-            Console.WriteLine($"{AI.Unit.GetName()} starting {GetType().Name}");
+            //Console.WriteLine($"{AI.Unit.GetName()} starting {GetType().Name}");
         }
 
         public bool Update()
@@ -126,6 +126,7 @@ namespace Source.Behaviors
 
         protected override void Start()
         {
+            base.Start();
             ShowUnitHide(AI.Unit);
             AI.InBuilding = building;
         }
@@ -135,6 +136,7 @@ namespace Source.Behaviors
     { 
         protected override void Start()
         {
+            base.Start();
             // TODO: move to bottom of building?
             unit building = AI.InBuilding;
             AI.InBuilding = null;
@@ -154,8 +156,8 @@ namespace Source.Behaviors
 
         protected override void Start()
         {
+            base.Start();
             var timer = CreateTimer();
-            // TODO: Doesn't seem to work
             TimerStart(timer, seconds, false, () =>
             {
                 DestroyTimer(timer);
@@ -165,7 +167,7 @@ namespace Source.Behaviors
 
         protected override bool UpdateContinue()
         {
-            return done;
+            return !done;
         }
     }
 

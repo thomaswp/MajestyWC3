@@ -140,12 +140,6 @@ STRING 34
 Healing Potion (Level 1)
 }
 
-STRING 35
-// Abilities: A001 (Item Healing (M)), Name (Name)
-{
-Item Healing (M)
-}
-
 STRING 36
 // Upgrades: R000 (Animal War Training), Tip (Tooltip)
 {
@@ -156,5 +150,23 @@ STRING 37
 // Upgrades: R000 (Animal War Training), Ubertip (Tooltip - Extended)
 {
 Allows heroes to purchase Level 2 Health Potions
+}
+
+STRING 38
+// Items: I002 (Healing Potion (Level 2)), Name (Name)
+{
+Healing Potion (Level 2)
+}
+
+STRING 39
+// Abilities: A001 (Item Healing (Level 2)), Name (Name)
+{
+Item Healing (Level 2)
+}
+
+STRING 40
+// Abilities: A002 (Item Healing (Level 1)), Name (Name)
+{
+Item Healing (Level 1)
 }
 

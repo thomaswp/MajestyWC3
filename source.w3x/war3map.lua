@@ -61,13 +61,8 @@ function CreateAllUnits()
     CreatePlayerUnits()
 end
 
-function Trig_Untitled_Trigger_001_Func003A()
-    DoNothing()
-end
-
 function Trig_Untitled_Trigger_001_Actions()
     SetPlayerStateBJ(Player(0), PLAYER_STATE_RESOURCE_GOLD, 1000)
-    ForGroupBJ(GetUnitsOfPlayerAll(Player(0)), Trig_Untitled_Trigger_001_Func003A)
 end
 
 function InitTrig_Untitled_Trigger_001()

@@ -11,13 +11,26 @@ namespace Source.Items
 {
     public static class Items
     {
-        private static readonly Dictionary<int, int> itemToResearchMap = new Dictionary<int, int>()
+        private struct Req
         {
-            { Constants.ITEM_HEALING_POTION_LEVEL_1, Constants.UPGRADE_HEALTH_POTIONS },
+            public int upgradeID, level;
+
+            public Req(int upgradeID, int level = 1)
+            {
+                this.upgradeID = upgradeID;
+                this.level = level;
+            }
+        }
+
+        private static readonly Dictionary<int, Req> itemToResearchMap = new Dictionary<int, Req>()
+        {
+            { Constants.ITEM_HEALING_POTION_LEVEL_1, new Req(Constants.UPGRADE_HEALTH_POTIONS) },
+            { Constants.ITEM_HEALING_POTION_LEVEL_2, new Req(Constants.UPGRADE_HEALTH_POTIONS, 2) },
         };
         private static readonly Dictionary<int, int> itemToSellerMap = new Dictionary<int, int>()
         {
             { Constants.ITEM_HEALING_POTION_LEVEL_1, Constants.UNIT_MARKET },
+            { Constants.ITEM_HEALING_POTION_LEVEL_2, Constants.UNIT_MARKET },
         };
         private static readonly List<int> itemIDs = new List<int>(itemToResearchMap.Keys);
         private static readonly List<int> shopIDs = new List<int>
@@ -47,9 +60,10 @@ namespace Source.Items
             if (!itemToSellerMap.TryGetValue(itemID, out int sellingID)) return false;
             if (sellingID != unit.GetTypeID()) return false;
             player player = unit.GetPlayer().GetHumanForAI();
-            if (!itemToSellerMap.TryGetValue(itemID, out int researchID)) return false;
-            //Console.WriteLine($"{GetPlayerTechResearched(player, researchID, true)}/{GetPlayerTechResearched(player, researchID, false)} -- {GetPlayerTechCount(player, researchID, true)}");
-            if (!GetPlayerTechResearched(player, researchID, true)) return false;
+            if (!itemToResearchMap.TryGetValue(itemID, out Req researchReq)) return false;
+            int researchLevel = GetPlayerTechCount(player, researchReq.upgradeID, true);
+            //Console.WriteLine($"Player research level {researchLevel}; required: {researchReq.level}");
+            if (researchLevel < researchReq.level) return false;
             return true;
         }
 

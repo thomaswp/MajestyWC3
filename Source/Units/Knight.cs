@@ -14,6 +14,12 @@ namespace Source.Units
     {
         public static List<int> itemPriorities = new List<int>()
         {
+            Constants.ITEM_HEALING_POTION_LEVEL_2,
+            Constants.ITEM_HEALING_POTION_LEVEL_2,
+            Constants.ITEM_HEALING_POTION_LEVEL_2,
+            Constants.ITEM_HEALING_POTION_LEVEL_2,
+            Constants.ITEM_HEALING_POTION_LEVEL_2,
+            Constants.ITEM_HEALING_POTION_LEVEL_1,
             Constants.ITEM_HEALING_POTION_LEVEL_1,
             Constants.ITEM_HEALING_POTION_LEVEL_1,
             Constants.ITEM_HEALING_POTION_LEVEL_1,
