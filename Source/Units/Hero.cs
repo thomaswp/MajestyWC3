@@ -8,6 +8,7 @@ using static War3Api.Common;
 using static War3Api.Blizzard;
 using Source;
 using Source.Behaviors;
+using Source.Items;
 
 namespace Source.Units
 {
@@ -22,6 +23,41 @@ namespace Source.Units
             Gold += STARTING_GOLD;
         }
 
+        protected override void DoPreBehaviorActions()
+        {
+            base.DoPreBehaviorActions();
+            if (CheckHealingPotions()) return;
+        }
+
+        protected bool CheckHealingPotions()
+        {
+            if (behavior == null || !behavior.IsInCombatOrDanger()) return false;
+            bool interrupted = false;
+            bool needsHeal = Unit.GetHPFraction() < 0.3f;
+            if (Unit.HasItem(Constants.ITEM_HEALING_POTION_LEVEL_2) &&
+                (needsHeal || Unit.GetDamage() >= Items.Items.HP2_HEALING))
+            {
+                int order = Unit.GetSlotOrderForItem(Constants.ITEM_HEALING_POTION_LEVEL_2);
+                IssueImmediateOrderById(Unit, order);
+                //Console.WriteLine("Using HP2");
+                interrupted = true;
+            } else if (Unit.HasItem(Constants.ITEM_HEALING_POTION_LEVEL_1) &&
+                (needsHeal || Unit.GetDamage() >= Items.Items.HP1_HEALING))
+            {
+                int order = Unit.GetSlotOrderForItem(Constants.ITEM_HEALING_POTION_LEVEL_1);
+                IssueImmediateOrderById(Unit, order);
+                //Console.WriteLine("Using HP1");
+                interrupted = true;
+            }
+            if (interrupted && behavior != null)
+            {
+                behavior.NeedsRestart = true;
+            }
+
+            return true;
+        }
+
+
         public override void OnAttack(unit target)
         {
             base.OnAttack(target);
@@ -33,18 +69,21 @@ namespace Source.Units
         public override void OnAttacked(unit attacker)
         {
             base.OnAttacked(attacker);
+
+            //Console.WriteLine("Trying Flee");
+            if (TryInterruptWith(typeof(Flee), true)) return;
+            //Console.WriteLine("Trying fight");
+            if (TryInterruptWith(typeof(Fight), true)) return;
+            //if (!(behavior is Fight)) Console.WriteLine("Failed...");
         }
 
         public override void OnHomeAttacked(unit attacker)
         {
             base.OnHomeAttacked(attacker);
-            Console.WriteLine("Defending...");
-            foreach (DefendHome b in behaviors.Where(b => b is DefendHome))
-            {
-                behavior = b;
-                b.OnHomeAttacked(attacker);
-                break;
-            }
+            DefendHome d = (DefendHome) GetBehavior(typeof(DefendHome));
+            if (d == null) return;
+            d.OnHomeAttackedBy(attacker);
+            TryInterruptWith(d, false);
         }
 
     }

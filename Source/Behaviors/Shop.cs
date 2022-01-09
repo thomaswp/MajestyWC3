@@ -38,6 +38,8 @@ namespace Source.Behaviors
         {
             targetShop = null;
             orders = null;
+            // In case interrupted
+            ShowUnitShow(AI.Unit);
         }
 
         public override bool Update()

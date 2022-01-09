@@ -37,7 +37,17 @@ namespace Source.Units
             AddBehavior(new Behaviors.DefendHome());
             AddBehavior(new Behaviors.Fight(), 10);
             AddBehavior(new Behaviors.Shop(), 5);
-            //AddBehavior(Behaviors.Activity.Fleeing);
+            AddBehavior(new Behaviors.RestAtHome(), 1);
+            AddBehavior(new Behaviors.Flee(), 3);
+        }
+
+        protected override void Init(unit unit)
+        {
+            base.Init(unit);
+
+            // TODO: remove
+            //TryPurchase(Constants.ITEM_HEALING_POTION_LEVEL_1);
+            //TryPurchase(Constants.ITEM_HEALING_POTION_LEVEL_1);
         }
 
 

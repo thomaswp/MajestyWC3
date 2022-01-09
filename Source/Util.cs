@@ -27,11 +27,6 @@ namespace Source
             return DistanceBetweenPoints(GetUnitLoc(me), other);
         }
 
-        public static string Name(this unit unit)
-        {
-            return GetUnitName(unit);
-        }
-
         public static player GetAIForHuman(this player player)
         {
             int id = GetPlayerId(player);
@@ -56,6 +51,11 @@ namespace Source
             return BlzGetUnitRealField(unit, UNIT_RF_SIGHT_RADIUS);
         }
 
+        public static List<unit> GetVisibleUnits(this unit unit)
+        {
+            return GetUnitsInRangeOfLocAll(unit.GetSightRange(), unit.GetLocation()).ToList();
+        }
+
         public static location GetLocation(this unit unit)
         {
             return GetUnitLoc(unit);
@@ -63,7 +63,17 @@ namespace Source
 
         public static int GetHP(this unit unit)
         {
-            return (int) Math.Round(GetUnitLifePercent(unit) * BlzGetUnitMaxHP(unit));
+            return (int) Math.Round(unit.GetHPFraction() * BlzGetUnitMaxHP(unit));
+        }
+
+        public static int GetDamage(this unit unit)
+        {
+            return (int)Math.Round((1 - unit.GetHPFraction()) * BlzGetUnitMaxHP(unit));
+        }
+
+        public static float GetHPFraction(this unit unit)
+        {
+            return GetUnitLifePercent(unit) / 100f;
         }
 
         public static bool IsStructure(this unit unit)

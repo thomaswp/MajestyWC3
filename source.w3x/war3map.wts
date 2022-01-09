@@ -141,7 +141,7 @@ Allows heroes to purchase Level 1 Health Potions
 }
 
 STRING 37
-// Upgrades: R000 (Animal War Training), Ubertip (Tooltip - Extended)
+// Upgrades: R000 (Animal War Training), Tip (Tooltip)
 {
 Allows heroes to purchase Level 2 Health Potions
 }

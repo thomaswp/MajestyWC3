@@ -16,14 +16,20 @@ namespace Source.Units
     {
 
         public unit Unit { get; private set; }
+        public string Name { get { return Unit.GetName(); } }
         public player MyPlayer { get; private set; }
         public player HumanPlayer { get; private set; }
+        public player AIPlayer { get; private set; }
 
         public unit Home { get; private set; }
         public unit InBuilding { get; set; }
+        public bool IsInBuilding { get { return InBuilding != null; } }
+        public bool IsHome { get { return InBuilding != null && InBuilding == Home; } }
 
         public int GoldTaxed { get; set; }
         public int GoldUntaxed { get; set; }
+
+        const float RECOVER_RATE = 0.01f, RECOVER_RATE_AT_HOME = RECOVER_RATE * 2;
 
         public int Gold 
         { 
@@ -59,16 +65,85 @@ namespace Source.Units
             //Console.WriteLine($"Adding {behavior.GetName()} for {Unit.GetName()}");
         }
 
+        public Behavior GetBehavior(Type type)
+        {
+            return behaviors.Find(b => type.IsInstanceOfType(b)) ?? null;
+        }
+
+        public bool TryInterruptWith(Type type, bool checkIfCanStart)
+        {
+            Behavior b = GetBehavior(type);
+            if (b == null) return false;
+            return TryInterruptWith(b, checkIfCanStart);
+        }
+
+        public bool TryInterruptWith(Behavior newBehavior, bool checkIfCanStart)
+        {
+            if (behavior == newBehavior) return false;
+            if (checkIfCanStart && !newBehavior.CanStart()) return false;
+            if (behavior != null && !behavior.TryInterrupt(newBehavior)) return false;
+            Console.WriteLine($"{Name} interrupted with {newBehavior.GetName()}");
+            behavior = newBehavior;
+            newBehavior.Start();
+            return true;
+        }
+
         protected virtual void Init(unit unit)
         {
             Unit = unit;
             MyPlayer = GetOwningPlayer(unit);
+            AIPlayer = MyPlayer.GetAIForHuman();
             HumanPlayer = MyPlayer.GetHumanForAI();
             AddBehaviors();
         }
 
+        protected virtual void RegainLife()
+        {
+            if (InBuilding == null) return;
+            float rate = IsHome ? RECOVER_RATE_AT_HOME : RECOVER_RATE;
+            SetUnitLifeBJ(Unit, Unit.GetHP() * (1 + rate));
+        }
+
+        public void EnterBuilding(unit building)
+        {
+            InBuilding = building;
+            ShowUnitHide(Unit);
+            PauseUnit(Unit, true);
+        }
+
+        public void ExitBuilding()
+        {
+            // TODO: move to bottom of building?
+            InBuilding = null;
+            ShowUnitShow(Unit);
+            PauseUnit(Unit, false);
+        }
+
+        public bool IsEnemy(unit unit)
+        {
+            // TODO: Alliances
+            player owner = unit.GetPlayer();
+            //Console.WriteLine($"{unit.GetName()} owned by {GetPlayerId(owner)} vs " +
+            //    $"H:{GetPlayerId(HumanPlayer)} and AI:{GetPlayerId(AIPlayer)}");
+            return owner != HumanPlayer && owner != AIPlayer;
+        }
+
+        public virtual float GetIntimidation(unit enemy)
+        {
+            // TODO: Consistent system
+            return GetUnitLevel(enemy) * enemy.GetHP();
+        }
+
+        public virtual float GetConfidence(unit ally)
+        {
+            // TODO: Consistent system
+            return  (1 + (GetUnitLevel(ally) - 1) / 0.2f) * ally.GetHP();
+        }
+
         public virtual void Update()
         {
+            RegainLife();
+            DoPreBehaviorActions();
             if (behaviors == null) return;
             //Console.WriteLine("Starting update...");
             if (behavior == null)
@@ -84,6 +159,12 @@ namespace Source.Units
             if (behavior == null) return;
 
             //Console.WriteLine("Updating behavior...");
+            if (behavior.NeedsRestart)
+            {
+                Console.WriteLine($"Restarting {behavior}");
+                behavior.NeedsRestart = false;
+                behavior.Start();
+            }
             if (!behavior.Update())
             {
                 behavior.Stop();
@@ -91,16 +172,22 @@ namespace Source.Units
             }
         }
 
+        protected virtual void DoPreBehaviorActions()
+        {
+            
+        }
+
         protected virtual Behavior ChooseIdleBehavior()
         {
             //Console.WriteLine($"Selecting from {behaviors.Count} behaviors");
-            var possible = behaviors.Where(b => b.Weight > 0 && b.CanStart());
-            int den = possible.Select(b => b.Weight).Sum();
+            var weights = behaviors.ToDictionary(b => b, b => b.StartWeight() * b.Weight);
+            var possible = behaviors.Where(b => weights[b] > 0);
+            float den = possible.Select(b => weights[b]).Sum();
             if (den == 0) return null;
             float rand = GetRandomInt(0, 999) / 1000f;
             foreach (Behavior b in possible)
             {
-                float slice = (float) b.Weight / den;
+                float slice = weights[b] / den;
                 if (rand <= slice) return b;
                 rand -= slice;
             }
@@ -132,13 +219,13 @@ namespace Source.Units
                 }
                 if (ai != null)
                 {
-                    Console.WriteLine($"Creating new AI for {unit.Name()}");
+                    Console.WriteLine($"Creating new AI for {unit.GetName()}");
                     ai.Init(unit);
                     unitMap[unit] = ai;
                 }
                 else
                 {
-                    Console.WriteLine($"Unknown AI for {unit.Name()}");
+                    Console.WriteLine($"Unknown AI for {unit.GetName()}");
                 }
             }
             return unitMap[unit];

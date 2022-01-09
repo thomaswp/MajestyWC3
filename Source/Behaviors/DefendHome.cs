@@ -12,25 +12,36 @@ namespace Source.Behaviors
 {
     public class DefendHome : Fight
     {
-        public const int MIN_HOME_ATTACK_DIS = 800;
+        public const int MIN_HOME_ATTACK_DIS = 1000;
 
-        public override bool Update()
-        {
-            return !IsTargetValid();
-        }
-
-        private bool IsTargetValid()
+        protected override bool IsValidTarget()
         {
             return targetEnemy != null && !targetEnemy.IsDead() && 
                 targetEnemy.DistanceTo(AI.Home) <= MIN_HOME_ATTACK_DIS;
         }
 
-        public void OnHomeAttacked(unit attacker)
+        public override bool TryInterrupt(Behavior with)
         {
-            if (IsTargetValid()) return;
-            targetEnemy = attacker;
+            //Console.WriteLine("No interrupt for you!");
+            // TODO: More nuance
+            return false;
+        }
+
+        public override void Start()
+        {
+            base.Start();
             Console.WriteLine($"{AI.Unit.GetName()} defending home from {targetEnemy.GetName()}");
-            IssueTargetOrder(AI.Unit, "Attack", targetEnemy);
+        }
+
+        public override void Stop()
+        {
+            base.Stop();
+            Console.WriteLine("Stopping Defend home");
+        }
+
+        public void OnHomeAttackedBy(unit attacker)
+        {
+            targetEnemy = attacker;
         }
 
         protected override void SelectTarget() { }

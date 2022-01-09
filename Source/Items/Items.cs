@@ -39,7 +39,10 @@ namespace Source.Items
             Constants.UNIT_MARKET_LEVEL_1, Constants.UNIT_MARKET_LEVEL_2,
         };
         private static readonly Dictionary<int, int> itemCostMap = new Dictionary<int, int>();
-        
+
+        public static readonly int HP1_HEALING, HP2_HEALING;
+
+
         static Items()
         {
             foreach (int itemID in itemIDs)
@@ -49,6 +52,19 @@ namespace Source.Items
                 itemCostMap[itemID] = cost;
                 RemoveItem(item);
             }
+
+            item hp1 = CreateItem(Constants.ITEM_HEALING_POTION_LEVEL_1, 0, 0);
+            HP1_HEALING = BlzGetAbilityIntegerLevelField(
+                BlzGetItemAbility(hp1, Constants.ABILITY_ITEM_HEALING_LEVEL_1),
+                ABILITY_ILF_HIT_POINTS_GAINED_IHP2, 1);
+            RemoveItem(hp1);
+
+            item hp2 = CreateItem(Constants.ITEM_HEALING_POTION_LEVEL_2, 0, 0);
+            HP2_HEALING = BlzGetAbilityIntegerLevelField(
+                BlzGetItemAbility(hp2, Constants.ABILITY_ITEM_HEALING_LEVEL_2),
+                ABILITY_ILF_HIT_POINTS_GAINED_IHP2, 1);
+            RemoveItem(hp2);
+
         }
 
         public static bool IsShop(this unit unit)
@@ -83,6 +99,28 @@ namespace Source.Items
         public static int GetItemCost(int itemID)
         {
             if (itemCostMap.TryGetValue(itemID, out int cost)) return cost;
+            return -1;
+        }
+
+        public static readonly int[] SLOTS_ORDERS = new int[] {
+            Constants.ORDER_USE_SLOT1,
+            Constants.ORDER_USE_SLOT2,
+            Constants.ORDER_USE_SLOT3,
+            Constants.ORDER_USE_SLOT4,
+            Constants.ORDER_USE_SLOT5,
+            Constants.ORDER_USE_SLOT6,
+        };
+
+        public static int GetSlotOrderForItem(this unit unit, int itemID)
+        {
+            for (int i = 1; i <= 6; i++)
+            {
+                item item = UnitItemInSlot(unit, i);
+                if (item != null && GetItemTypeId(item) == itemID)
+                {
+                    return SLOTS_ORDERS[i - 1];
+                }
+            }
             return -1;
         }
     }

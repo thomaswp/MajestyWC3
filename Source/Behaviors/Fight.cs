@@ -34,6 +34,11 @@ namespace Source.Behaviors
             targetEnemy = null;
         }
 
+        public override bool IsInCombatOrDanger()
+        {
+            return true;
+        }
+
         public override bool Update()
         {
             if (!IsValidTarget()) return false;
@@ -44,21 +49,20 @@ namespace Source.Behaviors
             return true;
         }
 
-        private bool IsValidTarget()
+        protected virtual bool IsValidTarget()
         {
             return targetEnemy != null && !targetEnemy.IsDead();
         }
 
         protected virtual void SelectTarget()
         {
+            //Console.WriteLine("Selecting target");
             if (IsValidTarget() && targetEnemy.DistanceTo(AI.Unit) < AI.Unit.GetSightRange()) return;
 
             targetEnemy = null;
 
-            player neutral = Player(PLAYER_NEUTRAL_AGGRESSIVE);
             var visible = GetUnitsInRangeOfLocAll(AI.Unit.GetSightRange(), AI.Unit.GetLocation()).ToList()
-                .Where(u => GetOwningPlayer(u) == neutral)
-                .Where(u => !u.IsDead());
+                .Where(u => AI.IsEnemy(u) && !u.IsDead());
 
             if (visible.Count() == 0) return;
 

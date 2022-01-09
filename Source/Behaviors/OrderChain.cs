@@ -127,8 +127,7 @@ namespace Source.Behaviors
         protected override void Start()
         {
             base.Start();
-            ShowUnitHide(AI.Unit);
-            AI.InBuilding = building;
+            AI.EnterBuilding(building);
         }
     }
 
@@ -136,11 +135,7 @@ namespace Source.Behaviors
     { 
         protected override void Start()
         {
-            base.Start();
-            // TODO: move to bottom of building?
-            unit building = AI.InBuilding;
-            AI.InBuilding = null;
-            ShowUnitShow(AI.Unit);
+            AI.ExitBuilding();
         }
     }
 
@@ -168,6 +163,21 @@ namespace Source.Behaviors
         protected override bool UpdateContinue()
         {
             return !done;
+        }
+    }
+
+    public class OrderWaitUntil : OrderChain
+    {
+        private Func<bool> predicate;
+
+        public OrderWaitUntil(Func<bool> predicate)
+        {
+            this.predicate = predicate;
+        }
+
+        protected override bool UpdateContinue()
+        {
+            return !predicate();
         }
     }
 
