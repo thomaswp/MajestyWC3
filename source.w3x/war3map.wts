@@ -176,3 +176,81 @@ STRING 42
 Market - Level 1
 }
 
+STRING 43
+// Units: o001 (Explore Flag), Name (Name)
+{
+Explore Flag
+}
+
+STRING 44
+// Abilities: A003 (Explore Flag), Tip (Tooltip - Normal)
+{
+Explore Flag
+}
+
+STRING 45
+// Abilities: A003 (Explore Flag), Hotkey (Hotkey - Normal)
+{
+E
+}
+
+STRING 46
+// Abilities: A003 (Explore Flag), Name (Name)
+{
+Explore Flag
+}
+
+STRING 47
+// Abilities: A003 (Explore Flag), Ubertip (Tooltip - Normal - Extended)
+{
+Puts a bounty on a point for exploration.
+}
+
+STRING 48
+// Abilities: A004 (Increase Bounty), Name (Name)
+{
+Increase Bounty
+}
+
+STRING 49
+// Abilities: A004 (Increase Bounty), Tip (Tooltip - Normal)
+{
+Increase Bounty +100
+}
+
+STRING 51
+// Abilities: A004 (Increase Bounty), Hotkey (Hotkey - Normal)
+{
+I
+}
+
+STRING 52
+// Abilities: A006 (Decrease Bounty), Name (Name)
+{
+Decrease Bounty
+}
+
+STRING 56
+// Abilities: A006 (Decrease Bounty), Hotkey (Hotkey - Normal)
+{
+D
+}
+
+STRING 57
+// Abilities: A006 (Decrease Bounty), Tip (Tooltip - Normal)
+{
+Decrease Bounty -100
+}
+
+STRING 59
+// Abilities: A007 (Destroy Flag), Name (Name)
+{
+Destroy Flag
+}
+
+STRING 60
+// Abilities: A007 (Destroy Flag), Tip (Tooltip - Normal)
+{
+Removes this flag and refunds its some of its cost.
+}
+

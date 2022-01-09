@@ -41,6 +41,12 @@ namespace Source
             return Player(id - 1);
         }
 
+        public static void ChangeGoldBy(this player player, int amount)
+        {
+            SetPlayerState(player, PLAYER_STATE_RESOURCE_GOLD,
+                        GetPlayerState(player, PLAYER_STATE_RESOURCE_GOLD) + amount);
+        }
+
         public static float lerp(float n0, float n1, float p)
         {
             return n0 + (n1 - n0) * p;
@@ -74,6 +80,16 @@ namespace Source
         public static float GetHPFraction(this unit unit)
         {
             return GetUnitLifePercent(unit) / 100f;
+        }
+
+        public static int GetMana(this unit unit)
+        {
+            return (int)Math.Round(unit.GetManaFraction() * BlzGetUnitMaxMana(unit));
+        }
+
+        public static float GetManaFraction(this unit unit)
+        {
+            return GetUnitManaPercent(unit) / 100f;
         }
 
         public static bool IsStructure(this unit unit)

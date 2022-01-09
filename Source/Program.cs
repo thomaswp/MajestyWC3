@@ -3,6 +3,8 @@ using static War3Api.Common;
 using static War3Api.Blizzard;
 using WCSharp.Events;
 using Source.Units;
+using System.Collections.Generic;
+using Source.Interface;
 
 namespace Source
 {
@@ -43,14 +45,14 @@ namespace Source
 				if (unit.IsStructure()) return;
 
 				if (GetUnitTypeId(unit) == Constants.UNIT_PEASANT_WORKER)
-                {
-					// TODO: Make uncontrollable?
-                }
-				else
+				{
+					UnitAI.RegisterUnit(unit);
+				}
+				else if (IsHeroUnitId(unit.GetTypeID()))
                 {
 					SetUnitOwner(unit, GetOwningPlayer(unit).GetAIForHuman(), false);
-                }
-				UnitAI.RegisterUnit(unit);
+					UnitAI.RegisterUnit(unit);
+				}
 
 				//string name = GetUnitName(unit);
 				//Console.WriteLine($"Created {(unit == null ? "NONE" : name)}");
@@ -71,8 +73,9 @@ namespace Source
 				UnitAI.TriggerHomeAttacked(GetAttackedUnitBJ(), GetAttacker());
 			});
 
+			Bounties.Init();
 
-			SetPlayerState(GetLocalPlayer(), PLAYER_STATE_RESOURCE_GOLD, 1000);
+            SetPlayerState(GetLocalPlayer(), PLAYER_STATE_RESOURCE_GOLD, 1000);
 			SetPlayerState(GetLocalPlayer(), PLAYER_STATE_RESOURCE_LUMBER, 1000);
 
 			ForGroup(GetUnitsOfPlayerAll(Player(0)), () =>

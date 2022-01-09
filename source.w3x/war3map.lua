@@ -42,7 +42,6 @@ function CreateNeutralHostile()
     local unitID
     local t
     local life
-    u = BlzCreateUnitWithSkin(p, FourCC("n001"), -461.6, -640.5, 206.352, FourCC("n001"))
     u = BlzCreateUnitWithSkin(p, FourCC("n001"), -1459.3, 602.5, 336.159, FourCC("n001"))
     u = BlzCreateUnitWithSkin(p, FourCC("n001"), -1347.3, 644.6, 88.992, FourCC("n001"))
     u = BlzCreateUnitWithSkin(p, FourCC("n001"), -1569.6, 909.6, 217.294, FourCC("n001"))
@@ -53,7 +52,6 @@ function CreateNeutralHostile()
     u = BlzCreateUnitWithSkin(p, FourCC("n001"), 652.8, 664.1, 201.869, FourCC("n001"))
     u = BlzCreateUnitWithSkin(p, FourCC("n001"), 710.4, 563.0, 31.894, FourCC("n001"))
     u = BlzCreateUnitWithSkin(p, FourCC("n001"), 878.7, 537.0, 50.341, FourCC("n001"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n001"), -540.6, -701.7, 141.288, FourCC("n001"))
 end
 
 function CreatePlayerBuildings()

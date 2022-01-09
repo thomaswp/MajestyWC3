@@ -3,6 +3,10 @@ public static class Constants
 	public const int ABILITY_MARKET_DAY = 1093677104;
 	public const int ABILITY_ITEM_HEALING_LEVEL_2 = 1093677105;
 	public const int ABILITY_ITEM_HEALING_LEVEL_1 = 1093677106;
+	public const int ABILITY_EXPLORE_FLAG = 1093677107;
+	public const int ABILITY_INCREASE_BOUNTY = 1093677108;
+	public const int ABILITY_DECREASE_BOUNTY = 1093677110;
+	public const int ABILITY_DESTROY_FLAG = 1093677111;
 	public const int ITEM_HEALING_POTION_LEVEL_1 = 1227894832;
 	public const int ITEM_HEALING_POTION_LEVEL_2 = 1227894834;
 	public const int UNIT_DUMMY = 2021161080;
@@ -13,6 +17,7 @@ public static class Constants
 	public const int UNIT_KOBOLD_TENT = 1848651829;
 	public const int UNIT_MARKET_LEVEL_2 = 1848651824;
 	public const int UNIT_MARKET_LEVEL_1 = 1848651827;
+	public const int UNIT_EXPLORE_FLAG = 1865429041;
 	public const int UPGRADE_HEALTH_POTIONS = 1378889776;
 	public const int UPGRADE_MARKET_DAY = 1378889777;
 	public const int ORDER_OFFSET = 851970;
