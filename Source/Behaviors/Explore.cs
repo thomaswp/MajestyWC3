@@ -10,45 +10,30 @@ using Source;
 
 namespace Source.Behaviors
 {
-    public class Explore : Behavior
+    public class Explore : TargetBehavior<location>
     {
         public const int HERO_EXPLORE_TICK_XP = 3;
 
-        protected location exploringLocation;
-
-        public override bool CanStart()
-        {
-            SelectTarget();
-            return exploringLocation != null;
-        }
 
         public override void Start()
         {
-            SelectTarget();
-            if (exploringLocation == null) return;
-            float ex = GetLocationX(exploringLocation), ey = GetLocationY(exploringLocation);
-            IssuePointOrderByIdLoc(AI.Unit, Constants.ORDER_MOVE, exploringLocation);
+            base.Start();
+            float ex = GetLocationX(Target), ey = GetLocationY(Target);
+            IssuePointOrderByIdLoc(AI.Unit, Constants.ORDER_MOVE, Target);
             //PingMinimap(ex, ey, 1);
             Console.WriteLine($"Knight exploring {ex}, {ey}");
         }
 
-        public override void Stop()
-        {
-            exploringLocation = null;
-        }
-
         public override bool Update()
         {
-            //Console.WriteLine($"Updating exploration...");
-
-            if (exploringLocation == null) return false;
+            if (!base.Update()) return false;
 
             location loc = GetUnitLoc(AI.Unit);
             float x = GetLocationX(loc), y = GetLocationY(loc);
             rect mapRect = GetPlayableMapRect();
 
 
-            float ex = GetLocationX(exploringLocation), ey = GetLocationY(exploringLocation);
+            float ex = GetLocationX(Target), ey = GetLocationY(Target);
             float length = (float)Math.Sqrt(Math.Pow(x - ex, 2) + Math.Pow(y - ey, 2));
             float sight = AI.Unit.GetSightRange();
             float perc = sight * 1.2f / length;
@@ -60,28 +45,27 @@ namespace Source.Behaviors
             //PingMinimapLocForPlayer(humanPlayer, check, 0.5f);
 
             // TODO: Configure continue exploring parameters
-            if (DistanceBetweenPoints(GetUnitLoc(AI.Unit), exploringLocation) <= 50) return false;
+            if (DistanceBetweenPoints(GetUnitLoc(AI.Unit), Target) <= 50) return false;
 
             return true;
         }
 
-        private bool IsMasked(location check, rect mapRect)
+        protected bool IsMasked(location check, rect mapRect)
         {
             return RectContainsLoc(mapRect, check) && IsLocationMaskedToPlayer(check, AI.HumanPlayer);
         }
 
-        protected virtual void SelectTarget()
+        protected override bool IsTargetStillValid(location target)
+        {
+            return IsLocationMaskedToPlayer(target, AI.HumanPlayer);
+        }
+
+        protected override location SelectTarget()
         {
             rect mapRect = GetPlayableMapRect();
             location loc = GetUnitLoc(AI.Unit);
             float x = GetLocationX(loc), y = GetLocationY(loc);
 
-            if (exploringLocation != null)
-            {
-                if (IsMasked(exploringLocation, mapRect)) return;
-            }
-
-            exploringLocation = null;
             int radius = 500;
             for (int i = 0; i < 100; i++)
             {
@@ -89,11 +73,11 @@ namespace Source.Behaviors
                 //Console.WriteLine($"Checking {GetLocationX(check)}, {GetLocationY(check)}");
                 if (IsMasked(check, mapRect))
                 {
-                    exploringLocation = check;
-                    return;
+                    return check;
                 }
                 radius += 50;
             }
+            return null;
         }
     }
 }

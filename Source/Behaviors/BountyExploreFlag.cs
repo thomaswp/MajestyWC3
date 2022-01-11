@@ -18,12 +18,6 @@ namespace Source.Behaviors
         // TODO: Per Hero
         const float DISTANCE_TO_BOUNTY_FACTOR = 0.1f;
 
-        public override bool CanStart()
-        {
-            SelectTarget();
-            return exploringLocation != null;
-        }
-
         public override float StartWeight()
         {
             if (!CanStart()) return 0;
@@ -36,12 +30,6 @@ namespace Source.Behaviors
             Console.WriteLine($"Knight pursuing bounty explore flag");
         }
 
-        public override void Stop()
-        {
-            base.Stop();
-            targetFlag = null;
-        }
-
         public override bool Update()
         {
             //Console.WriteLine($"Updating exploration...");
@@ -52,11 +40,12 @@ namespace Source.Behaviors
                 KillUnit(targetFlag);
                 return false;
             }
-            return IsValidTarget();
+            return true;
         }
 
-        private bool IsValidTarget()
+        protected override bool IsTargetStillValid(location target)
         {
+            // No base call, since we don't care about if it's explored
             return targetFlag != null && !targetFlag.IsDead();
         }
 
@@ -66,16 +55,20 @@ namespace Source.Behaviors
             return flag.GetFlagBounty() / (AI.Unit.DistanceTo(flag) * DISTANCE_TO_BOUNTY_FACTOR);
         }
 
-        protected override void SelectTarget()
+        protected override location SelectTarget()
         {
-            if (IsValidTarget()) return;
-
             var flags = GetUnitsOfTypeIdAll(Constants.UNIT_EXPLORE_FLAG).ToList();
-            if (flags.Count == 0) return;
+            if (flags.Count == 0) return null;
             targetFlag = flags
                 .OrderBy(u => GetBountyDesire(u))
                 .First();
-            exploringLocation = targetFlag.GetLocation();
+            return targetFlag.GetLocation();
+        }
+
+        protected override void OnTargetCleared()
+        {
+            base.OnTargetCleared();
+            targetFlag = null;
         }
     }
 }

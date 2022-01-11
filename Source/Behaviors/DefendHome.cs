@@ -14,10 +14,9 @@ namespace Source.Behaviors
     {
         public const int MIN_HOME_ATTACK_DIS = 1000;
 
-        protected override bool IsValidTarget()
+        protected override bool IsTargetCloseEnough(unit target)
         {
-            return targetEnemy != null && !targetEnemy.IsDead() && 
-                targetEnemy.DistanceTo(AI.Home) <= MIN_HOME_ATTACK_DIS;
+            return target.DistanceTo(AI.Home) <= MIN_HOME_ATTACK_DIS;
         }
 
         public override bool TryInterrupt(Behavior with)
@@ -30,20 +29,18 @@ namespace Source.Behaviors
         public override void Start()
         {
             base.Start();
-            Console.WriteLine($"{AI.Unit.GetName()} defending home from {targetEnemy.GetName()}");
-        }
-
-        public override void Stop()
-        {
-            base.Stop();
-            Console.WriteLine("Stopping Defend home");
+            Console.WriteLine($"{AI.Unit.GetName()} defending home from {Target.GetName()}");
         }
 
         public void OnHomeAttackedBy(unit attacker)
         {
-            targetEnemy = attacker;
+            Target = attacker;
         }
 
-        protected override void SelectTarget() { }
+        protected override unit SelectTarget()
+        {
+            // Target can only be selected by home attack
+            return null;
+        }
     }
 }

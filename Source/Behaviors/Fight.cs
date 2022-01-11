@@ -10,28 +10,14 @@ using Source;
 
 namespace Source.Behaviors
 {
-    public class Fight : Behavior
+    public class Fight : TargetBehavior<unit>
     {
-
-        protected unit targetEnemy;
-
-        public override bool CanStart()
-        {
-            SelectTarget();
-            return targetEnemy != null;
-        }
 
         public override void Start()
         {
-            SelectTarget();
-            if (targetEnemy == null) return;
-            IssueTargetOrder(AI.Unit, "Attack", targetEnemy);
-            Console.WriteLine(AI.Unit.GetName() + " targeting " + targetEnemy.GetName());
-        }
-
-        public override void Stop()
-        {
-            targetEnemy = null;
+            base.Start();
+            IssueTargetOrder(AI.Unit, "Attack", Target);
+            Console.WriteLine(AI.Unit.GetName() + " targeting " + Target.GetName());
         }
 
         public override bool IsInCombatOrDanger()
@@ -39,34 +25,25 @@ namespace Source.Behaviors
             return true;
         }
 
-        public override bool Update()
+        protected override bool IsTargetStillValid(unit target)
         {
-            if (!IsValidTarget()) return false;
-
-            // TODO: Check for danger...
-            //int totalEnemyHP = visible.Where(u => !u.IsStructure()).Select(u => u.GetHP()).Sum();
-
-            return true;
+            return base.IsTargetStillValid(target) && !target.IsDead() &&
+                IsTargetCloseEnough(target);
         }
 
-        protected virtual bool IsValidTarget()
+        protected virtual bool IsTargetCloseEnough(unit target)
         {
-            return targetEnemy != null && !targetEnemy.IsDead();
+            return target.DistanceTo(AI.Unit) < AI.Unit.GetSightRange();
         }
 
-        protected virtual void SelectTarget()
+        protected override unit SelectTarget()
         {
-            //Console.WriteLine("Selecting target");
-            if (IsValidTarget() && targetEnemy.DistanceTo(AI.Unit) < AI.Unit.GetSightRange()) return;
-
-            targetEnemy = null;
-
             var visible = GetUnitsInRangeOfLocAll(AI.Unit.GetSightRange(), AI.Unit.GetLocation()).ToList()
                 .Where(u => AI.IsEnemy(u) && !u.IsDead());
 
-            if (visible.Count() == 0) return;
+            if (!visible.Any()) return null;
 
-            targetEnemy = visible.OrderBy(u => (u.IsStructure() ? 1000 : 0) + u.DistanceTo(AI.Unit)).First();
+            return visible.OrderBy(u => (u.IsStructure() ? 1000 : 0) + u.DistanceTo(AI.Unit)).First();
         }
     }
 }
