@@ -104,5 +104,10 @@ namespace Source.Interface
             }
             bountyMap.Remove(flag);
         }
+
+        public static int GetFlagBounty(this unit flag)
+        {
+            return flag.GetMana();
+        }
     }
 }

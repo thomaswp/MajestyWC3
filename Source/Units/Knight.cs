@@ -34,6 +34,7 @@ namespace Source.Units
         protected override void AddBehaviors()
         {
             AddBehavior(new Behaviors.Explore(), 3);
+            AddBehavior(new Behaviors.BountyExploreFlag(), 3);
             AddBehavior(new Behaviors.DefendHome());
             AddBehavior(new Behaviors.Fight(), 10);
             AddBehavior(new Behaviors.Shop(), 5);

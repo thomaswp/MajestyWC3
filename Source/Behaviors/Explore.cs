@@ -65,12 +65,12 @@ namespace Source.Behaviors
             return true;
         }
 
-        private bool isMasked(location check, rect mapRect)
+        private bool IsMasked(location check, rect mapRect)
         {
             return RectContainsLoc(mapRect, check) && IsLocationMaskedToPlayer(check, AI.HumanPlayer);
         }
 
-        private void SelectTarget()
+        protected virtual void SelectTarget()
         {
             rect mapRect = GetPlayableMapRect();
             location loc = GetUnitLoc(AI.Unit);
@@ -78,7 +78,7 @@ namespace Source.Behaviors
 
             if (exploringLocation != null)
             {
-                if (isMasked(exploringLocation, mapRect)) return;
+                if (IsMasked(exploringLocation, mapRect)) return;
             }
 
             exploringLocation = null;
@@ -87,7 +87,7 @@ namespace Source.Behaviors
             {
                 location check = GetRandomLocInRect(Rect(x - radius, y - radius, x + radius, y + radius));
                 //Console.WriteLine($"Checking {GetLocationX(check)}, {GetLocationY(check)}");
-                if (isMasked(check, mapRect))
+                if (IsMasked(check, mapRect))
                 {
                     exploringLocation = check;
                     return;
