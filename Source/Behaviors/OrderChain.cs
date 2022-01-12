@@ -79,7 +79,7 @@ namespace Source.Behaviors
         private readonly location destination;
         private readonly float thresholdRadius;
 
-        public const int BUILDING_RADIUS = 220;
+        public const int BUILDING_RADIUS = 250;
         float lastDistance;
 
         public OrderMove(location destination, float thresholdRadius)

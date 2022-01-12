@@ -18,6 +18,9 @@ public static class Constants
 	public const int UNIT_MARKET_LEVEL_2 = 1848651824;
 	public const int UNIT_MARKET_LEVEL_1 = 1848651827;
 	public const int UNIT_EXPLORE_FLAG = 1865429041;
+	public const int UNIT_RANGER = 1211117618;
+	public const int UNIT_MERCENARY_CAMP_LORDAERON_SUMMER = 1848651844;
+	public const int UNIT_RANGERS_HALL = 1697656881;
 	public const int UPGRADE_HEALTH_POTIONS = 1378889776;
 	public const int UPGRADE_MARKET_DAY = 1378889777;
 	public const int ORDER_OFFSET = 851970;

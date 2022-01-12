@@ -254,3 +254,33 @@ STRING 60
 Removes this flag and refunds its some of its cost.
 }
 
+STRING 61
+// Units: H002 (Ranger), Name (Name)
+{
+Ranger
+}
+
+STRING 62
+// Units: H002 (Ranger), Tip (Tooltip - Basic)
+{
+Recruit Ranger
+}
+
+STRING 63
+// Units: H002 (Ranger), Hotkey (Hotkey)
+{
+R
+}
+
+STRING 64
+// Units: n00D (Mercenary Camp (Lordaeron Summer)), Name (Name)
+{
+Mercenary Camp (Lordaeron Summer)
+}
+
+STRING 65
+// Units: e001 (Rangers' Hall), Name (Name)
+{
+Rangers' Hall
+}
+

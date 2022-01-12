@@ -214,6 +214,9 @@ namespace Source.Units
                     case Constants.UNIT_KNIGHT:
                         ai = new Knight();
                         break;
+                    case Constants.UNIT_RANGER:
+                        ai = new Ranger();
+                        break;
                     case Constants.UNIT_BUILDER:
                         return null;
                 }
