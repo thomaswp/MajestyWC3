@@ -15,11 +15,6 @@ namespace Source.Interface
 
         public const int BOUNTY_INC = 100;
 
-        private const float MEAN_CHAR_WIDTH = 5.5f;
-        private const float MAX_TEXT_SHIFT = 32f;
-        private const float FONT_SIZE = 0.026f;
-        private const float Y_OFFSET = 125f;
-
         public static void Init()
         {
             PlayerUnitEvents.Register(PlayerUnitEvent.SpellEffect, () =>
@@ -79,10 +74,7 @@ namespace Source.Interface
         {
             if (!bountyMap.TryGetValue(flag, out texttag text))
             {
-                bountyMap[flag] = text = CreateTextTag();
-                SetTextTagPermanent(text, true);
-                SetTextTagColor(text, 255, 220, 0, 255);
-                SetTextTagVisibility(text, true);
+                bountyMap[flag] = text = TextTag.CreatePermenant(Color.GOLD);
                 //Console.WriteLine("Creating text for flag " + flag.GetName());
             }
             return text;
@@ -91,9 +83,8 @@ namespace Source.Interface
         private static void SetText(unit flag, string message)
         {
             texttag text = GetText(flag);
-            SetTextTagText(text, message, FONT_SIZE);
-            float shift = Math.Min(StringLength(message) * MEAN_CHAR_WIDTH / 2, MAX_TEXT_SHIFT) + 20;
-            SetTextTagPos(text, GetUnitX(flag) - shift, GetUnitY(flag), Y_OFFSET);
+            text.SetText(message);
+            text.CenterAboveUnit(flag, message);
         }
 
         private static void DestroyText(unit flag)

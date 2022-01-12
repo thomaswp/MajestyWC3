@@ -36,8 +36,10 @@ namespace Source.Behaviors
             if (!base.Update()) return false;
             if (AI.Unit.DistanceTo(targetFlag) < 100)
             {
-                AI.GoldUntaxed += targetFlag.GetFlagBounty();
+                int bounty = targetFlag.GetFlagBounty();
+                AI.GoldUntaxed += bounty;
                 KillUnit(targetFlag);
+                AI.Unit.ShowTextTag("+" + bounty, Color.GOLD);
                 return false;
             }
             return true;
