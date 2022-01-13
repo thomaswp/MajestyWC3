@@ -31,22 +31,9 @@ namespace Source.Behaviors
 
         public bool IsInDanger(float fearFactor)
         {
-            // TODO: Customize based on unit
-            var units = AI.Unit.GetVisibleUnits()
-                .Where(u => !u.IsDead() && !u.IsStructure());
-            float confidence = units
-                .Where(u => !AI.IsEnemy(u) && IsHeroUnitId(u.GetTypeID()))
-                .Select(u => AI.GetIntimidation(u))
-                .Sum();
-            confidence *= AI.Unit.GetHPFraction();
-            //Console.WriteLine(enemies.Aggregate("Enemies: ", (s, u) => s + u.GetName() + " "));
-            float intimidation = units
-                .Where(u => AI.IsEnemy(u))
-                .Select(u => AI.GetIntimidation(u))
-                .Sum();
-            //Console.WriteLine($"Calculating intimidation of {units.Count()} units = " +
-            //    $"{intimidation} * {fearFactor} vs {confidence}");
-            return intimidation * fearFactor > confidence;
+            if (fearFactor == 0) return false;
+            float confidence = AI.GetFightConfidence(AI.Unit.GetLocation());
+            return confidence > fearFactor;
         }
     }
 }

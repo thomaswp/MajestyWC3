@@ -243,13 +243,13 @@ Decrease Bounty -100
 }
 
 STRING 59
-// Abilities: A007 (Destroy Flag), Name (Name)
+// Abilities: A008 (Destroy Flag), Name (Name)
 {
 Destroy Flag
 }
 
 STRING 60
-// Abilities: A007 (Destroy Flag), Tip (Tooltip - Normal)
+// Abilities: A008 (Destroy Flag), Tip (Tooltip - Normal)
 {
 Removes this flag and refunds its some of its cost.
 }
@@ -282,5 +282,23 @@ STRING 65
 // Units: e001 (Rangers' Hall), Name (Name)
 {
 Rangers' Hall
+}
+
+STRING 66
+// Units: o000 (Attack Flag), Name (Name)
+{
+Attack Flag
+}
+
+STRING 67
+// Abilities: A007 (Attack Flag), Name (Name)
+{
+Attack Flag
+}
+
+STRING 68
+// Abilities: A007 (Attack Flag), Tip (Tooltip - Normal)
+{
+Puts a bounty on an enemy unit to attract Heroes to fight it.
 }
 

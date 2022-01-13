@@ -75,7 +75,7 @@ namespace Source
 
 			Bounties.Init();
 
-            SetPlayerState(GetLocalPlayer(), PLAYER_STATE_RESOURCE_GOLD, 1000);
+            SetPlayerState(GetLocalPlayer(), PLAYER_STATE_RESOURCE_GOLD, 50000);
 			SetPlayerState(GetLocalPlayer(), PLAYER_STATE_RESOURCE_LUMBER, 1000);
 
 			ForGroup(GetUnitsOfPlayerAll(Player(0)), () =>

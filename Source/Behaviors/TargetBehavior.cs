@@ -70,12 +70,12 @@ namespace Source.Behaviors
                 float elapsed = TimerGetElapsed(timeoutTimer);
                 if (elapsed >= GetTargetTimeout())
                 {
-                    Console.WriteLine("Clearing target due to timeout");
+                    //Console.WriteLine("Clearing target due to timeout");
                     Target = null;
                 }
             }
             if (IsTargetStillValid(Target)) return;
-            DestroyTimer(timeoutTimer);
+            if (timeoutTimer != null) DestroyTimer(timeoutTimer);
             timeoutTimer = null;
             // Set to null first to trigger the clear;
             Target = null;

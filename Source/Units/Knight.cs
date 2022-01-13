@@ -12,45 +12,15 @@ namespace Source.Units
 {
     public class Knight : Hero
     {
-        public static List<int> itemPriorities = new List<int>()
+        protected override Preferences GetPreferences()
         {
-            Constants.ITEM_HEALING_POTION_LEVEL_2,
-            Constants.ITEM_HEALING_POTION_LEVEL_2,
-            Constants.ITEM_HEALING_POTION_LEVEL_2,
-            Constants.ITEM_HEALING_POTION_LEVEL_2,
-            Constants.ITEM_HEALING_POTION_LEVEL_2,
-            Constants.ITEM_HEALING_POTION_LEVEL_1,
-            Constants.ITEM_HEALING_POTION_LEVEL_1,
-            Constants.ITEM_HEALING_POTION_LEVEL_1,
-            Constants.ITEM_HEALING_POTION_LEVEL_1,
-            Constants.ITEM_HEALING_POTION_LEVEL_1,
-        };
-
-        protected override IEnumerable<int> GetWantedItemsList()
-        {
-            return itemPriorities;
+            return new Preferences
+            {
+                Fight = 10,
+                Explore = 5,
+                Rest = 3
+            };
         }
-
-        protected override void AddBehaviors()
-        {
-            AddBehavior(new Behaviors.Explore(), 3);
-            AddBehavior(new Behaviors.BountyExploreFlag(), 3);
-            AddBehavior(new Behaviors.DefendHome());
-            AddBehavior(new Behaviors.Fight(), 10);
-            AddBehavior(new Behaviors.Shop(), 5);
-            AddBehavior(new Behaviors.RestAtHome(), 1);
-            AddBehavior(new Behaviors.Flee(), 3);
-        }
-
-        protected override void Init(unit unit)
-        {
-            base.Init(unit);
-
-            // TODO: remove
-            //TryPurchase(Constants.ITEM_HEALING_POTION_LEVEL_1);
-            //TryPurchase(Constants.ITEM_HEALING_POTION_LEVEL_1);
-        }
-
 
     }
 }

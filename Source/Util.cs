@@ -17,6 +17,11 @@ namespace Source
             return units;
         }
 
+        public static string ToXY(this location loc)
+        {
+            return $"({GetLocationX(loc)}, {GetLocationY(loc)})";
+        }
+
         public static float DistanceTo(this unit me, unit other)
         {
             return DistanceBetweenPoints(GetUnitLoc(me), GetUnitLoc(other));
@@ -62,6 +67,11 @@ namespace Source
             return GetUnitsInRangeOfLocAll(unit.GetSightRange(), unit.GetLocation()).ToList();
         }
 
+        public static bool IsVisibleToPlayer(this unit unit, player player)
+        {
+            return !IsLocationFoggedToPlayer(unit.GetLocation(), player);
+        }
+
         public static location GetLocation(this unit unit)
         {
             return GetUnitLoc(unit);
@@ -69,12 +79,12 @@ namespace Source
 
         public static int GetHP(this unit unit)
         {
-            return (int) Math.Round(unit.GetHPFraction() * BlzGetUnitMaxHP(unit));
+            return MathRound(unit.GetHPFraction() * BlzGetUnitMaxHP(unit));
         }
 
         public static int GetDamage(this unit unit)
         {
-            return (int)Math.Round((1 - unit.GetHPFraction()) * BlzGetUnitMaxHP(unit));
+            return MathRound((1 - unit.GetHPFraction()) * BlzGetUnitMaxHP(unit));
         }
 
         public static float GetHPFraction(this unit unit)
@@ -84,7 +94,7 @@ namespace Source
 
         public static int GetMana(this unit unit)
         {
-            return (int)Math.Round(unit.GetManaFraction() * BlzGetUnitMaxMana(unit));
+            return MathRound(unit.GetManaFraction() * BlzGetUnitMaxMana(unit));
         }
 
         public static float GetManaFraction(this unit unit)

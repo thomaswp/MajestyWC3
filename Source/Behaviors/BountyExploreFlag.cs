@@ -16,7 +16,7 @@ namespace Source.Behaviors
         protected unit targetFlag;
 
         // TODO: Per Hero
-        const float DISTANCE_TO_BOUNTY_FACTOR = 0.1f;
+        const float DISTANCE_TO_MOTIVATION_FACTOR = 0.001f;
 
         public override float StartWeight()
         {
@@ -30,6 +30,19 @@ namespace Source.Behaviors
             Console.WriteLine($"Knight pursuing bounty explore flag");
         }
 
+        public override bool TryInterrupt(Behavior with)
+        {
+            if (with is Flee && IsTargetStillValid(Target))
+            {
+                float motivation = AI.GetBountyMotivation(targetFlag);
+                float confidence = AI.GetFightConfidence(AI.Unit.GetLocation());
+                //Console.WriteLine($"Trying to interrupt with confidence {confidence} * {motivation}");
+                if (confidence * motivation > 1) return false;
+                //Console.WriteLine("Success");
+            }
+            return base.TryInterrupt(with);
+        }
+
         public override bool Update()
         {
             //Console.WriteLine($"Updating exploration...");
@@ -37,9 +50,8 @@ namespace Source.Behaviors
             if (AI.Unit.DistanceTo(targetFlag) < 100)
             {
                 int bounty = targetFlag.GetFlagBounty();
-                AI.GoldUntaxed += bounty;
+                AI.ReceiveBounty(bounty);
                 KillUnit(targetFlag);
-                AI.Unit.ShowTextTag("+" + bounty, Color.GOLD);
                 return false;
             }
             return true;
@@ -54,7 +66,7 @@ namespace Source.Behaviors
         private float GetBountyDesire(unit flag)
         {
             if (flag == null) return 0;
-            return flag.GetFlagBounty() / (AI.Unit.DistanceTo(flag) * DISTANCE_TO_BOUNTY_FACTOR);
+            return AI.GetBountyMotivation(targetFlag) / (AI.Unit.DistanceTo(flag) * DISTANCE_TO_MOTIVATION_FACTOR);
         }
 
         protected override location SelectTarget()

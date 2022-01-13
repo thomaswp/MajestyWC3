@@ -24,6 +24,10 @@ namespace Source.Behaviors
             Console.WriteLine($"Knight exploring {ex}, {ey}");
         }
 
+        protected override int GetTargetTimeout()
+        {
+            return 10;
+        }
         public override bool Update()
         {
             if (!base.Update()) return false;

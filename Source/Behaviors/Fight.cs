@@ -25,6 +25,11 @@ namespace Source.Behaviors
             return true;
         }
 
+        protected override int GetTargetTimeout()
+        {
+            return 10;
+        }
+
         protected override bool IsTargetStillValid(unit target)
         {
             return base.IsTargetStillValid(target) && !target.IsDead() &&

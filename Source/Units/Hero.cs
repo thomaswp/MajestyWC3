@@ -17,6 +17,45 @@ namespace Source.Units
         // TODO: Lower?
         public const int STARTING_GOLD = 100;
 
+        public static List<int> itemPriorities = new List<int>()
+        {
+            Constants.ITEM_HEALING_POTION_LEVEL_2,
+            Constants.ITEM_HEALING_POTION_LEVEL_2,
+            Constants.ITEM_HEALING_POTION_LEVEL_2,
+            Constants.ITEM_HEALING_POTION_LEVEL_2,
+            Constants.ITEM_HEALING_POTION_LEVEL_2,
+            Constants.ITEM_HEALING_POTION_LEVEL_1,
+            Constants.ITEM_HEALING_POTION_LEVEL_1,
+            Constants.ITEM_HEALING_POTION_LEVEL_1,
+            Constants.ITEM_HEALING_POTION_LEVEL_1,
+            Constants.ITEM_HEALING_POTION_LEVEL_1,
+        };
+
+        protected override void AddBehaviors()
+        {
+            Preferences prefs = GetPreferences();
+            AddBehavior(new Explore(), prefs.Explore);
+            AddBehavior(new BountyExploreFlag(), prefs.Explore);
+            AddBehavior(new DefendHome());
+            AddBehavior(new Fight(), prefs.Fight);
+            AddBehavior(new BountyAttackFlag(), prefs.Fight);
+            AddBehavior(new Shop(), 5);
+            AddBehavior(new RestAtHome(), prefs.Rest);
+            AddBehavior(new Flee());
+        }
+
+        public struct Preferences
+        {
+            public int Explore, Fight, Rest;
+        }
+
+        protected abstract Preferences GetPreferences();
+
+        protected override IEnumerable<int> GetWantedItemsList()
+        {
+            return itemPriorities;
+        }
+
         protected override void Init(unit unit)
         {
             base.Init(unit);

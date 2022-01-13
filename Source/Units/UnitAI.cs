@@ -9,6 +9,7 @@ using Source;
 using WCSharp.Events;
 using Source.Behaviors;
 using Source.Items;
+using Source.Interface;
 
 namespace Source.Units
 {
@@ -111,6 +112,19 @@ namespace Source.Units
             PauseUnit(Unit, true);
         }
 
+        public void ReceiveBounty(int amount)
+        {
+            GoldUntaxed += amount;
+            Unit.ShowTextTag("+" + amount, Color.GOLD);
+        }
+
+        public float GetBountyMotivation(unit flag)
+        {
+            // TODO: Add preferences
+            return SquareRoot((float)flag.GetFlagBounty() / Bounties.BOUNTY_INC);
+        }
+
+
         public void ExitBuilding()
         {
             // TODO: move to bottom of building?
@@ -151,7 +165,7 @@ namespace Source.Units
                 behavior = ChooseIdleBehavior();
                 if (behavior != null)
                 {
-                    Console.WriteLine($"Starting {behavior.GetName()} for {Unit.GetName()}");
+                    //Console.WriteLine($"Starting {behavior.GetName()} for {Unit.GetName()}");
                     behavior.Start();
                 }
             }
@@ -195,8 +209,53 @@ namespace Source.Units
             return null;
         }
 
+        public float GetFightConfidence(location location)
+        {
+            return GetFightConfidence(null, location);
+        }
+
+        public float GetFightConfidence(unit enemy)
+        {
+            return GetFightConfidence(enemy, enemy.GetLocation());
+        }
+
+        public float GetFightConfidence(unit enemy, location location)
+        {
+            // TODO: Customize based on unit
+            float radius = Unit.GetSightRange();
+            var allUnits = GetUnitsInRangeOfLocAll(radius, location).ToList();
+            //Console.WriteLine($"Searching {allUnits.Count} units in radius {radius} of {location.ToXY()}");
+            var units = allUnits
+                .Where(u => u.IsVisibleToPlayer(HumanPlayer) && !u.IsDead() && !u.IsStructure());
+            float confidence = units
+                .Where(u => u != Unit && !IsEnemy(u) && IsHeroUnitId(u.GetTypeID()))
+                .Select(u => GetIntimidation(u))
+                .Sum();
+            // Include this unit regardless of the location
+            confidence += GetIntimidation(Unit);
+            confidence *= Unit.GetHPFraction();
+            //Console.WriteLine(enemies.Aggregate("Enemies: ", (s, u) => s + u.GetName() + " "));
+            float intimidation = units
+                .Where(u => u != enemy && IsEnemy(u))
+                .Select(u => GetIntimidation(u))
+                .Sum();
+            // Make sure to include the target enemy
+            if (enemy != null) intimidation += GetIntimidation(enemy);
+
+            //Console.WriteLine($"Calculating intimidation of {units.Count()} units = " +
+            //    $"{confidence} / {intimidation}");
+
+            return confidence / Math.Max(1, intimidation);
+        }
+
         static Dictionary<unit, UnitAI> unitMap = new Dictionary<unit, UnitAI>();
         static Dictionary<unit, List<UnitAI>> homeMap = new Dictionary<unit, List<UnitAI>>();
+
+        public static UnitAI GetAI(unit unit)
+        {
+            if (unitMap.TryGetValue(unit, out UnitAI ai)) return ai;
+            return null;
+        }
 
         public static UnitAI RegisterUnit(unit unit)
         {

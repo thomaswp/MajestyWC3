@@ -6,7 +6,8 @@ public static class Constants
 	public const int ABILITY_EXPLORE_FLAG = 1093677107;
 	public const int ABILITY_INCREASE_BOUNTY = 1093677108;
 	public const int ABILITY_DECREASE_BOUNTY = 1093677110;
-	public const int ABILITY_DESTROY_FLAG = 1093677111;
+	public const int ABILITY_DESTROY_FLAG = 1093677112;
+	public const int ABILITY_ATTACK_FLAG = 1093677111;
 	public const int ITEM_HEALING_POTION_LEVEL_1 = 1227894832;
 	public const int ITEM_HEALING_POTION_LEVEL_2 = 1227894834;
 	public const int UNIT_DUMMY = 2021161080;
@@ -21,6 +22,7 @@ public static class Constants
 	public const int UNIT_RANGER = 1211117618;
 	public const int UNIT_MERCENARY_CAMP_LORDAERON_SUMMER = 1848651844;
 	public const int UNIT_RANGERS_HALL = 1697656881;
+	public const int UNIT_ATTACK_FLAG = 1865429040;
 	public const int UPGRADE_HEALTH_POTIONS = 1378889776;
 	public const int UPGRADE_MARKET_DAY = 1378889777;
 	public const int ORDER_OFFSET = 851970;
