@@ -10,6 +10,18 @@ namespace Source
 {
     public static class Util
     {
+        static Random rand = new Random();
+
+        public static float RandFloat()
+        {
+            return (float) rand.NextDouble();
+        }
+
+        public static float RandBetween(float min, float max)
+        {
+            return (float)rand.NextDouble() * (max - min) + min;
+        }
+
         public static List<unit> ToList(this group group)
         {
             List<unit> units = new List<unit>();

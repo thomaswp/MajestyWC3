@@ -7,28 +7,31 @@ using static War3Api.Common;
 using static War3Api.Blizzard;
 using Source;
 
-namespace Source.Units
+namespace Source.Units.Monsters
 {
-    public abstract class Monster : FighterAI
+    public abstract class Spawners
     {
-        static readonly Dictionary<int, int> BUILDINGS = new Dictionary<int, int>()
+        static readonly Dictionary<int, List<int>> BUILDINGS = new Dictionary<int, List<int>>()
         {
-            { Constants.UNIT_KOBOLD_WARRIOR, Constants.UNIT_KOBOLD_CAMP },
-            { Constants.UNIT_DRAENEI_WARRIOR, Constants.UNIT_DRAENEI_CAMP },
-            { Constants.UNIT_FOREST_TROLL_WARRIOR, Constants.UNIT_FOREST_TROLL_CAMP },
+            {  Constants.UNIT_KOBOLD_CAMP, new List<int>() { Constants.UNIT_KOBOLD_WARRIOR, } },
+            { Constants.UNIT_DRAENEI_CAMP, new List<int>() { Constants.UNIT_DRAENEI_WARRIOR, } },
+            { Constants.UNIT_FOREST_TROLL_CAMP, new List<int>() { Constants.UNIT_FOREST_TROLL_WARRIOR, } },
         };
 
-        static readonly List<int> ENEMY_UNITS = BUILDINGS.Keys.ToList();
-        static readonly List<int> ENEMY_BUILDINGS = BUILDINGS.Values.ToList();
+        //static readonly List<int> ENEMY_UNITS = BUILDINGS.Values.ToList();
+        static readonly List<int> ENEMY_BUILDINGS = BUILDINGS.Keys.ToList();
         public static readonly player MonsterPlayer = Player(GetPlayerNeutralAggressive());
         public const int MIN_SPAWN_DISTANCE = 1500;
+        public const float DELAY_BASE = 0; // TODO: Much higher
+        public const float DIS_DELAY_FACTOR = 60 / 3000f;
 
-        public static void SpawCamps(int nCamps)
+        public static void SpawCamps(int nCamps = 10)
         {
             var weights = ENEMY_BUILDINGS.Select(u => GetCampSpawnWeight(u));
             int totalWeight = weights.Sum();
             List<float> normalizedWeights = weights.Select(w => (float)w / totalWeight).ToList();
 
+            //Console.WriteLine("Gold: " + GetUnitGoldCost(Constants.UNIT_KOBOLD_CAMP));
 
             rect mapArea = GetPlayableMapRect();
             int margin = 500;
@@ -41,8 +44,6 @@ namespace Source.Units
 
             var spawnLocations = HaltonLocationSequence(spawnArea, 2, 3);
 
-            // TODO: All players
-            location startLoc = GetPlayerStartLocationLoc(Player(0));
             int campsMade = 0;
 
             int tries = 0;
@@ -52,9 +53,10 @@ namespace Source.Units
                 // Safety to preven infinite loop
                 if (tries > 1000) break;
 
-                Console.WriteLine("Trying to spawn at " + spawnLoc.ToXY());
+                //Console.WriteLine("Trying to spawn at " + spawnLoc.ToXY());
 
-                if (DistanceBetweenPoints(startLoc, spawnLoc) < MIN_SPAWN_DISTANCE)
+                float playerDis = DistanceToClosestPlayer(spawnLoc);
+                if (playerDis < MIN_SPAWN_DISTANCE)
                 {
                     continue;
                 }
@@ -70,7 +72,7 @@ namespace Source.Units
                 int buildingID = ENEMY_BUILDINGS[buildingIndex];
                 //Console.WriteLine($"Trying to spawn camp #{buildingIndex}");
 
-                unit building = CreateSpawnCamp(buildingID, spawnLoc);
+                unit building = CreateSpawnCamp(buildingID, spawnLoc, playerDis);
                 if (building == null)
                 {
                     //Console.WriteLine($"Failed, retrying");
@@ -86,7 +88,7 @@ namespace Source.Units
                     if (extras <= 0) break;
                     //Console.WriteLine($"Trying to spawn extra camp");
                     location extraLoc = GetRandomLocInRect(extraRect);
-                    unit extraBuilding = CreateSpawnCamp(buildingID, extraLoc);
+                    unit extraBuilding = CreateSpawnCamp(buildingID, extraLoc, playerDis);
                     if (extraBuilding == null) continue;
                     extras--;
                 }
@@ -94,10 +96,58 @@ namespace Source.Units
             }
         }
 
-        private static unit CreateSpawnCamp(int campID, location location)
+        private static List<location> playerLocations = new List<int>
         {
-            // TODO: register
-            return CreateUnitAtLoc(MonsterPlayer, campID, location, 0);
+            0
+        }.Select(p => GetPlayerStartLocationLoc(Player(p))).ToList();
+
+        private static float DistanceToClosestPlayer(location loc)
+        {
+            return playerLocations.Select(l => DistanceBetweenPoints(l, loc)).Min();
+        }
+
+        private static unit CreateSpawnCamp(int campID, location location, float playerDistance)
+        {
+            unit camp = CreateUnitAtLoc(MonsterPlayer, campID, location, 0);
+            float delay = DELAY_BASE + (playerDistance - MIN_SPAWN_DISTANCE) * DIS_DELAY_FACTOR;
+            delay *= Util.RandBetween(0.75f, 1.25f);
+            SpawnIn(camp, delay);
+            return camp;
+        }
+
+        private static void SpawnIn(unit camp, float delay)
+        {
+            if (camp.IsDead()) return;
+            //Console.WriteLine($"Delay: {delay}");
+            try
+            {
+                timer timer = CreateTimer();
+                TimerStart(timer, delay, false, () =>
+                {
+                    DestroyTimer(timer);
+                    Spawn(camp);
+                    float period = GetCampSpawnPeriod(camp.GetTypeID());
+                    if (period == 0)
+                    {
+                        Console.WriteLine("Invalid spawn period: " + camp.GetName());
+                        return;
+                    }
+                    period *= Util.RandBetween(0.75f, 1.25f);
+                    SpawnIn(camp, period);
+                });
+            } catch (Exception e)
+            {
+                Console.WriteLine($"Failed to spawn for {camp.GetName()}: {e.Message}");
+            }
+        }
+
+        private static void Spawn(unit camp)
+        {
+            //Console.WriteLine("Trying to spawn...");
+            if (!BUILDINGS.TryGetValue(camp.GetTypeID(), out List<int> unitTypes)) return;
+            int unitType = unitTypes[GetRandomInt(0, unitTypes.Count - 1)];
+            unit spawn = CreateUnitAtLoc(camp.GetPlayer(), unitType, camp.GetLocation(), 0);
+            UnitAI.RegisterUnit(spawn);
         }
 
         protected static int GetCampSpawnWeight(int campType)
@@ -108,6 +158,13 @@ namespace Source.Units
         protected static int GetCampSpawnNumber(int campType)
         {
             return GetFoodMade(campType);
+        }
+
+        protected static int GetCampSpawnPeriod(int campType)
+        {
+            int period = GetUnitGoldCost(campType);
+            //Console.WriteLine($"Spawn time for {campType} is {period}");
+            return period;
         }
 
         private static IEnumerable<location> HaltonLocationSequence(rect bounds, int bx, int by)
@@ -135,7 +192,7 @@ namespace Source.Units
 
         private static IEnumerable<float> HaltonSequence(int b)
         {
-            Console.WriteLine("Starting HS...");
+            //Console.WriteLine("Starting HS...");
             int n = 0, d = 1;
             while (true)
             {
@@ -156,7 +213,7 @@ namespace Source.Units
                     }
                 }
                 float v = (float)n / d;
-                Console.WriteLine("Yielding " + v);
+                //Console.WriteLine("Yielding " + v);
                 yield return v;
             }
         }

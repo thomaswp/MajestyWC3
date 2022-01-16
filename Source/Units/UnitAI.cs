@@ -10,6 +10,7 @@ using WCSharp.Events;
 using Source.Behaviors;
 using Source.Items;
 using Source.Interface;
+using Source.Units.Monsters;
 
 namespace Source.Units
 {
@@ -93,6 +94,7 @@ namespace Source.Units
         {
             Unit = unit;
             MyPlayer = GetOwningPlayer(unit);
+            // TODO: Handle Monsters
             AIPlayer = MyPlayer.GetAIForHuman();
             HumanPlayer = MyPlayer.GetHumanForAI();
             AddBehaviors();
@@ -275,6 +277,15 @@ namespace Source.Units
                         break;
                     case Constants.UNIT_RANGER:
                         ai = new Ranger();
+                        break;
+                    case Constants.UNIT_DRAENEI_WARRIOR:
+                        ai = new Draenei();
+                        break;
+                    case Constants.UNIT_FOREST_TROLL_WARRIOR:
+                        ai = new Troll();
+                        break;
+                    case Constants.UNIT_KOBOLD_WARRIOR:
+                        ai = new Kobold();
                         break;
                     case Constants.UNIT_BUILDER:
                         return null;

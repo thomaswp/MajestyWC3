@@ -42,6 +42,7 @@ namespace Source.Units
             AddBehavior(new Shop(), 5);
             AddBehavior(new RestAtHome(), prefs.Rest);
             AddBehavior(new Flee());
+            AddBehavior(new Wander(), 1);
         }
 
         public struct Preferences
@@ -103,26 +104,6 @@ namespace Source.Units
 
             int exp = GetUnitLevel(target);
             AddHeroXP(Unit, exp, true);
-        }
-
-        public override void OnAttacked(unit attacker)
-        {
-            base.OnAttacked(attacker);
-
-            //Console.WriteLine("Trying Flee");
-            if (TryInterruptWith(typeof(Flee), true)) return;
-            //Console.WriteLine("Trying fight");
-            if (TryInterruptWith(typeof(Fight), true)) return;
-            //if (!(behavior is Fight)) Console.WriteLine("Failed...");
-        }
-
-        public override void OnHomeAttacked(unit attacker)
-        {
-            base.OnHomeAttacked(attacker);
-            DefendHome d = (DefendHome) GetBehavior(typeof(DefendHome));
-            if (d == null) return;
-            d.OnHomeAttackedBy(attacker);
-            TryInterruptWith(d, false);
         }
 
     }

@@ -5,6 +5,7 @@ using WCSharp.Events;
 using Source.Units;
 using System.Collections.Generic;
 using Source.Interface;
+using Source.Units.Monsters;
 
 namespace Source
 {
@@ -90,11 +91,11 @@ namespace Source
 
 			try
 			{
-				Monster.SpawCamps(40);
+				Spawners.SpawCamps();
 			}
 			catch (Exception e)
             {
-				Console.WriteLine("Error spawing camps");
+				Console.WriteLine("Error spawing camps: " + e.Message);
             }
 
 			try
