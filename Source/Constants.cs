@@ -15,7 +15,6 @@ public static class Constants
 	public const int UNIT_KNIGHT = 1211117620;
 	public const int UNIT_BUILDER = 1697656880;
 	public const int UNIT_PEASANT_WORKER = 1747988528;
-	public const int UNIT_KOBOLD_TENT = 1848651829;
 	public const int UNIT_MARKET_LEVEL_2 = 1848651824;
 	public const int UNIT_MARKET_LEVEL_1 = 1848651827;
 	public const int UNIT_EXPLORE_FLAG = 1865429041;
@@ -23,6 +22,17 @@ public static class Constants
 	public const int UNIT_MERCENARY_CAMP_LORDAERON_SUMMER = 1848651844;
 	public const int UNIT_RANGERS_HALL = 1697656881;
 	public const int UNIT_ATTACK_FLAG = 1865429040;
+	public const int UNIT_GNOLL_CAMP = 1848651826;
+	public const int UNIT_FURBOLG_CAMP = 1848651828;
+	public const int UNIT_KOBOLD_CAMP = 1848651829;
+	public const int UNIT_TAUREN_CAMP = 1848651830;
+	public const int UNIT_ICE_TROLL_CAMP = 1848651831;
+	public const int UNIT_HARPY_CAMP = 1848651832;
+	public const int UNIT_FOREST_TROLL_CAMP = 1848651833;
+	public const int UNIT_DRAENEI_CAMP = 1848651841;
+	public const int UNIT_DRAENEI_WARRIOR = 1848651853;
+	public const int UNIT_FOREST_TROLL_WARRIOR = 1848651854;
+	public const int UNIT_KOBOLD_WARRIOR = 1848651825;
 	public const int UPGRADE_HEALTH_POTIONS = 1378889776;
 	public const int UPGRADE_MARKET_DAY = 1378889777;
 	public const int ORDER_OFFSET = 851970;

@@ -12,7 +12,7 @@ using Source.Items;
 
 namespace Source.Units
 {
-    public abstract class Hero : UnitAI
+    public abstract class Hero : FighterAI
     {
         // TODO: Lower?
         public const int STARTING_GOLD = 100;

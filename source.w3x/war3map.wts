@@ -74,12 +74,6 @@ STRING 15
 Brador Solidfist,Kethon the Slicer,Duvane the Battlemaster,Wodenthal the Battlemaster,Dremenon Knightly,Talon Headlopper,Stal Son of Kolar,Spalwin Knightly,Palador Vunderson,Valian Quickparry, the Fairly Sw,Xayter of North Glen,Sarion the Courageous,Kraye the Slicer,Wodenthal of North Glen,Gerwyn of Kranal's Creek
 }
 
-STRING 16
-// Units: n005 (Kobold Tent), Name (Name)
-{
-Kobold Tent
-}
-
 STRING 18
 // Abilities: A000 (Market Day), Name (Name)
 {
@@ -300,5 +294,71 @@ STRING 68
 // Abilities: A007 (Attack Flag), Tip (Tooltip - Normal)
 {
 Puts a bounty on an enemy unit to attract Heroes to fight it.
+}
+
+STRING 69
+// Units: n002 (Gnoll Camp), Name (Name)
+{
+Gnoll Camp
+}
+
+STRING 70
+// Units: n004 (Furbolg Camp), Name (Name)
+{
+Furbolg Camp
+}
+
+STRING 71
+// Units: n005 (Kobold Camp), Name (Name)
+{
+Kobold Camp
+}
+
+STRING 72
+// Units: n006 (Tauren Camp), Name (Name)
+{
+Tauren Camp
+}
+
+STRING 73
+// Units: n007 (Ice Troll Camp), Name (Name)
+{
+Ice Troll Camp
+}
+
+STRING 74
+// Units: n008 (Harpy Camp), Name (Name)
+{
+Harpy Camp
+}
+
+STRING 75
+// Units: n009 (Forest Troll Camp), Name (Name)
+{
+Forest Troll Camp
+}
+
+STRING 76
+// Units: n00A (Draenei Camp), Name (Name)
+{
+Draenei Camp
+}
+
+STRING 77
+// Units: n00M (Draenei Warrior), Name (Name)
+{
+Draenei Warrior
+}
+
+STRING 78
+// Units: n00N (Forest Troll Warrior), Name (Name)
+{
+Forest Troll Warrior
+}
+
+STRING 79
+// Units: n001 (Kobold Warrior), Name (Name)
+{
+Kobold Warrior
 }
 

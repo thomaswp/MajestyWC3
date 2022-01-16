@@ -26,34 +26,6 @@ function CreateUnitsForPlayer0()
     u = BlzCreateUnitWithSkin(p, FourCC("h000"), 280.7, -1524.1, 238.477, FourCC("h000"))
 end
 
-function CreateNeutralHostileBuildings()
-    local p = Player(PLAYER_NEUTRAL_AGGRESSIVE)
-    local u
-    local unitID
-    local t
-    local life
-    u = BlzCreateUnitWithSkin(p, FourCC("n005"), -1376.0, 864.0, 270.000, FourCC("n005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n005"), 864.0, 800.0, 270.000, FourCC("n005"))
-end
-
-function CreateNeutralHostile()
-    local p = Player(PLAYER_NEUTRAL_AGGRESSIVE)
-    local u
-    local unitID
-    local t
-    local life
-    u = BlzCreateUnitWithSkin(p, FourCC("n001"), -1459.3, 602.5, 336.159, FourCC("n001"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n001"), -1347.3, 644.6, 88.992, FourCC("n001"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n001"), -1569.6, 909.6, 217.294, FourCC("n001"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n001"), -1254.8, 478.5, 285.829, FourCC("n001"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n001"), -1129.4, 538.8, 59.383, FourCC("n001"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n001"), -1154.0, 757.7, 322.437, FourCC("n001"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n001"), -1008.9, 747.5, 73.336, FourCC("n001"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n001"), 652.8, 664.1, 201.869, FourCC("n001"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n001"), 710.4, 563.0, 31.894, FourCC("n001"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n001"), 878.7, 537.0, 50.341, FourCC("n001"))
-end
-
 function CreatePlayerBuildings()
     CreateBuildingsForPlayer0()
 end
@@ -63,9 +35,7 @@ function CreatePlayerUnits()
 end
 
 function CreateAllUnits()
-    CreateNeutralHostileBuildings()
     CreatePlayerBuildings()
-    CreateNeutralHostile()
     CreatePlayerUnits()
 end
 
@@ -121,7 +91,7 @@ function InitAllyPriorities()
 end
 
 function main()
-    SetCameraBounds(-3328.0 + GetCameraMargin(CAMERA_MARGIN_LEFT), -3584.0 + GetCameraMargin(CAMERA_MARGIN_BOTTOM), 3328.0 - GetCameraMargin(CAMERA_MARGIN_RIGHT), 3072.0 - GetCameraMargin(CAMERA_MARGIN_TOP), -3328.0 + GetCameraMargin(CAMERA_MARGIN_LEFT), 3072.0 - GetCameraMargin(CAMERA_MARGIN_TOP), 3328.0 - GetCameraMargin(CAMERA_MARGIN_RIGHT), -3584.0 + GetCameraMargin(CAMERA_MARGIN_BOTTOM))
+    SetCameraBounds(-5888.0 + GetCameraMargin(CAMERA_MARGIN_LEFT), -6144.0 + GetCameraMargin(CAMERA_MARGIN_BOTTOM), 8960.0 - GetCameraMargin(CAMERA_MARGIN_RIGHT), 8704.0 - GetCameraMargin(CAMERA_MARGIN_TOP), -5888.0 + GetCameraMargin(CAMERA_MARGIN_LEFT), 8704.0 - GetCameraMargin(CAMERA_MARGIN_TOP), 8960.0 - GetCameraMargin(CAMERA_MARGIN_RIGHT), -6144.0 + GetCameraMargin(CAMERA_MARGIN_BOTTOM))
     SetDayNightModels("Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl")
     NewSoundEnvironment("Default")
     SetAmbientDaySound("LordaeronSummerDay")

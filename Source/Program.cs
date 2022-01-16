@@ -90,6 +90,15 @@ namespace Source
 
 			try
 			{
+				Monster.SpawCamps(40);
+			}
+			catch (Exception e)
+            {
+				Console.WriteLine("Error spawing camps");
+            }
+
+			try
+			{
 				Console.WriteLine("Hello, Azeroth.");
 			}
 			catch (Exception ex)
