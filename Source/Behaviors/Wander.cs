@@ -15,6 +15,11 @@ namespace Source.Behaviors
 
         private OrderChain orders;
 
+        public override string GetStatusGerund()
+        {
+            return $"wandering around";
+        }
+
         protected override int GetTargetTimeout()
         {
             return 20;

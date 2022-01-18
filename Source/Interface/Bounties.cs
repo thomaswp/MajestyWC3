@@ -84,19 +84,9 @@ namespace Source.Interface
                     {
                         if (!flag.IsDead())
                         {
-                            float bounty = flag.GetFlagBounty();
-                            var units = GetUnitsInRangeOfLocAll(ATTACK_BOUNTY_RADIUS, flag.GetLocation()).ToList();
-                            var recipients = units
-                                .Where(u => !u.IsDead())
-                                .Select(u => UnitAI.GetAI(u))
-                                .Where(ai => ai != null && !ai.IsEnemy(flag))
-                                .ToList();
-                            int amount = (int)Math.Round(bounty / recipients.Count);
-                            foreach (UnitAI recipient in recipients)
-                            {
-                                recipient.ReceiveBounty(amount);
-                            }
-                            
+                            int bounty = flag.GetFlagBounty();
+                            AwardBounty(flag.GetLocation(), bounty,
+                                ai => !ai.IsEnemy(flag));
                             KillUnit(flag);
                         }
                         DestroyTimer(timer);
@@ -150,6 +140,23 @@ namespace Source.Interface
                     updateTimerMap.Remove(flag);
                 }
             }, Constants.UNIT_ATTACK_FLAG);
+        }
+
+        public static void AwardBounty(location loc, float bounty, Func<UnitAI, bool> filter)
+        {
+            var units = GetUnitsInRangeOfLocAll(ATTACK_BOUNTY_RADIUS, loc).ToList();
+            var recipients = units
+                .Where(u => !u.IsDead())
+                .Select(u => UnitAI.GetAI(u))
+                .Where(ai => ai != null)
+                .Where(filter)
+                .ToList();
+            if (!recipients.Any()) return;
+            int amount = (int)Math.Round(bounty / recipients.Count);
+            foreach (UnitAI recipient in recipients)
+            {
+                recipient.ReceiveBounty(amount);
+            }
         }
 
         public static unit GetFlagTarget(unit flag)

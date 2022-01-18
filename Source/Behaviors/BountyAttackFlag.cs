@@ -16,16 +16,15 @@ namespace Source.Behaviors
 
         protected unit targetFlag;
 
+        public override string GetStatusGerund()
+        {
+            return $"bounty hunting";
+        }
+
         public override float StartWeight()
         {
             if (!CanStart()) return 0;
             return GetBountyDesire(targetFlag);
-        }
-
-        public override void Start()
-        {
-            base.Start();
-            Console.WriteLine(AI.Unit.GetName() + " pursuing bounty");
         }
 
         public override bool TryInterrupt(Behavior with)

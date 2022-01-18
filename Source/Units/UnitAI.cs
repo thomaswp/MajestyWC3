@@ -23,6 +23,12 @@ namespace Source.Units
         public player HumanPlayer { get; private set; }
         public player AIPlayer { get; private set; }
 
+        public bool IsNeutralHostile { 
+            get {
+                return MyPlayer == Monster.Player;
+            } 
+        }
+
         public unit Home { get; private set; }
         public unit InBuilding { get; set; }
         public bool IsInBuilding { get { return InBuilding != null; } }
@@ -30,6 +36,20 @@ namespace Source.Units
 
         public int GoldTaxed { get; set; }
         public int GoldUntaxed { get; set; }
+
+        private string _status = "";
+        public string Status {
+            get { return _status; } 
+            set
+            {
+                if (_status == value) return;
+                _status = value;
+                if (IsUnitSelected(Unit, HumanPlayer))
+                {
+                    Interface.Status.ShowStatus(this);
+                }
+            }
+        }
 
         const float RECOVER_RATE = 0.01f, RECOVER_RATE_AT_HOME = RECOVER_RATE * 2;
 
@@ -69,7 +89,7 @@ namespace Source.Units
 
         public Behavior GetBehavior(Type type)
         {
-            return behaviors.Find(b => type.IsInstanceOfType(b)) ?? null;
+            return behaviors.Find(b => b.GetType() == type) ?? null;
         }
 
         public bool TryInterruptWith(Type type, bool checkIfCanStart)
@@ -81,12 +101,16 @@ namespace Source.Units
 
         public bool TryInterruptWith(Behavior newBehavior, bool checkIfCanStart)
         {
-            if (behavior == newBehavior) return false;
+            if (behavior == newBehavior)
+            {
+                // Should we let a behavior know its being interrupted?
+                return false;
+            }
             if (checkIfCanStart && !newBehavior.CanStart()) return false;
             if (behavior != null && !behavior.TryInterrupt(newBehavior)) return false;
             Console.WriteLine($"{Name} interrupted with {newBehavior.GetName()}");
             behavior = newBehavior;
-            newBehavior.Start();
+            StartBehavior();
             return true;
         }
 
@@ -137,7 +161,7 @@ namespace Source.Units
 
         public bool IsEnemy(unit unit)
         {
-            // TODO: Alliances
+            // TODO: Alliances, Make sure this works for neutrals
             player owner = unit.GetPlayer();
             //Console.WriteLine($"{unit.GetName()} owned by {GetPlayerId(owner)} vs " +
             //    $"H:{GetPlayerId(HumanPlayer)} and AI:{GetPlayerId(AIPlayer)}");
@@ -156,6 +180,16 @@ namespace Source.Units
             return  (1 + (GetUnitLevel(ally) - 1) / 0.2f) * ally.GetHP();
         }
 
+        private void StartBehavior()
+        {
+            if (behavior == null) return;
+            //Console.WriteLine($"Starting {behavior.GetName()} for {Unit.GetName()}");
+            behavior.Start();
+            string name = GetHeroProperName(Unit);
+            if (name == null || name.Length == 0) name = Unit.GetName();
+            Status = $"{name} is {behavior.GetStatusGerund()}.";
+        }
+
         public virtual void Update()
         {
             RegainLife();
@@ -165,11 +199,7 @@ namespace Source.Units
             if (behavior == null)
             {
                 behavior = ChooseIdleBehavior();
-                if (behavior != null)
-                {
-                    //Console.WriteLine($"Starting {behavior.GetName()} for {Unit.GetName()}");
-                    behavior.Start();
-                }
+                StartBehavior();
             }
 
             if (behavior == null) return;
@@ -177,9 +207,9 @@ namespace Source.Units
             //Console.WriteLine("Updating behavior...");
             if (behavior.NeedsRestart)
             {
-                Console.WriteLine($"Restarting {behavior}");
+                //Console.WriteLine($"Restarting {behavior}");
                 behavior.NeedsRestart = false;
-                behavior.Start();
+                StartBehavior();
             }
             if (!behavior.Update())
             {
@@ -196,7 +226,9 @@ namespace Source.Units
         protected virtual Behavior ChooseIdleBehavior()
         {
             //Console.WriteLine($"Selecting from {behaviors.Count} behaviors");
-            var weights = behaviors.ToDictionary(b => b, b => b.StartWeight() * b.Weight);
+            var weights = behaviors.ToDictionary(b => b, 
+                // Only calculate StartWeight for non-0
+                b => b.Weight == 0 ? 0 : b.StartWeight() * b.Weight);
             var possible = behaviors.Where(b => weights[b] > 0);
             float den = possible.Select(b => weights[b]).Sum();
             if (den == 0) return null;
@@ -244,7 +276,8 @@ namespace Source.Units
             // Make sure to include the target enemy
             if (enemy != null) intimidation += GetIntimidation(enemy);
 
-            //Console.WriteLine($"Calculating intimidation of {units.Count()} units = " +
+            //Console.WriteLine($"Calculating confidence for {Unit.GetName()}" +
+            //    $" of {units.Count()} units = " +
             //    $"{confidence} / {intimidation}");
 
             return confidence / Math.Max(1, intimidation);
@@ -364,7 +397,7 @@ namespace Source.Units
                 bought = true;
             }
             if (bought) Gold -= cost;
-            Console.WriteLine($"{Unit.GetName()} bought {itemID} successful: {bought}");
+            //Console.WriteLine($"{Unit.GetName()} bought {itemID} successful: {bought}");
 
             return bought;
         }

@@ -79,7 +79,7 @@ namespace Source.Behaviors
         private readonly location destination;
         private readonly float thresholdRadius;
 
-        public const int BUILDING_RADIUS = 250;
+        public const int BUILDING_RADIUS = 260;
         float lastDistance;
 
         public OrderMove(location destination, float thresholdRadius)
@@ -111,6 +111,7 @@ namespace Source.Behaviors
             // Stuck
             // TODO: Handle failed orders...
             Console.WriteLine($"{AI.Unit.GetName()} stuck, failed to move");
+            PingMinimapLocForPlayer(GetLocalPlayer(), destination, 1);
             return false;
         }
     }

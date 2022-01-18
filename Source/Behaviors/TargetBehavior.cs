@@ -79,17 +79,22 @@ namespace Source.Behaviors
             timeoutTimer = null;
             // Set to null first to trigger the clear;
             Target = null;
-            Target = SelectTarget();
-            if (Target != null)
+            RefreshTarget();
+        }
+
+        protected bool RefreshTarget()
+        {
+            T newTarget = SelectTarget();
+            if (newTarget == null || newTarget == Target) return false;
+            Target = newTarget;
+            int timeout = GetTargetTimeout();
+            if (timeout != int.MaxValue)
             {
-                int timeout = GetTargetTimeout();
-                if (timeout != int.MaxValue)
-                {
-                    timeoutTimer = CreateTimer();
-                    StartTimerBJ(timeoutTimer, false, timeout);
-                }
-                OnTargetUpdated();
+                timeoutTimer = CreateTimer();
+                StartTimerBJ(timeoutTimer, false, timeout);
             }
+            OnTargetUpdated();
+            return true;
         }
 
         protected virtual void OnTargetUpdated()

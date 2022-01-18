@@ -14,14 +14,18 @@ namespace Source.Behaviors
     {
         public const int HERO_EXPLORE_TICK_XP = 3;
 
+        public override string GetStatusGerund()
+        {
+            //float ex = GetLocationX(Target), ey = GetLocationY(Target);
+            //PingMinimap(ex, ey, 1);
+            //Console.WriteLine($"Knight exploring {ex}, {ey}");
+            return "exploring";
+        }
 
         public override void Start()
         {
             base.Start();
-            float ex = GetLocationX(Target), ey = GetLocationY(Target);
             IssuePointOrderByIdLoc(AI.Unit, Constants.ORDER_MOVE, Target);
-            //PingMinimap(ex, ey, 1);
-            Console.WriteLine($"Knight exploring {ex}, {ey}");
         }
 
         protected override int GetTargetTimeout()

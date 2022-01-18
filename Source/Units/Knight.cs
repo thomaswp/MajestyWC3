@@ -18,7 +18,8 @@ namespace Source.Units
             {
                 Fight = 10,
                 Explore = 5,
-                Rest = 3
+                Rest = 3,
+                Glory = 10,
             };
         }
 

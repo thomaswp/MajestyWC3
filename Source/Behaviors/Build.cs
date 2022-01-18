@@ -12,6 +12,10 @@ namespace Source.Behaviors
 {
     public class Build : TargetBehavior<unit>
     {
+        public override string GetStatusGerund()
+        {
+            return $"building a {Target.GetName()}";
+        }
 
         public override void Start()
         {

@@ -43,11 +43,12 @@ namespace Source.Units
             AddBehavior(new RestAtHome(), prefs.Rest);
             AddBehavior(new Flee());
             AddBehavior(new Wander(), 1);
+            AddBehavior(new Raid(), (prefs.Fight + prefs.Glory) / 2);
         }
 
         public struct Preferences
         {
-            public int Explore, Fight, Rest;
+            public int Explore, Fight, Rest, Glory;
         }
 
         protected abstract Preferences GetPreferences();

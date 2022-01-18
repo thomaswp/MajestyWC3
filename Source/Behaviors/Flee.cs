@@ -14,16 +14,21 @@ namespace Source.Behaviors
     {
         Random rand = new Random();
 
+        public override string GetStatusGerund()
+        {
+            return $"fleeing to home";
+        }
+
+        public override bool TryInterrupt(Behavior with)
+        {
+            return false;
+        }
+
         public override bool CanStart()
         {
             return IsInDanger((float)rand.NextDouble());
         }
 
-        public override void Start()
-        {
-            base.Start();
-            Console.WriteLine($"{AI.Name} fleeing enemiez");
-        }
         public override bool IsInCombatOrDanger()
         {
             return true;
@@ -33,7 +38,7 @@ namespace Source.Behaviors
         {
             if (fearFactor == 0) return false;
             float confidence = AI.GetFightConfidence(AI.Unit.GetLocation());
-            return confidence > fearFactor;
+            return confidence < fearFactor;
         }
     }
 }

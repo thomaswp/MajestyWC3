@@ -143,5 +143,19 @@ namespace Source
         {
             IssuePointOrderByIdLoc(unit, Constants.ORDER_MOVE, loc);
         }
+
+        public static int RollBountyAward(this unit unit)
+        {
+            int floor = BlzGetUnitIntegerField(unit, UNIT_IF_GOLD_BOUNTY_AWARDED_BASE);
+            int dice = BlzGetUnitIntegerField(unit, UNIT_IF_GOLD_BOUNTY_AWARDED_NUMBER_OF_DICE);
+            int sides = BlzGetUnitIntegerField(unit, UNIT_IF_GOLD_BOUNTY_AWARDED_SIDES_PER_DIE);
+
+            int bounty = floor;
+            for (int i = 0; i < sides; i++)
+            {
+                bounty += GetRandomInt(1, sides);
+            }
+            return bounty;
+        }
     }
 }

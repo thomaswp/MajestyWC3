@@ -13,6 +13,10 @@ namespace Source.Behaviors
         public const int SHOP_RADIUS = 4000;
 
         private OrderChain orders;
+        public override string GetStatusGerund()
+        {
+            return $"shopping at a {Target.GetName()}";
+        }
 
         protected override int GetTargetTimeout()
         {
@@ -39,7 +43,7 @@ namespace Source.Behaviors
                 .Then(new OrderWait(bought + 2))
                 .Then(new OrderExit())
                 ;
-            Console.WriteLine($"{AI.Unit.GetName()} shopping at {Target.GetName()}");
+            //Console.WriteLine($"{AI.Unit.GetName()} shopping at {Target.GetName()}");
         }
 
         public override void Stop()

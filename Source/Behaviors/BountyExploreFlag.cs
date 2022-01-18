@@ -18,16 +18,15 @@ namespace Source.Behaviors
         // TODO: Per Hero
         const float DISTANCE_TO_MOTIVATION_FACTOR = 0.001f;
 
+        public override string GetStatusGerund()
+        {
+            return "exploring for a bounty";
+        }
+
         public override float StartWeight()
         {
             if (!CanStart()) return 0;
             return GetBountyDesire(targetFlag);
-        }
-
-        public override void Start()
-        {
-            base.Start();
-            Console.WriteLine($"Knight pursuing bounty explore flag");
         }
 
         public override bool TryInterrupt(Behavior with)

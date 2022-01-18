@@ -18,8 +18,13 @@ namespace Source.Units
             //Console.WriteLine("Trying Flee");
             if (TryInterruptWith(typeof(Flee), true)) return;
             //Console.WriteLine("Trying fight");
-            if (TryInterruptWith(typeof(Fight), true)) return;
+            if (TryInterruptWith(typeof(Fight), true))
+            {
+                // TODO: call allies to help you
+                return;
+            }
             //if (!(behavior is Fight)) Console.WriteLine("Failed...");
+
         }
 
         public override void OnHomeAttacked(unit attacker)

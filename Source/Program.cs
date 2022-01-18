@@ -75,6 +75,8 @@ namespace Source
 			});
 
 			Bounties.Init();
+			Monster.Init();
+			Status.Init();
 
             SetPlayerState(GetLocalPlayer(), PLAYER_STATE_RESOURCE_GOLD, 50000);
 			SetPlayerState(GetLocalPlayer(), PLAYER_STATE_RESOURCE_LUMBER, 1000);

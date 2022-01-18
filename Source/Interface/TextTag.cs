@@ -8,11 +8,10 @@ using static War3Api.Common;
 
 namespace Source.Interface
 {
-
-
     public struct Color
     {
         public static readonly Color GOLD = new Color(255, 220, 0, 255);
+        public static readonly Color STATUS = new Color(100, 80, 255, 255);
 
         public int red, green, blue, alpha;
 
@@ -64,7 +63,7 @@ namespace Source.Interface
 
         public static void SetColor(this texttag text, Color color)
         {
-            SetTextTagColor(text, 255, 220, 0, 255);
+            SetTextTagColor(text, color.red, color.green, color.blue, color.alpha);
         }
 
         public static void CenterAboveUnit(this texttag text, unit unit, string message)

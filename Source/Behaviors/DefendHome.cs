@@ -14,6 +14,11 @@ namespace Source.Behaviors
     {
         public const int MIN_HOME_ATTACK_DIS = 1000;
 
+        public override string GetStatusGerund()
+        {
+            return $"defending their home against {Target.GetName()}";
+        }
+
         protected override bool IsTargetCloseEnough(unit target)
         {
             return target.DistanceTo(AI.Home) <= MIN_HOME_ATTACK_DIS;

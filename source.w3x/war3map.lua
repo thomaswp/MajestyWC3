@@ -1,4 +1,5 @@
 gg_trg_Untitled_Trigger_001 = nil
+gg_trg_Untitled_Trigger_002 = nil
 function InitGlobals()
 end
 
@@ -22,8 +23,21 @@ function CreateUnitsForPlayer0()
     u = BlzCreateUnitWithSkin(p, FourCC("e000"), 156.3, -1099.8, 173.479, FourCC("e000"))
     u = BlzCreateUnitWithSkin(p, FourCC("h000"), 360.8, -1547.0, 290.828, FourCC("h000"))
     u = BlzCreateUnitWithSkin(p, FourCC("h000"), 445.8, -1566.9, 216.196, FourCC("h000"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h003"), 52.4, -1746.7, 2.033, FourCC("h003"))
     u = BlzCreateUnitWithSkin(p, FourCC("h000"), 207.1, -1500.9, 179.236, FourCC("h000"))
     u = BlzCreateUnitWithSkin(p, FourCC("h000"), 280.7, -1524.1, 238.477, FourCC("h000"))
+end
+
+function CreateUnitsForPlayer8()
+    local p = Player(8)
+    local u
+    local unitID
+    local t
+    local life
+    u = BlzCreateUnitWithSkin(p, FourCC("H002"), 256.6, -1837.4, 296.321, FourCC("H002"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n001"), 130.2, -1822.8, 254.056, FourCC("n001"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n00M"), 226.8, -1921.7, 76.687, FourCC("n00M"))
+    u = BlzCreateUnitWithSkin(p, FourCC("H004"), 33.4, -1915.8, 177.292, FourCC("H004"))
 end
 
 function CreatePlayerBuildings()
@@ -32,11 +46,22 @@ end
 
 function CreatePlayerUnits()
     CreateUnitsForPlayer0()
+    CreateUnitsForPlayer8()
 end
 
 function CreateAllUnits()
     CreatePlayerBuildings()
     CreatePlayerUnits()
+end
+
+function Trig_Untitled_Trigger_002_Actions()
+    CreateTextTagUnitBJ("TRIGSTR_081", GetKillingUnitBJ(), 0, 10, 100, 100, 100, 0)
+end
+
+function InitTrig_Untitled_Trigger_002()
+    gg_trg_Untitled_Trigger_002 = CreateTrigger()
+    TriggerRegisterAnyUnitEventBJ(gg_trg_Untitled_Trigger_002, EVENT_PLAYER_UNIT_DEATH)
+    TriggerAddAction(gg_trg_Untitled_Trigger_002, Trig_Untitled_Trigger_002_Actions)
 end
 
 function Trig_Untitled_Trigger_001_Actions()
@@ -50,6 +75,7 @@ function InitTrig_Untitled_Trigger_001()
 end
 
 function InitCustomTriggers()
+    InitTrig_Untitled_Trigger_002()
     InitTrig_Untitled_Trigger_001()
 end
 
@@ -70,6 +96,12 @@ function InitCustomPlayerSlots()
     SetPlayerRacePreference(Player(1), RACE_PREF_HUMAN)
     SetPlayerRaceSelectable(Player(1), true)
     SetPlayerController(Player(1), MAP_CONTROL_COMPUTER)
+    SetPlayerStartLocation(Player(8), 2)
+    ForcePlayerStartLocation(Player(8), 2)
+    SetPlayerColor(Player(8), ConvertPlayerColor(8))
+    SetPlayerRacePreference(Player(8), RACE_PREF_UNDEAD)
+    SetPlayerRaceSelectable(Player(8), true)
+    SetPlayerController(Player(8), MAP_CONTROL_COMPUTER)
 end
 
 function InitCustomTeams()
@@ -81,13 +113,7 @@ function InitCustomTeams()
     SetPlayerAllianceStateAllyBJ(Player(1), Player(0), true)
     SetPlayerAllianceStateVisionBJ(Player(0), Player(1), true)
     SetPlayerAllianceStateVisionBJ(Player(1), Player(0), true)
-end
-
-function InitAllyPriorities()
-    SetStartLocPrioCount(1, 1)
-    SetStartLocPrio(1, 0, 0, MAP_LOC_PRIO_LOW)
-    SetEnemyStartLocPrioCount(1, 2)
-    SetEnemyStartLocPrio(1, 0, 0, MAP_LOC_PRIO_HIGH)
+    SetPlayerTeam(Player(8), 1)
 end
 
 function main()
@@ -107,13 +133,13 @@ end
 function config()
     SetMapName("TRIGSTR_001")
     SetMapDescription("TRIGSTR_003")
-    SetPlayers(2)
-    SetTeams(2)
+    SetPlayers(3)
+    SetTeams(3)
     SetGamePlacement(MAP_PLACEMENT_USE_MAP_SETTINGS)
     DefineStartLocation(0, 512.0, -1216.0)
     DefineStartLocation(1, 2816.0, 320.0)
+    DefineStartLocation(2, -3456.0, -4928.0)
     InitCustomPlayerSlots()
     InitCustomTeams()
-    InitAllyPriorities()
 end
 

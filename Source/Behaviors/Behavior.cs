@@ -18,6 +18,7 @@ namespace Source.Behaviors
         public abstract void Start();
         public abstract void Stop();
         public abstract bool Update();
+        public abstract string GetStatusGerund();
 
         public virtual float StartWeight()
         {

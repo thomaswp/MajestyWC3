@@ -10,6 +10,11 @@ namespace Source.Behaviors
     {
         protected OrderChain orders;
 
+        public override string GetStatusGerund()
+        {
+            return $"resting at home";
+        }
+
         public override bool CanStart()
         {
             return true;

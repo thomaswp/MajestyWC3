@@ -18,12 +18,22 @@ namespace Source.Units.Monsters
             { Constants.UNIT_FOREST_TROLL_CAMP, new List<int>() { Constants.UNIT_FOREST_TROLL_WARRIOR, } },
         };
 
-        //static readonly List<int> ENEMY_UNITS = BUILDINGS.Values.ToList();
-        static readonly List<int> ENEMY_BUILDINGS = BUILDINGS.Keys.ToList();
-        public static readonly player MonsterPlayer = Player(GetPlayerNeutralAggressive());
+        public static readonly HashSet<int> ENEMY_UNITS;
+        public static readonly List<int> ENEMY_BUILDINGS = BUILDINGS.Keys.ToList();
+        public static readonly player MonsterPlayer = Monster.Player;
+
         public const int MIN_SPAWN_DISTANCE = 1500;
         public const float DELAY_BASE = 0; // TODO: Much higher
         public const float DIS_DELAY_FACTOR = 60 / 3000f;
+
+        static Spawners()
+        {
+            // Add manually since SelectMany doesn't seem to work
+            ENEMY_UNITS = new HashSet<int>();
+            foreach (var list in BUILDINGS.Values)
+                foreach (int unitID in list)
+                    ENEMY_UNITS.Add(unitID);
+        }
 
         public static void SpawCamps(int nCamps = 10)
         {
@@ -125,6 +135,7 @@ namespace Source.Units.Monsters
                 TimerStart(timer, delay, false, () =>
                 {
                     DestroyTimer(timer);
+                    if (camp.IsDead()) return;
                     Spawn(camp);
                     float period = GetCampSpawnPeriod(camp.GetTypeID());
                     if (period == 0)
