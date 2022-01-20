@@ -1,5 +1,5 @@
-gg_trg_Untitled_Trigger_001 = nil
 gg_trg_Untitled_Trigger_002 = nil
+gg_trg_Untitled_Trigger_001 = nil
 function InitGlobals()
 end
 
@@ -116,6 +116,11 @@ function InitCustomTeams()
     SetPlayerTeam(Player(8), 1)
 end
 
+function InitAllyPriorities()
+    SetStartLocPrioCount(2, 1)
+    SetStartLocPrio(2, 0, 0, MAP_LOC_PRIO_HIGH)
+end
+
 function main()
     SetCameraBounds(-5888.0 + GetCameraMargin(CAMERA_MARGIN_LEFT), -6144.0 + GetCameraMargin(CAMERA_MARGIN_BOTTOM), 8960.0 - GetCameraMargin(CAMERA_MARGIN_RIGHT), 8704.0 - GetCameraMargin(CAMERA_MARGIN_TOP), -5888.0 + GetCameraMargin(CAMERA_MARGIN_LEFT), 8704.0 - GetCameraMargin(CAMERA_MARGIN_TOP), 8960.0 - GetCameraMargin(CAMERA_MARGIN_RIGHT), -6144.0 + GetCameraMargin(CAMERA_MARGIN_BOTTOM))
     SetDayNightModels("Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl")
@@ -141,5 +146,6 @@ function config()
     DefineStartLocation(2, -3456.0, -4928.0)
     InitCustomPlayerSlots()
     InitCustomTeams()
+    InitAllyPriorities()
 end
 
