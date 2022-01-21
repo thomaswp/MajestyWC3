@@ -26,6 +26,7 @@ namespace Source.Behaviors
 
         public bool Update()
         {
+            if (AI.Unit.IsDead()) return false;
             if (!started)
             {
                 Start();

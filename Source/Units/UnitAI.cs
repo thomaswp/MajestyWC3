@@ -108,7 +108,7 @@ namespace Source.Units
             }
             if (checkIfCanStart && !newBehavior.CanStart()) return false;
             if (behavior != null && !behavior.TryInterrupt(newBehavior)) return false;
-            Console.WriteLine($"{Name} interrupted with {newBehavior.GetName()}");
+            //Console.WriteLine($"{Name} interrupted with {newBehavior.GetName()}");
             behavior = newBehavior;
             StartBehavior();
             return true;
@@ -417,6 +417,20 @@ namespace Source.Units
 
         }
 
+        public virtual void OnBuildingAttacked(unit attacker)
+        {
+            if (behavior != null)
+            {
+                behavior.Stop();
+                behavior = null;
+            }
+            TryInterruptWith(typeof(Fight), true);
+        }
+
+        public virtual void OnRealmAttacked(unit building, unit attacker)
+        {
+        }
+
         public virtual void OnHomeSet()
         {
 
@@ -449,10 +463,30 @@ namespace Source.Units
         {
             try
             {
-                if (!home.IsStructure() || !homeMap.ContainsKey(home)) return;
+                // TODO: Should cache attack alerts, so they're once per ~3 seconds
+
+                if (!home.IsStructure()) return;
+
                 //Console.WriteLine($"Checking home {home.GetName()} attacked by {attacker.GetName()}...");
-                var units = homeMap[home];
-                foreach (UnitAI unit in units) unit.OnHomeAttacked(attacker);
+                foreach (UnitAI ai in unitMap.Values.Where(v => v.InBuilding == home))
+                {
+                    ai.OnBuildingAttacked(attacker);
+                }
+
+                if (homeMap.ContainsKey(home))
+                {
+                    var units = homeMap[home];
+                    foreach (UnitAI unit in units) unit.OnHomeAttacked(attacker);
+                }
+
+                player owner = home.GetPlayer();
+                // Monsters don't defend the realm 
+                if (owner == Monster.Player) return;
+
+                foreach (UnitAI ai in unitMap.Values.Where(v => v.HumanPlayer == owner))
+                {
+                    ai.OnRealmAttacked(home, attacker);
+                }
             }
             catch (Exception e)
             {

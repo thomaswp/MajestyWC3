@@ -157,5 +157,11 @@ namespace Source
             }
             return bounty;
         }
+
+        public static bool IsCastle(this unit unit)
+        {
+            // TODO: All levels
+            return unit.GetTypeID() == Constants.UNIT_CASTLE_LEVEL_1;
+        }
     }
 }

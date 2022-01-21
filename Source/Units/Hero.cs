@@ -17,6 +17,14 @@ namespace Source.Units
         // TODO: Lower?
         public const int STARTING_GOLD = 100;
 
+
+        private Preferences prefs;
+
+        public Hero()
+        {
+            prefs = GetPreferences();
+        }
+
         public static List<int> itemPriorities = new List<int>()
         {
             Constants.ITEM_HEALING_POTION_LEVEL_2,
@@ -33,10 +41,10 @@ namespace Source.Units
 
         protected override void AddBehaviors()
         {
-            Preferences prefs = GetPreferences();
             AddBehavior(new Explore(), prefs.Explore);
             AddBehavior(new BountyExploreFlag(), prefs.Explore);
             AddBehavior(new DefendHome());
+            AddBehavior(new DefendRealm());
             AddBehavior(new Fight(), prefs.Fight);
             AddBehavior(new BountyAttackFlag(), prefs.Fight);
             AddBehavior(new Shop(), 5);
@@ -105,6 +113,24 @@ namespace Source.Units
 
             int exp = GetUnitLevel(target);
             AddHeroXP(Unit, exp, true);
+        }
+
+        public override void OnRealmAttacked(unit building, unit attacker)
+        {
+            base.OnRealmAttacked(building, attacker);
+
+            float diminishRange = building.IsCastle() ? 7000 : 1000;
+            float distance = Unit.DistanceTo(building);
+            float willingness = Math.Max(1, diminishRange / distance);
+            willingness *= prefs.Glory * Util.RandFloat();
+            Console.WriteLine($"Realm attacked for {Name}; willingness={willingness}");
+
+            if (willingness < 1) return;
+
+            DefendRealm d = (DefendRealm)GetBehavior(typeof(DefendRealm));
+            if (d == null) return;
+            d.OnHomeAttackedBy(attacker);
+            TryInterruptWith(d, false);
         }
 
     }

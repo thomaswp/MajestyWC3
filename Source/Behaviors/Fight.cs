@@ -39,6 +39,13 @@ namespace Source.Behaviors
             return base.Update();
         }
 
+        public override bool TryInterrupt(Behavior with)
+        {
+            // If already in combat, don't switch to defending yet
+            if (with is DefendHome) return false;
+            return base.TryInterrupt(with);
+        }
+
         protected virtual void CheckForNewTarget()
         {
             // If targeting a structure but there's a better target...

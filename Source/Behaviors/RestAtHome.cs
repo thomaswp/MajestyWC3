@@ -35,7 +35,6 @@ namespace Source.Behaviors
                 .Then(new OrderWait(3))
                 .Then(new OrderExit())
                 ;
-            Console.WriteLine($"{AI.Name} resting at home");
         }
 
         public override void Stop()

@@ -20,14 +20,9 @@ namespace Source.Units.Monsters
         {
             AnyUnitEvents.Register(EVENT_PLAYER_UNIT_DEATH, () =>
             {
-                Console.WriteLine("Unit dies");
                 try
                 {
                     unit unit = GetTriggerUnit();
-                    if (GetKillingUnit() != null)
-                    {
-                        Console.WriteLine(GetKillingUnit().GetName());
-                    }
                     int type = unit.GetTypeID();
                     //Console.WriteLine($"Trying to create bounty for {unit.GetName()}");
                     if (!Spawners.ENEMY_UNITS.Contains(type) &&
@@ -56,7 +51,7 @@ namespace Source.Units.Monsters
         public override void OnAttacked(unit attacker)
         {
             base.OnAttacked(attacker);
-            Console.WriteLine($"{Name} attacked by {attacker} => {behavior.GetName()}");
+            //Console.WriteLine($"{Name} attacked by {attacker} => {behavior.GetName()}");
         }
     }
 }

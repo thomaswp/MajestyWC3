@@ -67,7 +67,7 @@ namespace Source
 				if (ai != null) ai.SetHome(building);
 			});
 
-			PlayerUnitEvents.Register(PlayerUnitEvent.UnitTypeAttacks, () =>
+			AnyUnitEvents.Register(EVENT_PLAYER_UNIT_ATTACKED, () =>
 			{
 				UnitAI.Trigger(PlayerUnitEvent.UnitTypeAttacks, GetAttacker());
 				UnitAI.Trigger(PlayerUnitEvent.UnitTypeIsAttacked, GetAttackedUnitBJ());

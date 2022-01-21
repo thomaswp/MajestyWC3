@@ -34,7 +34,7 @@ namespace Source.Behaviors
         public override void Start()
         {
             base.Start();
-            Console.WriteLine($"{AI.Unit.GetName()} defending home from {Target.GetName()}");
+            //Console.WriteLine($"{AI.Unit.GetName()} defending home from {Target.GetName()}");
         }
 
         public void OnHomeAttackedBy(unit attacker)
