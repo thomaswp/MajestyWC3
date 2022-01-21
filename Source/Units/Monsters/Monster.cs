@@ -18,33 +18,24 @@ namespace Source.Units.Monsters
 
         public static void Init()
         {
-            Console.WriteLine("Starting monster");   
-
-            PlayerUnitEvents.Register(PlayerUnitEvent.UnitTypeDies, () =>
+            AnyUnitEvents.Register(EVENT_PLAYER_UNIT_DEATH, () =>
             {
                 Console.WriteLine("Unit dies");
                 try
                 {
                     unit unit = GetTriggerUnit();
-                    if (unit == null)
-                    {
-                        Console.WriteLine("null unit");
-                        return;
-                    }
-                    Console.WriteLine(unit.GetName() + " killed");
                     if (GetKillingUnit() != null)
                     {
                         Console.WriteLine(GetKillingUnit().GetName());
                     }
                     int type = unit.GetTypeID();
-                    Console.WriteLine($"Trying to create bounty for {unit.GetName()}");
+                    //Console.WriteLine($"Trying to create bounty for {unit.GetName()}");
                     if (!Spawners.ENEMY_UNITS.Contains(type) &&
                         !Spawners.ENEMY_BUILDINGS.Contains(type))
                     {
                         return;
                     }
                     int award = unit.RollBountyAward();
-                    Console.WriteLine("Success: " + award);
                     if (award == 0) return;
                     Bounties.AwardBounty(unit.GetLocation(), award, ai => ai.IsEnemy(unit));
                 } catch (Exception e)

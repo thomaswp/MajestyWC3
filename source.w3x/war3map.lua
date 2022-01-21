@@ -23,21 +23,8 @@ function CreateUnitsForPlayer0()
     u = BlzCreateUnitWithSkin(p, FourCC("e000"), 156.3, -1099.8, 173.479, FourCC("e000"))
     u = BlzCreateUnitWithSkin(p, FourCC("h000"), 360.8, -1547.0, 290.828, FourCC("h000"))
     u = BlzCreateUnitWithSkin(p, FourCC("h000"), 445.8, -1566.9, 216.196, FourCC("h000"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h003"), 52.4, -1746.7, 2.033, FourCC("h003"))
     u = BlzCreateUnitWithSkin(p, FourCC("h000"), 207.1, -1500.9, 179.236, FourCC("h000"))
     u = BlzCreateUnitWithSkin(p, FourCC("h000"), 280.7, -1524.1, 238.477, FourCC("h000"))
-end
-
-function CreateUnitsForPlayer8()
-    local p = Player(8)
-    local u
-    local unitID
-    local t
-    local life
-    u = BlzCreateUnitWithSkin(p, FourCC("H002"), 256.6, -1837.4, 296.321, FourCC("H002"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n001"), 130.2, -1822.8, 254.056, FourCC("n001"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n00M"), 226.8, -1921.7, 76.687, FourCC("n00M"))
-    u = BlzCreateUnitWithSkin(p, FourCC("H004"), 33.4, -1915.8, 177.292, FourCC("H004"))
 end
 
 function CreatePlayerBuildings()
@@ -46,7 +33,6 @@ end
 
 function CreatePlayerUnits()
     CreateUnitsForPlayer0()
-    CreateUnitsForPlayer8()
 end
 
 function CreateAllUnits()
@@ -56,6 +42,7 @@ end
 
 function Trig_Untitled_Trigger_002_Actions()
     CreateTextTagUnitBJ("TRIGSTR_081", GetKillingUnitBJ(), 0, 10, 100, 100, 100, 0)
+    SetTextTagVelocityBJ(GetLastCreatedTextTag(), 64.00, 90)
 end
 
 function InitTrig_Untitled_Trigger_002()
