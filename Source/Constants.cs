@@ -8,6 +8,9 @@ public static class Constants
 	public const int ABILITY_DECREASE_BOUNTY = 1093677110;
 	public const int ABILITY_DESTROY_FLAG = 1093677112;
 	public const int ABILITY_ATTACK_FLAG = 1093677111;
+	public const int ABILITY_SELECT_HERO_1 = 1093677109;
+	public const int ABILITY_SELECT_HERO_2 = 1093677113;
+	public const int ABILITY_SELECT_HERO_3 = 1093677121;
 	public const int ITEM_HEALING_POTION_LEVEL_1 = 1227894832;
 	public const int ITEM_HEALING_POTION_LEVEL_2 = 1227894834;
 	public const int UNIT_DUMMY = 2021161080;
@@ -33,6 +36,8 @@ public static class Constants
 	public const int UNIT_DRAENEI_WARRIOR = 1848651853;
 	public const int UNIT_FOREST_TROLL_WARRIOR = 1848651854;
 	public const int UNIT_KOBOLD_WARRIOR = 1848651825;
+	public const int UNIT_WARRIORS_BARRACKS = 1747988530;
+	public const int UNIT_FOOD_DUMMY = 1747988533;
 	public const int UPGRADE_HEALTH_POTIONS = 1378889776;
 	public const int UPGRADE_MARKET_DAY = 1378889777;
 	public const int ORDER_OFFSET = 851970;

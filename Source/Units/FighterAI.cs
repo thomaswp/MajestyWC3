@@ -30,9 +30,9 @@ namespace Source.Units
         public override void OnHomeAttacked(unit attacker)
         {
             base.OnHomeAttacked(attacker);
-            DefendHome d = (DefendHome)GetBehavior(typeof(DefendHome));
+            DefendBuilding d = (DefendBuilding)GetBehavior(typeof(DefendBuilding));
             if (d == null) return;
-            d.OnHomeAttackedBy(attacker);
+            d.OnHomeAttackedBy(attacker, Home);
             TryInterruptWith(d, false);
         }
     }

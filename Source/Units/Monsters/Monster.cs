@@ -16,7 +16,7 @@ namespace Source.Units.Monsters
         public static int PlayerID = 8;
         public static player Player = Player(PlayerID);
 
-        public static void Init()
+        public static new void Init()
         {
             AnyUnitEvents.Register(EVENT_PLAYER_UNIT_DEATH, () =>
             {
@@ -44,7 +44,7 @@ namespace Source.Units.Monsters
         {
             AddBehavior(new Wander(), 5);
             AddBehavior(new Fight(), 10);
-            AddBehavior(new DefendHome());
+            AddBehavior(new DefendBuilding());
             AddBehavior(new Raid(), 3);
         }
 

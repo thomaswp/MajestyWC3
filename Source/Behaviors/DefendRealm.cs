@@ -10,7 +10,7 @@ using Source;
 
 namespace Source.Behaviors
 {
-    public class DefendRealm : DefendHome
+    public class DefendRealm : DefendBuilding
     {
         // TODO: Add trigger for this and add to heroes
         public override string GetStatusGerund()

@@ -42,7 +42,7 @@ namespace Source.Behaviors
         public override bool TryInterrupt(Behavior with)
         {
             // If already in combat, don't switch to defending yet
-            if (with is DefendHome) return false;
+            if (with is DefendBuilding) return false;
             return base.TryInterrupt(with);
         }
 
@@ -78,7 +78,7 @@ namespace Source.Behaviors
         {
             var visible = GetPossibleTargets();
             if (!visible.Any()) return null;
-            return visible.OrderBy(u => (u.IsStructure() ? 1000 : 0) + u.DistanceTo(AI.Unit)).First();
+            return visible.OrderBy(u => (u.IsStructure() ? 10000 : 0) + u.DistanceTo(AI.Unit)).First();
         }
     }
 }

@@ -8,6 +8,7 @@ using static War3Api.Blizzard;
 
 namespace Source
 {
+
     public static class Util
     {
         static Random rand = new Random();
@@ -20,6 +21,23 @@ namespace Source
         public static float RandBetween(float min, float max)
         {
             return (float)rand.NextDouble() * (max - min) + min;
+        }
+
+        public static Action TryAction(Action action, string details)
+        {
+            return () =>
+            {
+                try
+                {
+                    action();
+                }
+                catch (Exception e)
+                {
+                    unit unit = GetTriggerUnit();
+                    string name = unit == null ? "NONE" : unit.GetName();
+                    Console.WriteLine($"Error on {details} for {name}: {e.Message}");
+                }
+            };
         }
 
         public static List<unit> ToList(this group group)

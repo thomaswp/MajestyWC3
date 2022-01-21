@@ -10,9 +10,11 @@ using Source;
 
 namespace Source.Behaviors
 {
-    public class DefendHome : Fight
+    public class DefendBuilding : Fight
     {
         public const int MIN_HOME_ATTACK_DIS = 1000;
+
+        protected unit buildingDefended;
 
         public override string GetStatusGerund()
         {
@@ -21,7 +23,7 @@ namespace Source.Behaviors
 
         protected override bool IsTargetCloseEnough(unit target)
         {
-            return target.DistanceTo(AI.Home) <= MIN_HOME_ATTACK_DIS;
+            return target.DistanceTo(buildingDefended) <= MIN_HOME_ATTACK_DIS;
         }
 
         public override bool TryInterrupt(Behavior with)
@@ -37,9 +39,10 @@ namespace Source.Behaviors
             //Console.WriteLine($"{AI.Unit.GetName()} defending home from {Target.GetName()}");
         }
 
-        public void OnHomeAttackedBy(unit attacker)
+        public void OnHomeAttackedBy(unit attacker, unit toDefend)
         {
             Target = attacker;
+            buildingDefended = toDefend;
         }
 
         protected override unit SelectTarget()

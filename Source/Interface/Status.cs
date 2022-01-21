@@ -29,6 +29,7 @@ namespace Source.Interface
 
         public static void ShowStatus(UnitAI ai)
         {
+            // TODO: Clear prior status
             TextTag.ShowTextTag(ai.Unit, ai.Status, Color.STATUS);
         }
     }

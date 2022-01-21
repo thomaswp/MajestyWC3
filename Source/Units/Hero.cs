@@ -43,7 +43,7 @@ namespace Source.Units
         {
             AddBehavior(new Explore(), prefs.Explore);
             AddBehavior(new BountyExploreFlag(), prefs.Explore);
-            AddBehavior(new DefendHome());
+            AddBehavior(new DefendBuilding());
             AddBehavior(new DefendRealm());
             AddBehavior(new Fight(), prefs.Fight);
             AddBehavior(new BountyAttackFlag(), prefs.Fight);
@@ -123,13 +123,13 @@ namespace Source.Units
             float distance = Unit.DistanceTo(building);
             float willingness = Math.Max(1, diminishRange / distance);
             willingness *= prefs.Glory * Util.RandFloat();
-            Console.WriteLine($"Realm attacked for {Name}; willingness={willingness}");
+            //Console.WriteLine($"Realm attacked for {Name}; willingness={willingness}");
 
             if (willingness < 1) return;
 
             DefendRealm d = (DefendRealm)GetBehavior(typeof(DefendRealm));
             if (d == null) return;
-            d.OnHomeAttackedBy(attacker);
+            d.OnHomeAttackedBy(attacker, building);
             TryInterruptWith(d, false);
         }
 

@@ -74,6 +74,61 @@ namespace Source.Units
         protected List<Behavior> behaviors = new List<Behavior>();
         protected Behavior behavior = null;
 
+        private static Dictionary<unit, UnitAI> unitMap = new Dictionary<unit, UnitAI>();
+
+        public static void Init()
+        {
+            PlayerUnitEvents.Register(PlayerUnitEvent.UnitTypeIsCreated, () =>
+            {
+                unit unit = GetTriggerUnit();
+                try
+                {
+                    if (unit.IsStructure()) return;
+
+                    if (GetUnitTypeId(unit) == Constants.UNIT_PEASANT_WORKER)
+                    {
+                        RegisterUnit(unit);
+                    }
+                    else if (IsHeroUnitId(unit.GetTypeID()))
+                    {
+                        //Console.WriteLine($"{GetConstructingStructure().GetName()} constr {unit.GetName()}");
+                        SetUnitOwner(unit, GetOwningPlayer(unit).GetAIForHuman(), false);
+                        RegisterUnit(unit);
+                    }
+
+                    //string name = GetUnitName(unit);
+                    //Console.WriteLine($"Created {(unit == null ? "NONE" : name)}");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Error initializing {unit.GetName()}: {e.Message}");
+                }
+            });
+
+            PlayerUnitEvents.Register(PlayerUnitEvent.UnitTypeFinishesTraining, () =>
+            {
+                //Console.WriteLine($"Trained: {GetTriggerUnit().GetName()}, {GetTrainedUnit().GetName()}");
+                unit unit = GetTrainedUnit();
+                unit building = GetTriggerUnit();
+                UnitAI ai = RegisterUnit(unit);
+                if (ai != null) ai.SetHome(building);
+            });
+
+            AnyUnitEvents.Register(EVENT_PLAYER_UNIT_ATTACKED, () =>
+            {
+                Trigger(PlayerUnitEvent.UnitTypeAttacks, GetAttacker());
+                Trigger(PlayerUnitEvent.UnitTypeIsAttacked, GetAttackedUnitBJ());
+                TriggerHomeAttacked(GetAttackedUnitBJ(), GetAttacker());
+            });
+
+            AnyUnitEvents.Register(EVENT_PLAYER_UNIT_DEATH, () =>
+            {
+                unit unit = GetTriggerUnit();
+                UnitAI ai = GetAI(unit);
+                if (ai != null) ai.OnDeath();
+            });
+        }
+
         public UnitAI()
         {
         }
@@ -283,9 +338,6 @@ namespace Source.Units
             return confidence / Math.Max(1, intimidation);
         }
 
-        static Dictionary<unit, UnitAI> unitMap = new Dictionary<unit, UnitAI>();
-        static Dictionary<unit, List<UnitAI>> homeMap = new Dictionary<unit, List<UnitAI>>();
-
         public static UnitAI GetAI(unit unit)
         {
             if (unitMap.TryGetValue(unit, out UnitAI ai)) return ai;
@@ -336,22 +388,13 @@ namespace Source.Units
             }
             return unitMap[unit];
         }
-
         public void SetHome(unit home)
         {
-            if (this.Home != null)
-            {
-                homeMap[this.Home].Remove(this);
-            }
-            this.Home = home;
-            if (!homeMap.ContainsKey(home))
-            {
-                homeMap[home] = new List<UnitAI>();
-            }
-            var units = homeMap[home];
-            units.Add(this);
+            Guilds.SetHome(this, home);
+            Home = home;
             OnHomeSet();
         }
+
         protected virtual IEnumerable<int> GetWantedItemsList()
         {
             return new List<int>();
@@ -417,6 +460,12 @@ namespace Source.Units
 
         }
 
+        public virtual void OnDeath()
+        {
+            Guilds.RemoveAI(this);
+            unitMap.Remove(Unit);
+        }
+
         public virtual void OnBuildingAttacked(unit attacker)
         {
             if (behavior != null)
@@ -473,11 +522,7 @@ namespace Source.Units
                     ai.OnBuildingAttacked(attacker);
                 }
 
-                if (homeMap.ContainsKey(home))
-                {
-                    var units = homeMap[home];
-                    foreach (UnitAI unit in units) unit.OnHomeAttacked(attacker);
-                }
+                Guilds.OnBuildingAttacked(home, attacker);
 
                 player owner = home.GetPlayer();
                 // Monsters don't defend the realm 

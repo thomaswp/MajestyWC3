@@ -361,14 +361,67 @@ STRING 80
 Monsters
 }
 
-STRING 81
-{
-!!!
-}
-
 STRING 82
 // Units: H004 (Knight), Propernames (Proper Names)
 {
 Brador Solidfist,Kethon the Slicer,Duvane the Battlemaster,Wodenthal the Battlemaster,Dremenon Knightly,Talon Headlopper,Stal Son of Kolar,Spalwin Knightly,Palador Vunderson,Valian Quickparry,Xayter of North Glen,Sarion the Courageous,Kraye the Slicer,Wodenthal of North Glen,Gerwyn of Kranal's Creek
+}
+
+STRING 83
+// Units: h002 (Warriors' Barracks), Name (Name)
+{
+Warriors' Barracks
+}
+
+STRING 84
+// Units: h005 (Food Dummy), Name (Name)
+{
+Food Dummy
+}
+
+STRING 85
+// Abilities: A005 (Select Hero 1), Name (Name)
+{
+Select Hero 1
+}
+
+STRING 86
+// Abilities: A005 (Select Hero 1), Tip (Tooltip - Normal)
+{
+Select the first Hero in this guild.
+}
+
+STRING 87
+// Abilities: A009 (Select Hero 2), Name (Name)
+{
+Select Hero 2
+}
+
+STRING 89
+// Abilities: A009 (Select Hero 2), Tip (Tooltip - Normal)
+{
+Select the second Hero in this guild.
+}
+
+STRING 90
+{
+2
+}
+
+STRING 92
+{
+1
+}
+
+STRING 93
+// Abilities: A00A (Select Hero 3), Name (Name)
+{
+Select Hero 3
+}
+
+STRING 95
+// Abilities: A00A (Select Hero 3), Tip (Tooltip - Normal)
+{
+Select the third Hero in this guild.
 }
 

@@ -1,5 +1,6 @@
-gg_trg_Untitled_Trigger_002 = nil
 gg_trg_Untitled_Trigger_001 = nil
+gg_trg_Untitled_Trigger_002 = nil
+gg_trg_Untitled_Trigger_002_Copy = nil
 function InitGlobals()
 end
 
@@ -40,17 +41,6 @@ function CreateAllUnits()
     CreatePlayerUnits()
 end
 
-function Trig_Untitled_Trigger_002_Actions()
-    CreateTextTagUnitBJ("TRIGSTR_081", GetKillingUnitBJ(), 0, 10, 100, 100, 100, 0)
-    SetTextTagVelocityBJ(GetLastCreatedTextTag(), 64.00, 90)
-end
-
-function InitTrig_Untitled_Trigger_002()
-    gg_trg_Untitled_Trigger_002 = CreateTrigger()
-    TriggerRegisterAnyUnitEventBJ(gg_trg_Untitled_Trigger_002, EVENT_PLAYER_UNIT_DEATH)
-    TriggerAddAction(gg_trg_Untitled_Trigger_002, Trig_Untitled_Trigger_002_Actions)
-end
-
 function Trig_Untitled_Trigger_001_Actions()
     SetPlayerStateBJ(Player(0), PLAYER_STATE_RESOURCE_GOLD, 1000)
     SetPlayerStateBJ(Player(0), PLAYER_STATE_RESOURCE_LUMBER, 1000)
@@ -61,9 +51,48 @@ function InitTrig_Untitled_Trigger_001()
     TriggerAddAction(gg_trg_Untitled_Trigger_001, Trig_Untitled_Trigger_001_Actions)
 end
 
+function Trig_Untitled_Trigger_002_Conditions()
+    if (not (GetSpellAbilityId() == FourCC("A009"))) then
+        return false
+    end
+    return true
+end
+
+function Trig_Untitled_Trigger_002_Actions()
+    CreateTextTagLocBJ("TRIGSTR_090", GetUnitLoc(GetTriggerUnit()), 0, 10, 100, 100, 100, 0)
+    SetTextTagVelocityBJ(GetLastCreatedTextTag(), 64, 90)
+end
+
+function InitTrig_Untitled_Trigger_002()
+    gg_trg_Untitled_Trigger_002 = CreateTrigger()
+    TriggerRegisterAnyUnitEventBJ(gg_trg_Untitled_Trigger_002, EVENT_PLAYER_UNIT_SPELL_CAST)
+    TriggerAddCondition(gg_trg_Untitled_Trigger_002, Condition(Trig_Untitled_Trigger_002_Conditions))
+    TriggerAddAction(gg_trg_Untitled_Trigger_002, Trig_Untitled_Trigger_002_Actions)
+end
+
+function Trig_Untitled_Trigger_002_Copy_Conditions()
+    if (not (GetSpellAbilityId() == FourCC("A005"))) then
+        return false
+    end
+    return true
+end
+
+function Trig_Untitled_Trigger_002_Copy_Actions()
+    CreateTextTagLocBJ("TRIGSTR_092", GetUnitLoc(GetTriggerUnit()), 0, 10, 100, 100, 100, 0)
+    SetTextTagVelocityBJ(GetLastCreatedTextTag(), 64, 90)
+end
+
+function InitTrig_Untitled_Trigger_002_Copy()
+    gg_trg_Untitled_Trigger_002_Copy = CreateTrigger()
+    TriggerRegisterAnyUnitEventBJ(gg_trg_Untitled_Trigger_002_Copy, EVENT_PLAYER_UNIT_SPELL_CAST)
+    TriggerAddCondition(gg_trg_Untitled_Trigger_002_Copy, Condition(Trig_Untitled_Trigger_002_Copy_Conditions))
+    TriggerAddAction(gg_trg_Untitled_Trigger_002_Copy, Trig_Untitled_Trigger_002_Copy_Actions)
+end
+
 function InitCustomTriggers()
-    InitTrig_Untitled_Trigger_002()
     InitTrig_Untitled_Trigger_001()
+    InitTrig_Untitled_Trigger_002()
+    InitTrig_Untitled_Trigger_002_Copy()
 end
 
 function RunInitializationTriggers()
