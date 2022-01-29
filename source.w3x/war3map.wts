@@ -425,3 +425,21 @@ STRING 95
 Select the third Hero in this guild.
 }
 
+STRING 96
+// Abilities: A00B (Select Hero 4), Name (Name)
+{
+Select Hero 4
+}
+
+STRING 97
+// Abilities: A00B (Select Hero 4), Tip (Tooltip - Normal)
+{
+Select the fourth Hero in this guild.
+}
+
+STRING 98
+// Units: H002 (Ranger), Propernames (Proper Names)
+{
+Avaline Trackcutter,Sennethe Trailchaser,Stethe the Bushwacker,Neynas Lakescouter,Nyphlan Longgait,Venstar Highriver,Ayodonna the Bushwacker,Camrine the Trekker,Derrita Broadview,Belshaw Cairnmaker,Sterling the Frontiersman,Neynas the Outlander,Kasef of Laughing Brook,Hyrall Broadview,Teeve of Sylvan Knoll,Elris the Trekker,Ruvontina Longgait,Belshaw of the Country,Feddeth of Treldan Wood
+}
+

@@ -23,7 +23,7 @@ namespace Source.Interface
             Constants.ABILITY_SELECT_HERO_1,
             Constants.ABILITY_SELECT_HERO_2,
             Constants.ABILITY_SELECT_HERO_3,
-            //Constants.ABILITY_SELECT_HERO_2,
+            Constants.ABILITY_SELECT_HERO_4,
         };
 
         public readonly static List<int> GuildsIDs = new List<int>()
@@ -76,7 +76,7 @@ namespace Source.Interface
             PlayerUnitEvents.Register(PlayerUnitEvent.UnitTypeStartsBeingTrained, Util.TryAction(() =>
             {
                 unit building = GetTriggerUnit();
-                Console.WriteLine($"Start construct: {building.GetName()}");
+                //Console.WriteLine($"Start construct: {building.GetName()}");
 
                 int unitID = building.GetTypeID();
                 if (!GuildsIDs.Contains(unitID)) return;
@@ -87,7 +87,7 @@ namespace Source.Interface
             {
                 int index = selectAbilityIDs.IndexOf(GetSpellAbilityId());
                 if (index < 0) return;
-                Console.WriteLine(GetSpellAbilityId());
+                //Console.WriteLine(GetSpellAbilityId());
                 unit guild = GetTriggerUnit();
                 SelectHero(guild, index);
             }, "Select"));
@@ -239,7 +239,7 @@ namespace Source.Interface
         {
             if (home == null)
             {
-                Console.WriteLine("Null home!");
+                //Console.WriteLine("Null home!");
                 return;
             }
             for (int i = 0; i < selectAbilityIDs.Count; i++)
@@ -247,12 +247,12 @@ namespace Source.Interface
                 int abilityID = selectAbilityIDs[i];
                 if (i < count)
                 {
-                    Console.WriteLine("Adding: " + home.GetName());
+                    //Console.WriteLine("Adding: " + home.GetName());
                     UnitAddAbility(home, abilityID);
                 }
                 else
                 {
-                    Console.WriteLine("Removing: " + home.GetName());
+                    //Console.WriteLine("Removing: " + home.GetName());
                     UnitRemoveAbility(home, abilityID);
                 }
             }

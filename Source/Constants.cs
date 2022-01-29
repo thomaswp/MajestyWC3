@@ -11,6 +11,7 @@ public static class Constants
 	public const int ABILITY_SELECT_HERO_1 = 1093677109;
 	public const int ABILITY_SELECT_HERO_2 = 1093677113;
 	public const int ABILITY_SELECT_HERO_3 = 1093677121;
+	public const int ABILITY_SELECT_HERO_4 = 1093677122;
 	public const int ITEM_HEALING_POTION_LEVEL_1 = 1227894832;
 	public const int ITEM_HEALING_POTION_LEVEL_2 = 1227894834;
 	public const int UNIT_DUMMY = 2021161080;
