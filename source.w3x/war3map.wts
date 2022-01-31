@@ -443,3 +443,249 @@ STRING 98
 Avaline Trackcutter,Sennethe Trailchaser,Stethe the Bushwacker,Neynas Lakescouter,Nyphlan Longgait,Venstar Highriver,Ayodonna the Bushwacker,Camrine the Trekker,Derrita Broadview,Belshaw Cairnmaker,Sterling the Frontiersman,Neynas the Outlander,Kasef of Laughing Brook,Hyrall Broadview,Teeve of Sylvan Knoll,Elris the Trekker,Ruvontina Longgait,Belshaw of the Country,Feddeth of Treldan Wood
 }
 
+STRING 99
+// Units: h006 (Blacksmith - Level 1), Name (Name)
+{
+Blacksmith - Level 1
+}
+
+STRING 100
+// Units: h006 (Blacksmith - Level 1), Tip (Tooltip - Basic)
+{
+Build Blacksmith - Level 1.
+}
+
+STRING 101
+// Units: h006 (Blacksmith - Level 1), Ubertip (Tooltip - Extended)
+{
+Can sell upgraded weapons to Heroes.
+}
+
+STRING 102
+// Upgrades: R002 (Animal War Training), Name (Name)
+{
+Level 1 Weapons
+}
+
+STRING 103
+// Upgrades: R002 (Animal War Training), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 104
+// Upgrades: R002 (Animal War Training), Tip (Tooltip)
+{
+Allows the Blacksmith to sell Level 1 weapons to Heroes.
+}
+
+STRING 105
+// Upgrades: R002 (Animal War Training), Name (Name)
+{
+Level 2 Weapons
+}
+
+STRING 106
+// Upgrades: R002 (Animal War Training), Name (Name)
+{
+Level 3 Weapons
+}
+
+STRING 107
+// Upgrades: R002 (Animal War Training), Tip (Tooltip)
+{
+Allows the Blacksmith to sell Level 2 weapons to Heroes.
+}
+
+STRING 108
+// Upgrades: R002 (Animal War Training), Tip (Tooltip)
+{
+Allows the Blacksmith to sell Level 3 weapons to Heroes.
+}
+
+STRING 109
+// Upgrades: R002 (Animal War Training), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 110
+// Upgrades: R002 (Animal War Training), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 111
+// Upgrades: R003 (Animal War Training), Name (Name)
+{
+Level 1 Armor
+}
+
+STRING 112
+// Upgrades: R003 (Animal War Training), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 113
+// Upgrades: R003 (Animal War Training), Tip (Tooltip)
+{
+Allows the Blacksmith to sell Level 1 armor to Heroes.
+}
+
+STRING 114
+// Upgrades: R003 (Animal War Training), Name (Name)
+{
+Level 2 Armor
+}
+
+STRING 115
+// Upgrades: R003 (Animal War Training), Name (Name)
+{
+Level 3 Armor
+}
+
+STRING 116
+// Upgrades: R003 (Animal War Training), Tip (Tooltip)
+{
+Allows the Blacksmith to sell Level 2 armor to Heroes.
+}
+
+STRING 117
+// Upgrades: R003 (Animal War Training), Tip (Tooltip)
+{
+Allows the Blacksmith to sell Level 3 armor to Heroes.
+}
+
+STRING 118
+// Upgrades: R003 (Animal War Training), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 119
+// Upgrades: R003 (Animal War Training), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 120
+// Items: I003 (Sword - Level 1), Name (Name)
+{
+Sword - Level 1
+}
+
+STRING 121
+// Items: I003 (Sword - Level 1), Description (Description)
+{
++6 Damage, +4 Strength, +1 Agility
+}
+
+STRING 122
+// Items: I001 (Bow - Level 1), Name (Name)
+{
+Bow - Level 1
+}
+
+STRING 123
+// Items: I001 (Bow - Level 1), Description (Description)
+{
++6 Damage, +4 Agility, +1 Strength
+}
+
+STRING 124
+// Items: I004 (Plate Armor - Level 1), Name (Name)
+{
+Plate Armor - Level 1
+}
+
+STRING 125
+// Items: I004 (Plate Armor - Level 1), Description (Description)
+{
++3 Armor
+}
+
+STRING 126
+// Items: I005 (Hide Armor - Level 1), Name (Name)
+{
+Hide Armor - Level 1
+}
+
+STRING 128
+// Abilities: A00C (Item Move Speed Bonus), EditorSuffix (Editor Suffix)
+{
+(+30)
+}
+
+STRING 129
+// Units: h007 (Blacksmith - Level 2), Name (Name)
+{
+Blacksmith - Level 2
+}
+
+STRING 130
+// Units: h007 (Blacksmith - Level 2), Tip (Tooltip - Basic)
+{
+Upgrade to Blacksmith - Level 2.
+}
+
+STRING 131
+// Units: h007 (Blacksmith - Level 2), Ubertip (Tooltip - Extended)
+{
+Can sell upgraded weapons to Heroes.
+}
+
+STRING 132
+// Items: I006 (Sword - Level 2), Name (Name)
+{
+Sword - Level 2
+}
+
+STRING 133
+// Items: I006 (Sword - Level 2), Description (Description)
+{
++10 Damage, +6 Strength, +3 Agility, +1 Intelligence
+}
+
+STRING 134
+// Items: I005 (Hide Armor - Level 1), Description (Description)
+{
++1 Armor, +30 Movement
+}
+
+STRING 135
+// Items: I007 (Hide Armor - Level 2), Name (Name)
+{
+Hide Armor - Level 2
+}
+
+STRING 136
+// Items: I007 (Hide Armor - Level 2), Description (Description)
+{
++3 Armor, +45 Movement
+}
+
+STRING 137
+// Abilities: A00D (Item Move Speed Bonus), EditorSuffix (Editor Suffix)
+{
+(+45)
+}
+
+STRING 138
+// Units: h008 (Blacksmith - Level 3), Name (Name)
+{
+Blacksmith - Level 3
+}
+
+STRING 139
+// Units: h008 (Blacksmith - Level 3), Tip (Tooltip - Basic)
+{
+Upgrade to Blacksmith - Level 3.
+}
+
+STRING 140
+// Units: h008 (Blacksmith - Level 3), Ubertip (Tooltip - Extended)
+{
+Can sell upgraded weapons to Heroes.
+}
+

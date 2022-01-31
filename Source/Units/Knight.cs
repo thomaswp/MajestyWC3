@@ -23,5 +23,15 @@ namespace Source.Units
             };
         }
 
+        protected override int GetBaseWeaponID()
+        {
+            return Constants.ITEM_SWORD_LEVEL_1;
+        }
+
+        protected override int GetBaseArmorID()
+        {
+            return Constants.ITEM_PLATE_ARMOR_LEVEL_1;
+        }
+
     }
 }

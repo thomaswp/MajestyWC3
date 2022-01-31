@@ -15,7 +15,7 @@ namespace Source.Units
     public abstract class Hero : FighterAI
     {
         // TODO: Lower?
-        public const int STARTING_GOLD = 100;
+        public const int STARTING_GOLD = 500;
 
 
         private Preferences prefs;
@@ -24,20 +24,6 @@ namespace Source.Units
         {
             prefs = GetPreferences();
         }
-
-        public static List<int> itemPriorities = new List<int>()
-        {
-            Constants.ITEM_HEALING_POTION_LEVEL_2,
-            Constants.ITEM_HEALING_POTION_LEVEL_2,
-            Constants.ITEM_HEALING_POTION_LEVEL_2,
-            Constants.ITEM_HEALING_POTION_LEVEL_2,
-            Constants.ITEM_HEALING_POTION_LEVEL_2,
-            Constants.ITEM_HEALING_POTION_LEVEL_1,
-            Constants.ITEM_HEALING_POTION_LEVEL_1,
-            Constants.ITEM_HEALING_POTION_LEVEL_1,
-            Constants.ITEM_HEALING_POTION_LEVEL_1,
-            Constants.ITEM_HEALING_POTION_LEVEL_1,
-        };
 
         protected override void AddBehaviors()
         {
@@ -60,10 +46,29 @@ namespace Source.Units
         }
 
         protected abstract Preferences GetPreferences();
+        protected abstract int GetBaseWeaponID();
+        protected abstract int GetBaseArmorID();
 
         protected override IEnumerable<int> GetWantedItemsList()
         {
-            return itemPriorities;
+            for (int i = 0; i < 2; i++)
+            {
+                yield return Constants.ITEM_HEALING_POTION_LEVEL_1;
+            }
+
+            int weaponID = GetBaseWeaponID();
+            int armorID = GetBaseArmorID();
+
+            int[] weapons = Items.Items.GetUpgradeChain(weaponID);
+            int[] armors = Items.Items.GetUpgradeChain(armorID);
+
+            for (int i = 0; i < weapons.Length || i < armors.Length; i++)
+            {
+                if (i < weapons.Length) yield return weapons[i];
+                if (i < armors.Length) yield return armors[i];
+                yield return Constants.ITEM_HEALING_POTION_LEVEL_1;
+                yield return Constants.ITEM_HEALING_POTION_LEVEL_2;
+            }
         }
 
         protected override void Init(unit unit)
@@ -83,14 +88,14 @@ namespace Source.Units
             if (behavior == null || !behavior.IsInCombatOrDanger()) return false;
             bool interrupted = false;
             bool needsHeal = Unit.GetHPFraction() < 0.3f;
-            if (Unit.HasItem(Constants.ITEM_HEALING_POTION_LEVEL_2) &&
+            if (Unit.HasExactItem(Constants.ITEM_HEALING_POTION_LEVEL_2) &&
                 (needsHeal || Unit.GetDamage() >= Items.Items.HP2_HEALING))
             {
                 int order = Unit.GetSlotOrderForItem(Constants.ITEM_HEALING_POTION_LEVEL_2);
                 IssueImmediateOrderById(Unit, order);
                 //Console.WriteLine("Using HP2");
                 interrupted = true;
-            } else if (Unit.HasItem(Constants.ITEM_HEALING_POTION_LEVEL_1) &&
+            } else if (Unit.HasExactItem(Constants.ITEM_HEALING_POTION_LEVEL_1) &&
                 (needsHeal || Unit.GetDamage() >= Items.Items.HP1_HEALING))
             {
                 int order = Unit.GetSlotOrderForItem(Constants.ITEM_HEALING_POTION_LEVEL_1);

@@ -29,7 +29,9 @@ namespace Source.Behaviors
             int bought = 0;
             Action action = () =>
             {
-                foreach (int itemID in AI.GetWantedItems())
+                var wanted = AI.GetWantedItems();
+                //Console.WriteLine($"Wanted: {string.Join(", ", wanted)}");
+                foreach (int itemID in wanted)
                 {
                     if (!Target.IsSelling(itemID)) continue;
                     if (AI.TryPurchase(itemID)) bought++;
@@ -72,10 +74,15 @@ namespace Source.Behaviors
 
             foreach (int itemID in AI.GetWantedItems())
             {
-                if (AI.Gold < Items.Items.GetItemCost(itemID)) continue;
                 //Console.WriteLine($"Looking to buy {itemID} from {shops.Count} shops");
+
+                // If there are no shops that can sell this item, skip it
                 var selling = shops.Where(shop => shop.IsSelling(itemID));
                 if (!selling.Any()) continue;
+
+                // But if I just don't have enough money, save until I do
+                if (AI.Gold < Items.Items.GetItemCost(itemID)) return null;
+
                 unit targetShop = selling.OrderBy(shop => shop.DistanceTo(AI.Unit)).First();
                 //Console.WriteLine($"Found item #{itemID} at {targetShop.GetName()}");
                 return targetShop;

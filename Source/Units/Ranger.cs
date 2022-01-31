@@ -22,5 +22,15 @@ namespace Source.Units
                 Glory = 2,
             };
         }
+
+        protected override int GetBaseWeaponID()
+        {
+            return Constants.ITEM_BOW_LEVEL_1;
+        }
+
+        protected override int GetBaseArmorID()
+        {
+            return Constants.ITEM_HIDE_ARMOR_LEVEL_1;
+        }
     }
 }

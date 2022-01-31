@@ -242,7 +242,7 @@ namespace Source.Units
             behavior.Start();
             string name = GetHeroProperName(Unit);
             if (name == null || name.Length == 0) name = Unit.GetName();
-            Status = $"{name} is {behavior.GetStatusGerund()}.";
+            Status = $"{name} ({Gold}g) is {behavior.GetStatusGerund()}.";
         }
 
         public virtual void Update()
@@ -408,7 +408,7 @@ namespace Source.Units
             {
                 if (!itemCounts.TryGetValue(item, out int count))
                 {
-                    count = itemCounts[item] = Unit.GetItemCount(item);
+                    count = itemCounts[item] = Unit.GetItemOrUpgradeCount(item);
                 }
                 if (count > 0)
                 {
@@ -427,17 +427,21 @@ namespace Source.Units
             if (Gold < cost) return false;
             item item;
             bool bought = false;
-            if (Unit.HasItem(itemID))
+            if (Unit.HasExactItem(itemID))
             {
                 item = GetItemOfTypeFromUnitBJ(Unit, itemID);
 
                 SetItemCharges(item, GetItemCharges(item) + 1);
                 bought = true;
             }
-            else if (UnitInventoryCount(Unit) < 6)
+            else
             {
-                UnitAddItemById(Unit, itemID);
-                bought = true;
+                Unit.RemoveReplacedItems(itemID);
+                if (UnitInventoryCount(Unit) < 6)
+                {
+                    UnitAddItemById(Unit, itemID);
+                    bought = true;
+                }
             }
             if (bought) Gold -= cost;
             //Console.WriteLine($"{Unit.GetName()} bought {itemID} successful: {bought}");

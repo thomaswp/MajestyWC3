@@ -12,7 +12,6 @@ namespace Source.Behaviors
 {
     public class DefendRealm : DefendBuilding
     {
-        // TODO: Add trigger for this and add to heroes
         public override string GetStatusGerund()
         {
             return $"defending the realm against {Target.GetName()}";
