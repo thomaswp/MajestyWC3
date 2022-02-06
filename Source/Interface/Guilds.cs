@@ -14,6 +14,8 @@ namespace Source.Interface
     public static class Guilds
     {
 
+        public const float TAX_RATE = 0.4f;
+
         private static unit selectedBuilding;
 
         private static Dictionary<unit, List<UnitAI>> homeMap = new Dictionary<unit, List<UnitAI>>();
@@ -197,6 +199,13 @@ namespace Source.Interface
             {
                 SetUnitOwner(dummies[i], i < food ? player : neutral, false);
             }
+        }
+
+        internal static int PayTax(unit building, int untaxed)
+        {
+            int taxes = (int)(untaxed * TAX_RATE);
+            // TODO: Add to guild
+            return taxes;
         }
 
         public static void OnBuildingAttacked(unit home, unit attacker)

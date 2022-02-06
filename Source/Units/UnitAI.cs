@@ -46,7 +46,7 @@ namespace Source.Units
                 _status = value;
                 if (IsUnitSelected(Unit, HumanPlayer))
                 {
-                    Interface.Status.ShowStatus(this);
+                    //Interface.Status.ShowStatus(this);
                 }
             }
         }
@@ -191,6 +191,14 @@ namespace Source.Units
             InBuilding = building;
             ShowUnitHide(Unit);
             PauseUnit(Unit, true);
+            if (IsHome)
+            {
+                int untaxed = GoldUntaxed;
+                int tax = Guilds.PayTax(building, untaxed);
+                GoldUntaxed = 0;
+                GoldTaxed += untaxed - tax;
+
+            }
         }
 
         public void ReceiveBounty(int amount)
@@ -242,7 +250,14 @@ namespace Source.Units
             behavior.Start();
             string name = GetHeroProperName(Unit);
             if (name == null || name.Length == 0) name = Unit.GetName();
-            Status = $"{name} ({Gold}g) is {behavior.GetStatusGerund()}.";
+            //Status = $"{name} ({Gold}g) is {behavior.GetStatusGerund()}.";
+            Status = $"{Capitalize(behavior.GetStatusGerund())}.";
+        }
+
+        private static string Capitalize(string s)
+        {
+            if (s.Length == 0) return s;
+            return s.Substring(0, 1).ToUpper() + s.Substring(1);
         }
 
         public virtual void Update()

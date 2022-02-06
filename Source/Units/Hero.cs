@@ -15,7 +15,7 @@ namespace Source.Units
     public abstract class Hero : FighterAI
     {
         // TODO: Lower?
-        public const int STARTING_GOLD = 500;
+        public const int STARTING_GOLD = 100;
 
 
         private Preferences prefs;
@@ -74,7 +74,7 @@ namespace Source.Units
         protected override void Init(unit unit)
         {
             base.Init(unit);
-            Gold += STARTING_GOLD;
+            GoldTaxed += STARTING_GOLD;
         }
 
         protected override void DoPreBehaviorActions()

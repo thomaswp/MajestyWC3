@@ -10,21 +10,22 @@ using Source.Units;
 
 namespace Source.Interface
 {
+    // Essentially deprecated at this point, give UnitInfoPanels
     public static class Status
     {
         public static void Init()
         {
-            PlayerUnitEvents.Register(PlayerUnitEvent.UnitTypeIsSelected, () =>
-            {
-                unit selected = GetTriggerUnit();
-                // TODO: Maybe allow allies?
-                // TODO: Temp disabled for debugging
-                //if (selected.GetPlayer().GetHumanForAI() != GetTriggerPlayer()) return;
-                if (selected.IsDead() || selected.IsStructure()) return;
-                UnitAI ai = UnitAI.GetAI(selected);
-                if (ai == null) return;
-                ShowStatus(ai);
-            });
+            //PlayerUnitEvents.Register(PlayerUnitEvent.UnitTypeIsSelected, () =>
+            //{
+            //    unit selected = GetTriggerUnit();
+            //    // TODO: Maybe allow allies?
+            //    // TODO: Temp disabled for debugging
+            //    //if (selected.GetPlayer().GetHumanForAI() != GetTriggerPlayer()) return;
+            //    if (selected.IsDead() || selected.IsStructure()) return;
+            //    UnitAI ai = UnitAI.GetAI(selected);
+            //    if (ai == null) return;
+            //    ShowStatus(ai);
+            //});
         }
 
         public static void ShowStatus(UnitAI ai)

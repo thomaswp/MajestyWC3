@@ -12,6 +12,15 @@ Frame "TEXT" "CustomUnitInfoText" {
     LayerStyle "IGNORETRACKEVENTS",
 }
 
+Frame "TEXT" "CustomUnitStatusText" {
+    DecorateFileNames,
+    FrameFont "InfoPanelTextFont", 0.009, "",
+    FontColor 1 1 1 1,
+	FontShadowColor 0.0 0.0 0.0 0.9,	
+    FontShadowOffset 0.002 -0.002,
+    LayerStyle "IGNORETRACKEVENTS",
+}
+
 Texture "CustomUnitInfoButtonHighlight" {
     File "UpperMenuButtonTexture",
     TexCoord 0.0, 0.6640625, 0.75, 0.921875,

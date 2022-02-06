@@ -299,29 +299,3 @@ do
         end)
     end
 end
-
-
--- Examle for a non SimpleFrame Button
-do
-    local realFunction = MarkGameStarted
-    local parent, frameParent, textArea
-    local function Init()
-        BlzLoadTOCFile("war3mapImported\\Templates.toc")
-        parent =  AddUnitInfoPanelEx(function(unit)
-            BlzFrameSetText(textArea, BlzGetAbilityExtendedTooltip(GetUnitTypeId(unit), 0))
-        end)
-        frameParent = SetUnitInfoPanelFrameEx()
-        textArea = BlzCreateFrameByType("TEXTAREA", "", frameParent, "EscMenuTextAreaTemplate", 0)
-        BlzFrameSetPoint(textArea, FRAMEPOINT_TOP, BlzGetFrameByName("SimpleHeroLevelBar", 0), FRAMEPOINT_BOTTOM, 0, -0.001)
-	    BlzFrameSetSize(textArea, 0.18, 0.08)
-    end
-    function MarkGameStarted()
-        realFunction()
-        realFunction = nil
-
-        Init()
-        if FrameLoaderAdd then FrameLoaderAdd(Init) end
-
-    end
-
-end
