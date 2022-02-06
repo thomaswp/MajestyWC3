@@ -403,16 +403,6 @@ STRING 89
 Select the second Hero in this guild.
 }
 
-STRING 90
-{
-2
-}
-
-STRING 92
-{
-1
-}
-
 STRING 93
 // Abilities: A00A (Select Hero 3), Name (Name)
 {

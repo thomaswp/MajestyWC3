@@ -74,6 +74,16 @@ namespace Source
 			{
 				DisplayTextToPlayer(GetLocalPlayer(), 0, 0, ex.Message);
 			}
+
+			// TODO: Just for testing - should remove
+			try
+            {
+                UnitInfoPanels.UnitInfoPanelSetPage(1, true);
+            }
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+			}
 		}
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
@@ -18,6 +19,7 @@ namespace Launcher
 		// Input
 		private const string SOURCE_CODE_PROJECT_FOLDER_PATH = @"..\..\..\..\Source";
 		private const string ASSETS_FOLDER_PATH = @"..\..\..\..\Assets\";
+		private const string LUA_FOLDER_PATH = @"..\..\..\..\lua\";
 		private const string BASE_MAP_PATH = @"..\..\..\..\source.w3x";
 
 		// Output
@@ -92,7 +94,9 @@ namespace Launcher
 			};
 
 			// Collect required paths and compile
-			var coreSystemFiles = CSharpLua.CoreSystem.CoreSystemProvider.GetCoreSystemFiles();
+			List<string> coreSystemFiles = new List<string>(CSharpLua.CoreSystem.CoreSystemProvider.GetCoreSystemFiles());
+			// TODO: Add all files
+			coreSystemFiles.Add(LUA_FOLDER_PATH + "UnitInfoPanels.lua");
 			var blizzardJ = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Warcraft III/JassHelper/Blizzard.j");
 			var commonJ = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Warcraft III/JassHelper/common.j");
 			var compileResult = map.CompileScript(compiler, coreSystemFiles, blizzardJ, commonJ);
