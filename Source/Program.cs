@@ -78,7 +78,9 @@ namespace Source
 			try
             {
 				HeroInfoPanel.Init();
-            }
+				GuildInfoPanel.Init();
+
+			}
 			catch (Exception ex)
 			{
 				Console.WriteLine(ex.Message);

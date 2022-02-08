@@ -19,6 +19,12 @@ namespace Source.Units
 
         public unit Unit { get; private set; }
         public string Name { get { return Unit.GetName(); } }
+        public string ProperName { get 
+            {
+                string properName = GetHeroProperName(Unit);
+                if (properName != null && properName.Length != 0) return properName;
+                return Name;
+            } }
         public player MyPlayer { get; private set; }
         public player HumanPlayer { get; private set; }
         public player AIPlayer { get; private set; }
@@ -571,6 +577,17 @@ namespace Source.Units
                     Console.WriteLine($"Error updating {GetUnitName(unit.Unit)}: {e.Message}");
                 }
             }
+        }
+
+        public void Select()
+        {
+            Select(HumanPlayer);
+        }
+
+        public void Select(player player)
+        {
+            SelectUnitForPlayerSingle(Unit, player);
+            SetCameraPositionLocForPlayer(player, Unit.GetLocation());
         }
     }
 }

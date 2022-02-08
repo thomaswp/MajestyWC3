@@ -100,10 +100,7 @@ namespace Source.Interface
             if (unitNo < 0) return;
             if (!homeMap.TryGetValue(guild, out var ais)) return;
             if (ais.Count <= unitNo) return;
-            unit unit = ais[unitNo].Unit;
-            player player = guild.GetPlayer();
-            SelectUnitForPlayerSingle(unit, player);
-            SetCameraPositionLocForPlayer(player, unit.GetLocation());
+            ais[unitNo].Select();
         }
 
         private static void CheckCancel(unit building)
@@ -123,22 +120,21 @@ namespace Source.Interface
             //Console.WriteLine("Canceled building");
         }
 
+        public static List<UnitAI> GetHeroes(unit guild)
+        {
+            if (!homeMap.TryGetValue(guild, out var heroes)) return new List<UnitAI>();
+            return heroes;
+        }
+
+        public static bool IsGuild(this unit building)
+        {
+            return building != null && GuildsIDs.Contains(building.GetTypeID());
+        }
+
         private static void PingUnits()
         {
             if (!homeMap.TryGetValue(selectedBuilding, out var ais)) return;
             ais.ForEach(ai => PingMinimapLocForPlayer(ai.HumanPlayer, ai.Unit.GetLocation(), 1));
-        }
-
-        private static void OwnUnits()
-        {
-            if (!homeMap.TryGetValue(selectedBuilding, out var ais)) return;
-            ais.ForEach(ai => SetUnitOwner(ai.Unit, ai.HumanPlayer, false));
-        }
-
-        private static void ReleaseUnits()
-        {
-            if (!homeMap.TryGetValue(selectedBuilding, out var ais)) return;
-            ais.ForEach(ai => SetUnitOwner(ai.Unit, ai.AIPlayer, false));
         }
 
         private static void UpdateFood(player player)
