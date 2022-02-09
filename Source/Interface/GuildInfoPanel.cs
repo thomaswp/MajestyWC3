@@ -33,7 +33,7 @@ namespace Source.Interface
 
             framehandle parent = AddUnitInfoPanelEx(unit =>
             {
-                int gold = 100; // TODO
+                int gold = Buildings.GetGold(unit);
                 BlzFrameSetText(statusText, $"{unit.GetName()} has {gold}g in coffers.");
                 var heroes = Guilds.GetHeroes(unit);
                 iconToUnitMap.Clear();

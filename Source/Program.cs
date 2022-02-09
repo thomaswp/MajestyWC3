@@ -43,13 +43,16 @@ namespace Source
 			Monster.Init();
 			Status.Init();
 			Guilds.Init();
+			Buildings.Init();
 
             SetPlayerState(GetLocalPlayer(), PLAYER_STATE_RESOURCE_GOLD, 50000);
 			SetPlayerState(GetLocalPlayer(), PLAYER_STATE_RESOURCE_LUMBER, 1000);
 
 			ForGroup(GetUnitsOfPlayerAll(Player(0)), () =>
 			{
-				UnitAI.RegisterUnit(GetEnumUnit());
+				unit unit = GetEnumUnit();
+				UnitAI.RegisterUnit(unit);
+				Buildings.TryRegister(unit);
 			});
 
 			ForGroup(GetUnitsOfPlayerAll(Player(1)), () =>

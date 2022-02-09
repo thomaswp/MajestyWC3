@@ -203,7 +203,6 @@ namespace Source.Units
                 int tax = Guilds.PayTax(building, untaxed);
                 GoldUntaxed = 0;
                 GoldTaxed += untaxed - tax;
-
             }
         }
 
@@ -442,7 +441,7 @@ namespace Source.Units
             }
         }
 
-        public bool TryPurchase(int itemID)
+        public bool TryPurchase(int itemID, unit shop)
         {
             int cost = Items.Items.GetItemCost(itemID);
             if (Gold < cost) return false;
@@ -465,6 +464,7 @@ namespace Source.Units
                 }
             }
             if (bought) Gold -= cost;
+            Buildings.ChangeGold(shop, MathRound(cost * Items.Items.TAX_RATE));
             //Console.WriteLine($"{Unit.GetName()} bought {itemID} successful: {bought}");
 
             return bought;

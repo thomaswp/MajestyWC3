@@ -34,7 +34,7 @@ namespace Source.Behaviors
                 foreach (int itemID in wanted)
                 {
                     if (!Target.IsSelling(itemID)) continue;
-                    if (AI.TryPurchase(itemID)) bought++;
+                    if (AI.TryPurchase(itemID, Target)) bought++;
                 }
             };
             orders =

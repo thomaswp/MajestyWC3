@@ -11,6 +11,9 @@ namespace Source.Items
 {
     public static class Items
     {
+        // TODO: Per-building?
+        public const float TAX_RATE = 0.4f;
+
         private struct Req
         {
             public int upgradeID, level;

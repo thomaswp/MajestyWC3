@@ -199,8 +199,9 @@ namespace Source.Interface
 
         internal static int PayTax(unit building, int untaxed)
         {
-            int taxes = (int)(untaxed * TAX_RATE);
-            // TODO: Add to guild
+            
+            int taxes = MathRound(untaxed * TAX_RATE);
+            Buildings.ChangeGold(building, taxes);
             return taxes;
         }
 
