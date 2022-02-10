@@ -93,6 +93,7 @@ namespace Source.Units
 
                     if (GetUnitTypeId(unit) == Constants.UNIT_PEASANT_WORKER)
                     {
+                        SetUnitOwner(unit, GetOwningPlayer(unit).GetAIForHuman(), false);
                         RegisterUnit(unit);
                     }
                     else if (IsHeroUnitId(unit.GetTypeID()))
@@ -464,7 +465,7 @@ namespace Source.Units
                 }
             }
             if (bought) Gold -= cost;
-            Buildings.ChangeGold(shop, MathRound(cost * Items.Items.TAX_RATE));
+            Buildings.AddTax(shop, cost);
             //Console.WriteLine($"{Unit.GetName()} bought {itemID} successful: {bought}");
 
             return bought;

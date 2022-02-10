@@ -32,7 +32,7 @@ namespace Source.Units.Monsters
                     }
                     int award = unit.RollBountyAward();
                     if (award == 0) return;
-                    Bounties.AwardBounty(unit.GetLocation(), award, ai => ai.IsEnemy(unit));
+                    Bounties.AwardBounty(unit.GetLocation(), award, ai => ai is Hero && ai.IsEnemy(unit));
                 } catch (Exception e)
                 {
                     Console.WriteLine("Error with bounty: " + e.Message);

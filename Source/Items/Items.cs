@@ -6,80 +6,19 @@ using System.Threading.Tasks;
 using static War3Api.Common;
 using static War3Api.Blizzard;
 using Source;
+using Source.Units;
 
 namespace Source.Items
 {
+
+
+
     public static class Items
     {
-        // TODO: Per-building?
-        public const float TAX_RATE = 0.4f;
-
-        private struct Req
-        {
-            public int upgradeID, level;
-
-            public Req(int upgradeID, int level = 1)
-            {
-                this.upgradeID = upgradeID;
-                this.level = level;
-            }
-        }
-
-        private static readonly Dictionary<int, Req> itemToResearchMap = new Dictionary<int, Req>()
-        {
-            { Constants.ITEM_HEALING_POTION_LEVEL_1, new Req(Constants.UPGRADE_HEALTH_POTIONS) },
-            { Constants.ITEM_HEALING_POTION_LEVEL_2, new Req(Constants.UPGRADE_HEALTH_POTIONS, 2) },
-            { Constants.ITEM_SWORD_LEVEL_1, new Req(Constants.UPGRADE_LEVEL_3_WEAPONS) },
-            { Constants.ITEM_BOW_LEVEL_1, new Req(Constants.UPGRADE_LEVEL_3_WEAPONS) },
-            { Constants.ITEM_PLATE_ARMOR_LEVEL_1, new Req(Constants.UPGRADE_LEVEL_3_ARMOR) },
-            { Constants.ITEM_HIDE_ARMOR_LEVEL_1, new Req(Constants.UPGRADE_LEVEL_3_ARMOR) },
-            { Constants.ITEM_SWORD_LEVEL_2, new Req(Constants.UPGRADE_LEVEL_3_WEAPONS, 2) },
-            { Constants.ITEM_HIDE_ARMOR_LEVEL_2, new Req(Constants.UPGRADE_LEVEL_3_ARMOR, 2) },
-        };
-        private static readonly Dictionary<int, int> itemToSellerMap = new Dictionary<int, int>()
-        {
-            // TODO: Handle building upgrades (i.e. sell lvl1 potions at lvl2 market)
-            { Constants.ITEM_HEALING_POTION_LEVEL_1, Constants.UNIT_MARKET_LEVEL_1 },
-            { Constants.ITEM_HEALING_POTION_LEVEL_2, Constants.UNIT_MARKET_LEVEL_2 },
-            { Constants.ITEM_SWORD_LEVEL_1, Constants.UNIT_BLACKSMITH_LEVEL_1 },
-            { Constants.ITEM_BOW_LEVEL_1, Constants.UNIT_BLACKSMITH_LEVEL_1 },
-            { Constants.ITEM_PLATE_ARMOR_LEVEL_1, Constants.UNIT_BLACKSMITH_LEVEL_1 },
-            { Constants.ITEM_HIDE_ARMOR_LEVEL_1, Constants.UNIT_BLACKSMITH_LEVEL_1 },
-            { Constants.ITEM_SWORD_LEVEL_2, Constants.UNIT_BLACKSMITH_LEVEL_2 },
-            { Constants.ITEM_HIDE_ARMOR_LEVEL_2, Constants.UNIT_BLACKSMITH_LEVEL_2 },
-        };
-        private static readonly int[][] upgradeChains = new int[][]
-        {
-            new int[] { Constants.ITEM_HEALING_POTION_LEVEL_1, Constants.ITEM_HEALING_POTION_LEVEL_2 },
-            new int[] { Constants.ITEM_SWORD_LEVEL_1, Constants.ITEM_SWORD_LEVEL_2 },
-            new int[] { Constants.ITEM_BOW_LEVEL_1 },
-            new int[] { Constants.ITEM_PLATE_ARMOR_LEVEL_1 },
-            new int[] { Constants.ITEM_HIDE_ARMOR_LEVEL_1, Constants.ITEM_HIDE_ARMOR_LEVEL_2 },
-        };
-        private static readonly Dictionary<int, int[]> upgradeMap = new Dictionary<int, int[]>();
-        private static readonly List<int> itemIDs = new List<int>(itemToResearchMap.Keys);
-        private static readonly List<int> shopIDs = new List<int>
-        {
-            Constants.UNIT_MARKET_LEVEL_1,
-            Constants.UNIT_MARKET_LEVEL_2,
-            Constants.UNIT_BLACKSMITH_LEVEL_1,
-            Constants.UNIT_BLACKSMITH_LEVEL_2,
-        };
-        private static readonly Dictionary<int, int> itemCostMap = new Dictionary<int, int>();
-
         public static readonly int HP1_HEALING, HP2_HEALING;
-
 
         static Items()
         {
-            foreach (int itemID in itemIDs)
-            {
-                item item = CreateItem(itemID, 0, 0);
-                int cost = BlzGetItemIntegerField(item, ITEM_IF_PRIORITY);
-                itemCostMap[itemID] = cost;
-                RemoveItem(item);
-            }
-
             item hp1 = CreateItem(Constants.ITEM_HEALING_POTION_LEVEL_1, 0, 0);
             HP1_HEALING = BlzGetAbilityIntegerLevelField(
                 BlzGetItemAbility(hp1, Constants.ABILITY_ITEM_HEALING_LEVEL_1),
@@ -91,36 +30,28 @@ namespace Source.Items
                 BlzGetItemAbility(hp2, Constants.ABILITY_ITEM_HEALING_LEVEL_2),
                 ABILITY_ILF_HIT_POINTS_GAINED_IHP2, 1);
             RemoveItem(hp2);
-
-            foreach (int[] chain in upgradeChains)
-            {
-                foreach (int item in chain)
-                {
-                    upgradeMap.Add(item, chain);
-                }
-            }
         }
 
-        public static int[] GetUpgradeChain(int itemID)
-        {
-            if (!upgradeMap.TryGetValue(itemID, out int[] chain)) return new int[] { itemID };
-            return chain;
-        }
+        //public static int[] GetUpgradeChain(int itemID)
+        //{
+        //    if (!upgradeMap.TryGetValue(itemID, out int[] chain)) return new int[] { itemID };
+        //    return chain;
+        //}
 
         public static bool IsShop(this unit unit)
         {
-            return shopIDs.Contains(GetUnitTypeId(unit));
+            return ShopInfo.IsShop(unit.GetTypeID());
         }
 
         public static bool IsSelling(this unit unit, int itemID)
         {
-            if (!itemToSellerMap.TryGetValue(itemID, out int sellingID)) return false;
-            if (sellingID != unit.GetTypeID()) return false;
+            ItemInfo info = itemID;
+            if (info == null) return false;
+            if (!info.IsSoldBy(unit.GetTypeID())) return false;
             player player = unit.GetPlayer().GetHumanForAI();
-            if (!itemToResearchMap.TryGetValue(itemID, out Req researchReq)) return false;
-            int researchLevel = GetPlayerTechCount(player, researchReq.upgradeID, true);
+            int researchLevel = GetPlayerTechCount(player, info.Requirement.upgradeID, true);
             //Console.WriteLine($"Player research level {researchLevel}; required: {researchReq.level}");
-            if (researchLevel < researchReq.level) return false;
+            if (researchLevel < info.Requirement.level) return false;
             return true;
         }
 
@@ -129,25 +60,18 @@ namespace Source.Items
             return UnitHasItemOfTypeBJ(unit, itemID);
         }
 
-        public static IEnumerable<int> GetItemIDAndUpgrades(int itemID)
+        public static int[] GetItemIDAndUpgrades(int itemID)
         {
-            yield return itemID;
-            if (!upgradeMap.TryGetValue(itemID, out int[] chain)) yield break;
-            int i = 0;
-            for (; i < chain.Length; i++)
-            {
-                if (chain[i] == itemID) break;
-            }
-            i++;
-            for (; i < chain.Length; i++)
-            {
-                yield return chain[i];
-            }
+            ItemInfo info = itemID;
+            if (info == null) return new int[] { itemID };
+            return info.UpgradeChain;
         }
 
         public static IEnumerable<int> GetPriorUpgrades(int itemID)
         {
-            if (!upgradeMap.TryGetValue(itemID, out int[] chain)) yield break;
+            ItemInfo info = itemID;
+            if (info == null) yield break;
+            int[] chain = info.UpgradeChain;
             for (int i = 0; i < chain.Length; i++)
             {
                 if (chain[i] == itemID) break;
@@ -191,8 +115,9 @@ namespace Source.Items
 
         public static int GetItemCost(int itemID)
         {
-            if (itemCostMap.TryGetValue(itemID, out int cost)) return cost;
-            return -1;
+            ItemInfo info = itemID;
+            if (info == null) return -1;
+            return info.Cost;
         }
 
         public static readonly int[] SLOTS_ORDERS = new int[] {

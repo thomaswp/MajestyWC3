@@ -38,6 +38,7 @@ namespace Source
 			//	//Console.WriteLine($"Constructing {(unit == null ? "NONE" : name)} of player {GetPlayerId(GetOwningPlayer(unit))}");
 			//});
 
+			Info.Init();
 			UnitAI.Init();
 			Bounties.Init();
 			Monster.Init();

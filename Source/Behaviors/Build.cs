@@ -32,9 +32,11 @@ namespace Source.Behaviors
         {
             //Console.WriteLine("Start search...");
             var units = GetUnitsOfPlayerAll(AI.HumanPlayer).ToList();
+            units.AddRange(GetUnitsOfPlayerAll(AI.AIPlayer).ToList());
+
             //Console.WriteLine($"Searching {units.Count} units...");
             var repairable = units
-                .Where(unit => IsUnitIdType(GetUnitTypeId(unit), UNIT_TYPE_STRUCTURE))
+                .Where(unit => unit.IsStructure())
                 .Where(unit => GetUnitLifePercent(unit) < 99.95);
             //Console.WriteLine($"Found {repairable.Count()} repairable...");
             if (!repairable.Any()) return null;

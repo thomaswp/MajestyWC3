@@ -59,8 +59,8 @@ namespace Source.Units
             int weaponID = GetBaseWeaponID();
             int armorID = GetBaseArmorID();
 
-            int[] weapons = Items.Items.GetUpgradeChain(weaponID);
-            int[] armors = Items.Items.GetUpgradeChain(armorID);
+            int[] weapons = ((ItemInfo)weaponID).UpgradeChain;
+            int[] armors = ((ItemInfo)armorID).UpgradeChain;
 
             for (int i = 0; i < weapons.Length || i < armors.Length; i++)
             {
