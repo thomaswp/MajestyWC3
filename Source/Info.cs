@@ -96,14 +96,13 @@ namespace Source
 
         internal static void InitBuildings()
         {
+            All.AddRange(AddChain(new List<BuildingInfo>() {
+                new() { ID = Constants.UNIT_CASTLE_LEVEL_1, CanBeTaxed = false },
+                new() { ID = Constants.UNIT_CASTLE_LEVEL_2, CanBeTaxed = false },
+            }));;
+
             All.AddRange(new List<BuildingInfo>()
             {
-                new()
-                {
-                    ID = Constants.UNIT_CASTLE_LEVEL_1,
-                    CanBeTaxed = false,
-                },
-
                 new() { ID = Constants.UNIT_WARRIORS_BARRACKS, },
                 new() { ID = Constants.UNIT_RANGERS_HALL, },
             });

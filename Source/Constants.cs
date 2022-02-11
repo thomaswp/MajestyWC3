@@ -50,6 +50,7 @@ public static class Constants
 	public const int UNIT_BLACKSMITH_LEVEL_1 = 1747988534;
 	public const int UNIT_BLACKSMITH_LEVEL_2 = 1747988535;
 	public const int UNIT_BLACKSMITH_LEVEL_3 = 1747988536;
+	public const int UNIT_CASTLE_LEVEL_2 = 1747988537;
 	public const int UPGRADE_HEALTH_POTIONS = 1378889776;
 	public const int UPGRADE_MARKET_DAY = 1378889777;
 	public const int UPGRADE_LEVEL_3_WEAPONS = 1378889778;

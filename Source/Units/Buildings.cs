@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WCSharp.Events;
 using static War3Api.Common;
+using static War3Api.Blizzard;
 
 namespace Source.Units
 {
@@ -16,9 +17,65 @@ namespace Source.Units
 
         public int Gold { get; set; }
 
+        public BuildingInfo Info;
+
+        private timer upgradeTimer;
+        private int targetMaxHP;
+
         public Building(unit unit)
         {
             Unit = unit;
+            UpdateInfo();
+        }
+
+        private void UpdateInfo()
+        {
+            Info = Unit.GetTypeID();
+        }
+
+        private int GetUpgradeMaxHP()
+        {
+            // TODO create safe spawn point? Or precompute at start?
+            unit unit = CreateUnit(Player(GetBJPlayerNeutralVictim()), Unit.GetTypeID(), 0, 0, 0);
+            if (unit != null)
+            {
+                int maxHp = BlzGetUnitMaxHP(unit);
+                RemoveUnit(unit);
+                return maxHp;
+            }
+            Console.WriteLine("Could not create dummy");
+            return MathRound(BlzGetUnitMaxHP(Unit) * 1.3f);
+        }
+
+        public void StartUpgrade()
+        {
+            // Max be easier and less error prone to just remove health, rather than
+            // trying to early add max hp and later remove it...
+
+            UpdateInfo();
+            //Console.WriteLine("Starting upgrade: " + Unit.GetName());
+            targetMaxHP = GetUpgradeMaxHP();
+            int startHP = Unit.GetHP();
+            float startFrac = Math.Min(startHP / targetMaxHP, 0.99f);
+            Console.WriteLine($"{startHP} / {targetMaxHP}: {startFrac}%");
+            BlzSetUnitMaxHP(Unit, targetMaxHP);
+            BlzSetUnitRealField(Unit, UNIT_RF_HP, startHP);
+            upgradeTimer = CreateTimer();
+            TimerStart(upgradeTimer, 0.1f, true, () =>
+            {
+                float fraction = (Unit.GetHPFraction() - startFrac) / (1 - startFrac);
+                fraction = Math.Max(0, Math.Min(1, fraction));
+                Console.WriteLine($"{Unit.GetHPFraction() - startFrac} / {1 - startFrac} = {fraction}");
+                UnitSetUpgradeProgress(Unit, MathRound(fraction * 100 - 0.4f));
+            });
+            UpdateInfo();
+        }
+
+        public void FinishUpgrade()
+        {
+            DestroyTimer(upgradeTimer);
+            // Set MaxHP back, since we added it earlier...
+            BlzSetUnitMaxHP(Unit, targetMaxHP);
         }
     }
 
@@ -54,15 +111,24 @@ namespace Source.Units
             PlayerUnitEvents.Register(PlayerUnitEvent.UnitTypeStartsUpgrade, Util.TryAction(() =>
             {
                 unit unit = GetTriggerUnit();
-                if (!unit.IsStructure()) return;
-                Console.WriteLine("Starting upgrade: " + unit.GetName());
+                Building building = Get(unit);
+                if (building == null) return;
+                building.StartUpgrade();
 
             }, "start upgrade"));
+
+            PlayerUnitEvents.Register(PlayerUnitEvent.UnitTypeFinishesUpgrade, Util.TryAction(() =>
+            {
+                unit unit = GetTriggerUnit();
+                Building building = Get(unit);
+                if (building == null) return;
+                building.FinishUpgrade();
+
+            }, "finish upgrade"));
 
             PlayerUnitEvents.Register(PlayerUnitEvent.UnitTypeDies, Util.TryAction(() =>
             {
                 unit building = GetTriggerUnit();
-                if (!building.IsTaxable()) return;
                 TryRemove(building);
             }, "registering building"));
         }
@@ -87,7 +153,7 @@ namespace Source.Units
 
         public static bool TryRegister(unit building)
         {
-            if (!building.IsTaxable()) return false;
+            if (!BuildingInfo.Map.ContainsKey(building.GetTypeID())) return false;
             buildingMap.Add(building, new Building(building));
             return true;
         }

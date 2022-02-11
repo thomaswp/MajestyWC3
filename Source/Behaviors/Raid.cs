@@ -25,6 +25,13 @@ namespace Source.Behaviors
             return true;
         }
 
+        public override bool TryInterrupt(Behavior with)
+        {
+            // If raiding (but not fighting a unit) can be interrupted 
+            if (with is DefendBuilding) return true;
+            return base.TryInterrupt(with);
+        }
+
         protected override void CheckForNewTarget()
         {
             // Don't swap to non-buildings, just allow updating

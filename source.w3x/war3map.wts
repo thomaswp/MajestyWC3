@@ -679,3 +679,21 @@ STRING 140
 Can sell upgraded weapons to Heroes.
 }
 
+STRING 141
+// Units: h001 (Castle - Level 1), Tip (Tooltip - Basic)
+{
+Castle - Level 1
+}
+
+STRING 142
+// Units: h009 (Castle - Level 2), Name (Name)
+{
+Castle - Level 2
+}
+
+STRING 143
+// Units: h009 (Castle - Level 2), Tip (Tooltip - Basic)
+{
+Upgrade to Castle - Level 2
+}
+
