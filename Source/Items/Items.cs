@@ -43,10 +43,10 @@ namespace Source.Items
             return ShopInfo.IsShop(unit.GetTypeID());
         }
 
-        public static bool IsSelling(this unit unit, int itemID)
+        public static bool IsSelling(this unit unit, ItemInfo info)
         {
-            ItemInfo info = itemID;
             if (info == null) return false;
+            //Console.WriteLine($"Is {unit} selling {info}?");
             if (!info.IsSoldBy(unit.GetTypeID())) return false;
             player player = unit.GetPlayer().GetHumanForAI();
             int researchLevel = GetPlayerTechCount(player, info.Requirement.upgradeID, true);
@@ -60,21 +60,24 @@ namespace Source.Items
             return UnitHasItemOfTypeBJ(unit, itemID);
         }
 
-        public static int[] GetItemIDAndUpgrades(int itemID)
+        public static IEnumerable<int> GetItemIDAndUpgrades(int itemID)
         {
+            yield return itemID;
             ItemInfo info = itemID;
-            if (info == null) return new int[] { itemID };
-            return info.UpgradeChain;
+            if (info == null) yield break;
+            for (int i = info.UpgradeIndex + 1; i < info.UpgradeChain.Length; i++)
+            {
+                yield return info.UpgradeChain[i];
+            }
         }
 
-        public static IEnumerable<int> GetPriorUpgrades(int itemID)
+        public static IEnumerable<int> GetPriorUpgrades(ItemInfo info)
         {
-            ItemInfo info = itemID;
             if (info == null) yield break;
             int[] chain = info.UpgradeChain;
             for (int i = 0; i < chain.Length; i++)
             {
-                if (chain[i] == itemID) break;
+                if (chain[i] == info) break;
                 yield return chain[i];
             }
         }
@@ -96,12 +99,12 @@ namespace Source.Items
             return GetItemIDAndUpgrades(itemID).Sum(id => unit.GetExactItemCount(id));
         }
 
-        public static void RemoveReplacedItems(this unit unit, int itemID)
+        public static void RemoveReplacedItems(this unit unit, ItemInfo info)
         {
-            if (itemID == Constants.ITEM_HEALING_POTION_LEVEL_1 ||
-                itemID == Constants.ITEM_HEALING_POTION_LEVEL_2) return;
+            if (info == Constants.ITEM_HEALING_POTION_LEVEL_1 ||
+                info == Constants.ITEM_HEALING_POTION_LEVEL_2) return;
 
-            foreach (int id in GetPriorUpgrades(itemID))
+            foreach (int id in GetPriorUpgrades(info))
             {
                 Console.WriteLine($"Attempting to remove item {id} from {unit.GetName()}");
                 item item = GetItemOfTypeFromUnitBJ(unit, id);

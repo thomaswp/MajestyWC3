@@ -43,7 +43,6 @@ namespace Source
             where T : Info
         {
             Console.WriteLine(header);
-            //Console.WriteLine(string.Join(",", map.Keys));
             foreach (Info i in list)
             {
                 Console.WriteLine($"{i.ID} => {i}");
@@ -82,7 +81,7 @@ namespace Source
         public override string ToString()
         {
             string s = base.ToString();
-            if (UpgradesTo != null) s += " -> " + UpgradesTo.Name;
+            if (UpgradeChain != null) s += $" ({UpgradeIndex}/{UpgradeChain.Length})";
             return s;
         }
     }
@@ -125,6 +124,26 @@ namespace Source
         }
 
         public static implicit operator BuildingInfo(int id) => Map.GetValue(id);
+
+        static void Test()
+        {
+            ShopInfo shop = new ShopInfo();
+            new ItemInfo()
+            {
+                ID = 0,
+                Requirement = new UpgradeRequirement(0, 0),
+                Seller = shop, // Must cast to prevent transpilation bug
+            };
+            //for (int i = 0; i < 1; i++)
+            //{
+            //    shop = (ShopInfo)shop.UpgradesTo;
+            //}
+        }
+
+        static IEnumerable<ShopInfo> GetEnum()
+        {
+            yield return 0;
+        }
     }
 
     public class ShopInfo : BuildingInfo
@@ -217,7 +236,7 @@ namespace Source
             int upgradeLevel = 1;
             for (int i = 0; i < ids.Length; i++)
             {
-                Console.WriteLine($"IU {i}: {shop}");
+                //Console.WriteLine($"IU {i}: {shop}");
                 items.Add(new()
                 {
                     ID = ids[i],

@@ -31,10 +31,10 @@ namespace Source.Behaviors
             {
                 var wanted = AI.GetWantedItems();
                 //Console.WriteLine($"Wanted: {string.Join(", ", wanted)}");
-                foreach (int itemID in wanted)
+                foreach (ItemInfo info in wanted)
                 {
-                    if (!Target.IsSelling(itemID)) continue;
-                    if (AI.TryPurchase(itemID, Target)) bought++;
+                    if (!Target.IsSelling(info)) continue;
+                    if (AI.TryPurchase(info, Target)) bought++;
                 }
             };
             orders =
@@ -68,11 +68,13 @@ namespace Source.Behaviors
 
         protected override unit SelectTarget()
         {
+            //Console.WriteLine($"Checking shops...");
+
             var shops = GetUnitsInRangeOfLocAll(SHOP_RADIUS, AI.Unit.GetLocation()).ToList()
                 .Where(u => u.IsShop() && u.GetPlayer() == AI.HumanPlayer)
                 .ToList();
 
-            foreach (int itemID in AI.GetWantedItems())
+            foreach (ItemInfo itemID in AI.GetWantedItems())
             {
                 //Console.WriteLine($"Looking to buy {itemID} from {shops.Count} shops");
 

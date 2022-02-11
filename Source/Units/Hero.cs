@@ -15,7 +15,7 @@ namespace Source.Units
     public abstract class Hero : FighterAI
     {
         // TODO: Lower?
-        public const int STARTING_GOLD = 100;
+        public const int STARTING_GOLD = 1000;
 
 
         private Preferences prefs;
@@ -46,8 +46,8 @@ namespace Source.Units
         }
 
         protected abstract Preferences GetPreferences();
-        protected abstract int GetBaseWeaponID();
-        protected abstract int GetBaseArmorID();
+        protected abstract ItemInfo GetBaseWeaponID();
+        protected abstract ItemInfo GetBaseArmorID();
 
         protected override IEnumerable<int> GetWantedItemsList()
         {
@@ -56,11 +56,11 @@ namespace Source.Units
                 yield return Constants.ITEM_HEALING_POTION_LEVEL_1;
             }
 
-            int weaponID = GetBaseWeaponID();
-            int armorID = GetBaseArmorID();
+            ItemInfo weaponID = GetBaseWeaponID();
+            ItemInfo armorID = GetBaseArmorID();
 
-            int[] weapons = ((ItemInfo)weaponID).UpgradeChain;
-            int[] armors = ((ItemInfo)armorID).UpgradeChain;
+            int[] weapons = weaponID.UpgradeChain;
+            int[] armors = armorID.UpgradeChain;
 
             for (int i = 0; i < weapons.Length || i < armors.Length; i++)
             {
@@ -75,6 +75,8 @@ namespace Source.Units
         {
             base.Init(unit);
             GoldTaxed += STARTING_GOLD;
+
+            //GetWantedItemsList().ToList().ForEach(i => Console.WriteLine("" + (ItemInfo)i));
         }
 
         protected override void DoPreBehaviorActions()

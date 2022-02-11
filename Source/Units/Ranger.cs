@@ -23,12 +23,12 @@ namespace Source.Units
             };
         }
 
-        protected override int GetBaseWeaponID()
+        protected override ItemInfo GetBaseWeaponID()
         {
             return Constants.ITEM_BOW_LEVEL_1;
         }
 
-        protected override int GetBaseArmorID()
+        protected override ItemInfo GetBaseArmorID()
         {
             return Constants.ITEM_HIDE_ARMOR_LEVEL_1;
         }

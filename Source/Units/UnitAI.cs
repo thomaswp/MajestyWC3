@@ -421,46 +421,48 @@ namespace Source.Units
             return new List<int>();
         }
 
-        public IEnumerable<int> GetWantedItems()
+        public IEnumerable<ItemInfo> GetWantedItems()
         {
-            // TODO: Should probably cache
             Dictionary<int, int> itemCounts = new Dictionary<int, int>();
-            foreach (int item in GetWantedItemsList())
+            // TODO: Should probably cache
+            foreach (int itemID in GetWantedItemsList())
             {
-                if (!itemCounts.TryGetValue(item, out int count))
+                if (!itemCounts.TryGetValue(itemID, out int count))
                 {
-                    count = itemCounts[item] = Unit.GetItemOrUpgradeCount(item);
+                    count = itemCounts[itemID] = Unit.GetItemOrUpgradeCount(itemID);
                 }
                 if (count > 0)
                 {
-                    itemCounts[item]--;
+                    itemCounts[itemID]--;
                 }
                 else
                 {
+                    // Explicit cast for yeild return bug
+                    ItemInfo item = itemID;
                     yield return item;
                 }
             }
         }
 
-        public bool TryPurchase(int itemID, unit shop)
+        public bool TryPurchase(ItemInfo info, unit shop)
         {
-            int cost = Items.Items.GetItemCost(itemID);
+            int cost = info.Cost;
             if (Gold < cost) return false;
             item item;
             bool bought = false;
-            if (Unit.HasExactItem(itemID))
+            if (Unit.HasExactItem(info))
             {
-                item = GetItemOfTypeFromUnitBJ(Unit, itemID);
+                item = GetItemOfTypeFromUnitBJ(Unit, info);
 
                 SetItemCharges(item, GetItemCharges(item) + 1);
                 bought = true;
             }
             else
             {
-                Unit.RemoveReplacedItems(itemID);
+                Unit.RemoveReplacedItems(info);
                 if (UnitInventoryCount(Unit) < 6)
                 {
-                    UnitAddItemById(Unit, itemID);
+                    UnitAddItemById(Unit, info);
                     bought = true;
                 }
             }
