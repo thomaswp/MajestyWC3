@@ -140,9 +140,10 @@ namespace Source.Units
             ChangeGold(shop, MathRound(pretax * info.TaxRate));
         }
 
-        public static bool IsTaxable(this unit building)
+        public static bool CanBeTaxed(this unit building)
         {
-            return building.IsStructure() && (building.IsGuild() || building.IsShop());
+            var b = Get(building);
+            return b != null && b.Info.CanBeTaxed;
         }
 
         public static Building Get(unit unit)

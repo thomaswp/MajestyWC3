@@ -40,6 +40,11 @@ namespace Source.Units
             AddBehavior(new Raid(), (prefs.Fight + prefs.Glory) / 2);
         }
 
+        public override bool HasStatusPanel()
+        {
+            return true;
+        }
+
         public struct Preferences
         {
             public int Explore, Fight, Rest, Glory;

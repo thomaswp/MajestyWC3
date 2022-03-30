@@ -345,6 +345,7 @@ function CreateUnitsForPlayer0()
     local t
     local life
     u = BlzCreateUnitWithSkin(p, FourCC("e000"), 156.3, -1099.8, 173.479, FourCC("e000"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n00O"), -54.2, -1522.1, 119.139, FourCC("n00O"))
 end
 
 function CreateUnitsForPlayer1()

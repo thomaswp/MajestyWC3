@@ -10,61 +10,6 @@ using Source.Units;
 
 namespace Source.Interface
 {
-    /**
-     * 
--- Examle for a non SimpleFrame Button
--- Shows how much gold and Lumber bounty one gets when slaying an unit
-do
-    local realFunction = MarkGameStarted
-    local lumberText, goldText, parent
-    local createContext, infoFrame, iconFrame, labelFrame, textFrame
-    local function Init()
-        -- create a new Unit Info Panel, this panel can only be shown when the current selected unit's owner gives bounty
-        parent = AddUnitInfoPanelEx(function(unit)
-            local min, max
-            min = BlzGetUnitIntegerField(unit, UNIT_IF_GOLD_BOUNTY_AWARDED_NUMBER_OF_DICE) + BlzGetUnitIntegerField(unit, UNIT_IF_GOLD_BOUNTY_AWARDED_BASE)
-            max = BlzGetUnitIntegerField(unit, UNIT_IF_GOLD_BOUNTY_AWARDED_NUMBER_OF_DICE) *BlzGetUnitIntegerField(unit, UNIT_IF_GOLD_BOUNTY_AWARDED_SIDES_PER_DIE) + BlzGetUnitIntegerField(unit, UNIT_IF_GOLD_BOUNTY_AWARDED_BASE)
-            BlzFrameSetText(goldText, min.." - "..max)
-            min = BlzGetUnitIntegerField(unit, UNIT_IF_LUMBER_BOUNTY_AWARDED_NUMBER_OF_DICE) + BlzGetUnitIntegerField(unit, UNIT_IF_LUMBER_BOUNTY_AWARDED_BASE)
-            max = BlzGetUnitIntegerField(unit, UNIT_IF_LUMBER_BOUNTY_AWARDED_NUMBER_OF_DICE) *BlzGetUnitIntegerField(unit, UNIT_IF_LUMBER_BOUNTY_AWARDED_SIDES_PER_DIE) + BlzGetUnitIntegerField(unit, UNIT_IF_LUMBER_BOUNTY_AWARDED_BASE)
-            BlzFrameSetText(lumberText, min.." - "..max)
-        end,
-        function(unit) return IsPlayerFlagSetBJ(PLAYER_STATE_GIVES_BOUNTY, GetOwningPlayer(unit)) end)
-        -- define locals
-        
-        -- create a new custom Info and load all created frames into the locals
-        createContext, infoFrame, iconFrame, labelFrame, textFrame = UnitInfoCreateCustomInfo(parent, " Gold:", "UI\\Widgets\\ToolTips\\Human\\ToolTipGoldIcon", function(unit)
-        -- this function returns the text shown inside the tooltip when this UnitInfo is mouse hovered.
-            local min, max
-            min = BlzGetUnitIntegerField(unit, UNIT_IF_GOLD_BOUNTY_AWARDED_NUMBER_OF_DICE) + BlzGetUnitIntegerField(unit, UNIT_IF_GOLD_BOUNTY_AWARDED_BASE)
-            max = BlzGetUnitIntegerField(unit, UNIT_IF_GOLD_BOUNTY_AWARDED_NUMBER_OF_DICE) *BlzGetUnitIntegerField(unit, UNIT_IF_GOLD_BOUNTY_AWARDED_SIDES_PER_DIE) + BlzGetUnitIntegerField(unit, UNIT_IF_GOLD_BOUNTY_AWARDED_BASE)
-            return "Bounty Gold: "..min.." - "..max
-            .."\nWhen an unit owned by you kills this unit, you gain this amount of Gold.\nOnly unallied unit give bounty."
-        end)
-        local prevIcon = iconFrame
-        goldText = textFrame
-        BlzFrameSetPoint(iconFrame, FRAMEPOINT_TOPLEFT, BlzGetFrameByName("SimpleHeroLevelBar", 0), FRAMEPOINT_BOTTOMLEFT, 0, -0.001)
-
-        -- 2. Custom Info
-        createContext, infoFrame, iconFrame, labelFrame, textFrame = UnitInfoCreateCustomInfo(parent, " Lumber:", "UI\\Widgets\\ToolTips\\Human\\ToolTipLumberIcon", function(unit)
-            local min, max
-            min = BlzGetUnitIntegerField(unit, UNIT_IF_LUMBER_BOUNTY_AWARDED_NUMBER_OF_DICE) + BlzGetUnitIntegerField(unit, UNIT_IF_LUMBER_BOUNTY_AWARDED_BASE)
-            max = BlzGetUnitIntegerField(unit, UNIT_IF_LUMBER_BOUNTY_AWARDED_NUMBER_OF_DICE) *BlzGetUnitIntegerField(unit, UNIT_IF_LUMBER_BOUNTY_AWARDED_SIDES_PER_DIE) + BlzGetUnitIntegerField(unit, UNIT_IF_LUMBER_BOUNTY_AWARDED_BASE)
-            return "Bounty Lumber: "..min.." - "..max
-            .."\nWhen an unit owned by you kills this unit, you gain this amount of Lumber.\nOnly unallied unit give bounty."
-        end)
-        lumberText = textFrame
-        BlzFrameSetPoint(iconFrame, FRAMEPOINT_TOPLEFT, prevIcon, FRAMEPOINT_TOPLEFT, 0.095, 0)
-        prevIcon = nil
-    end
-    function MarkGameStarted()
-        realFunction()
-        realFunction = nil
-        Init()
-        if FrameLoaderAdd then FrameLoaderAdd(Init) end                
-    end
-end
-     */
     public class HeroInfoPanel
     {
         public static void Init()
@@ -80,7 +25,8 @@ end
                 BlzFrameSetText(statusText, ai.Status);
             }, unit =>
             {
-                return UnitAI.GetAI(unit) is Hero;
+                var ai = UnitAI.GetAI(unit);
+                return ai != null && ai.HasStatusPanel();
             });
 
             float statusHeight = 0.035f;

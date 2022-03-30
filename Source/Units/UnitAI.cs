@@ -140,6 +140,11 @@ namespace Source.Units
         {
         }
 
+        public virtual bool HasStatusPanel()
+        {
+            return false;
+        }
+
         protected abstract void AddBehaviors();
 
         protected void AddBehavior(Behavior behavior, int weight = 0)
@@ -378,6 +383,9 @@ namespace Source.Units
                     case Constants.UNIT_PEASANT_WORKER:
                         ai = new Peasant();
                         break;
+                    case Constants.UNIT_TAX_COLLECTOR:
+                        ai = new TaxCollector();
+                        break;
                     case Constants.UNIT_KNIGHT:
                         ai = new Knight();
                         break;
@@ -466,8 +474,11 @@ namespace Source.Units
                     bought = true;
                 }
             }
-            if (bought) Gold -= cost;
-            Buildings.AddTax(shop, cost);
+            if (bought)
+            {
+                Gold -= cost;
+                Buildings.AddTax(shop, cost);
+            }
             //Console.WriteLine($"{Unit.GetName()} bought {itemID} successful: {bought}");
 
             return bought;

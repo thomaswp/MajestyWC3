@@ -82,6 +82,7 @@ namespace Source
 			try
             {
 				HeroInfoPanel.Init();
+				TaxableInfoPanel.Init();
 				GuildInfoPanel.Init();
 
 			}
