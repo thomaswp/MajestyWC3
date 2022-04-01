@@ -77,6 +77,11 @@ namespace Source.Units
             // Set MaxHP back, since we added it earlier...
             BlzSetUnitMaxHP(Unit, targetMaxHP);
         }
+
+        internal void AddIncome()
+        {
+            Gold += Info.Income;
+        }
     }
 
     public static class Buildings
@@ -131,6 +136,59 @@ namespace Source.Units
                 unit building = GetTriggerUnit();
                 TryRemove(building);
             }, "registering building"));
+
+            TimerStart(CreateTimer(), 5, true, Util.TryAction(() =>
+            {
+                // TODO: Do all castles
+                foreach (var castle in GetUnitsOfTypeIdAll(Constants.UNIT_CASTLE_LEVEL_1).ToList())
+                {
+                    player player = castle.GetPlayer();
+                    int heroes = UnitAI.GetHeroCount(player);
+                    int houses = GetUnitsOfPlayerAndTypeId(player, Constants.UNIT_HOUSE).Count();
+
+                    if ((heroes + 3) / 4 > houses)
+                    {
+                        CreateHouse(player, castle);
+                    }
+
+                }
+            }, "Creating houses"));
+
+            TimerStart(CreateTimer(), 30, true, Util.TryAction(() =>
+            {
+                foreach (var building in buildingMap.Values)
+                {
+                    building.AddIncome();
+                }
+            }, "Adding income"));
+        }
+
+        private static void CreateHouse(player player, unit castle)
+        {
+            var castleLoc = castle.GetLocation();
+            float castleX = castleLoc.X(), castleY = castleLoc.Y();
+            
+            for (int radius = 500; radius < 5000; radius += 200)
+            {
+                float offset = Util.RandBetween(0, 360);
+                for (int angleBase = 0; angleBase < 360; angleBase += 10)
+                {
+                    float angle = angleBase + offset;
+                    angle *= (float) Math.PI / 180;
+
+                    float x = castleX + radius * (float)Math.Cos(angle);
+                    float y = castleY + radius * (float)Math.Sin(angle);
+                    location location = Location(x, y);
+
+                    if (GetUnitsInRangeOfLocAll(400, location).Any()) continue;
+                    if (!IsVisibleToPlayer(x, y, player)) continue;
+
+                    CreateUnit(player, Constants.UNIT_HOUSE, x, y, 0);
+                    return;
+                }
+            }
+
+            Console.WriteLine("Cannot build house!");
         }
 
         public static void AddTax(unit shop, int pretax)

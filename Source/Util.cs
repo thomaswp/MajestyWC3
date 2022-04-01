@@ -53,9 +53,36 @@ namespace Source
             return units;
         }
 
+        public static int Count(this group group)
+        {
+            int count = 0;
+            ForGroup(group, () => count++);
+            return count;
+        }
+
+        public static bool Any(this group group)
+        {
+            return !IsUnitGroupEmptyBJ(group);
+        }
+
+        public static void ForEach(this group group, Action<unit> action)
+        {
+            ForGroup(group, () => action(GetEnumUnit()));
+        }
+
         public static string ToXY(this location loc)
         {
             return $"({GetLocationX(loc)}, {GetLocationY(loc)})";
+        }
+
+        public static float X(this location loc)
+        {
+            return GetLocationX(loc);
+        }
+
+        public static float Y(this location loc)
+        {
+            return GetLocationY(loc);
         }
 
         public static float DistanceTo(this unit me, unit other)

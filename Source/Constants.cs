@@ -59,6 +59,7 @@ public static class Constants
 	public const int UNIT_BLACKSMITH_LEVEL_3 = 1747988536;
 	public const int UNIT_CASTLE_LEVEL_2 = 1747988537;
 	public const int UNIT_TAX_COLLECTOR = 1848651855;
+	public const int UNIT_HOUSE = 1747988545;
 	public const int UPGRADE_HEALTH_POTIONS = 1378889776;
 	public const int UPGRADE_MARKET_DAY = 1378889777;
 	public const int UPGRADE_LEVEL_3_WEAPONS = 1378889778;

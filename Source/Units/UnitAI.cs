@@ -136,6 +136,11 @@ namespace Source.Units
             });
         }
 
+        public static int GetHeroCount(player player)
+        {
+            return unitMap.Values.Where(h => h is Hero && h.HumanPlayer == player).Count();
+        }
+
         public UnitAI()
         {
         }

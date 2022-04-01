@@ -90,6 +90,7 @@ namespace Source
     {
         public bool CanBeTaxed = true;
         public float TaxRate = 0.4f;
+        public int Income = 0;
 
         public static readonly List<BuildingInfo> All = new();
         public static Dictionary<int, BuildingInfo> Map = new();
@@ -108,15 +109,17 @@ namespace Source
             });
 
             All.AddRange(AddChain(new List<BuildingInfo>() {
-                new ShopInfo() { ID = Constants.UNIT_BLACKSMITH_LEVEL_1, },
-                new ShopInfo() { ID = Constants.UNIT_BLACKSMITH_LEVEL_2, },
-                new ShopInfo() { ID = Constants.UNIT_BLACKSMITH_LEVEL_3, },
+                new ShopInfo() { ID = Constants.UNIT_BLACKSMITH_LEVEL_1, Income = 25, },
+                new ShopInfo() { ID = Constants.UNIT_BLACKSMITH_LEVEL_2, Income = 50, },
+                new ShopInfo() { ID = Constants.UNIT_BLACKSMITH_LEVEL_3, Income = 75, },
             }));
 
             All.AddRange(AddChain(new List<BuildingInfo>() {
-                new ShopInfo() { ID = Constants.UNIT_MARKET_LEVEL_1, },
-                new ShopInfo() { ID = Constants.UNIT_MARKET_LEVEL_2, },
+                new ShopInfo() { ID = Constants.UNIT_MARKET_LEVEL_1, Income = 125, },
+                new ShopInfo() { ID = Constants.UNIT_MARKET_LEVEL_2, Income = 150, },
             }));
+
+            All.Add(new() { ID = Constants.UNIT_HOUSE, Income = 15, });
 
             //PrintList("Buildings", All);
             AddToMap(Map, All);
