@@ -709,3 +709,63 @@ STRING 145
 House
 }
 
+STRING 146
+// Abilities: A00E (Trueshot Aura), EditorSuffix (Editor Suffix)
+{
+(Ranger)
+}
+
+STRING 147
+// Abilities: A00F (Entangling Roots), EditorSuffix (Editor Suffix)
+{
+(Ranger)
+}
+
+STRING 148
+// Upgrades: R004 (Cloud), Hotkey (Hotkey)
+{
+E
+}
+
+STRING 149
+// Upgrades: R004 (Cloud), Name (Name)
+{
+Entagling Roots
+}
+
+STRING 150
+// Upgrades: R004 (Cloud), Tip (Tooltip)
+{
+Research Entangling Roots
+}
+
+STRING 151
+// Upgrades: R004 (Cloud), Ubertip (Tooltip - Extended)
+{
+Allows Rangers to learn the Entangling Roots ability.
+}
+
+STRING 152
+// Upgrades: R005 (Cloud), Name (Name)
+{
+Trueshot Aura
+}
+
+STRING 153
+// Upgrades: R005 (Cloud), Tip (Tooltip)
+{
+Research Trueshot Aura
+}
+
+STRING 154
+// Upgrades: R005 (Cloud), Ubertip (Tooltip - Extended)
+{
+Allows Rangers to learn the Trueshot Aura ability.
+}
+
+STRING 155
+// Upgrades: R005 (Cloud), Hotkey (Hotkey)
+{
+T
+}
+

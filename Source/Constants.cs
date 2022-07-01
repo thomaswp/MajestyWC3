@@ -21,6 +21,8 @@ public static class Constants
 	public const int ABILITY_SELECT_HERO_4 = 1093677122;
 	public const int ABILITY_ITEM_MOVE_SPEED_BONUS_30 = 1093677123;
 	public const int ABILITY_ITEM_MOVE_SPEED_BONUS_45 = 1093677124;
+	public const int ABILITY_TRUESHOT_AURA_RANGER = 1093677125;
+	public const int ABILITY_ENTANGLING_ROOTS_RANGER = 1093677126;
 	public const int ITEM_HEALING_POTION_LEVEL_1 = 1227894832;
 	public const int ITEM_HEALING_POTION_LEVEL_2 = 1227894834;
 	public const int ITEM_SWORD_LEVEL_1 = 1227894835;
@@ -64,6 +66,8 @@ public static class Constants
 	public const int UPGRADE_MARKET_DAY = 1378889777;
 	public const int UPGRADE_LEVEL_3_WEAPONS = 1378889778;
 	public const int UPGRADE_LEVEL_3_ARMOR = 1378889779;
+	public const int UPGRADE_ENTAGLING_ROOTS = 1378889780;
+	public const int UPGRADE_TRUESHOT_AURA = 1378889781;
 	public const int ORDER_OFFSET = 851970;
 	public const int ORDER_WAND_ILLUSION = 852274;
 	public const int ORDER_ABSORB = 852529;

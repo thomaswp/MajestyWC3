@@ -72,7 +72,7 @@ namespace Source
 
 			try
 			{
-				Console.WriteLine("Hello, Azeroth.");
+				Console.WriteLine("Hello, Azeroth!");
 			}
 			catch (Exception ex)
 			{

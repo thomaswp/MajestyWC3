@@ -57,7 +57,7 @@ namespace Source.Units
             targetMaxHP = GetUpgradeMaxHP();
             int startHP = Unit.GetHP();
             float startFrac = Math.Min(startHP / targetMaxHP, 0.99f);
-            Console.WriteLine($"{startHP} / {targetMaxHP}: {startFrac}%");
+            //Console.WriteLine($"{startHP} / {targetMaxHP}: {startFrac}%");
             BlzSetUnitMaxHP(Unit, targetMaxHP);
             BlzSetUnitRealField(Unit, UNIT_RF_HP, startHP);
             upgradeTimer = CreateTimer();
@@ -65,7 +65,7 @@ namespace Source.Units
             {
                 float fraction = (Unit.GetHPFraction() - startFrac) / (1 - startFrac);
                 fraction = Math.Max(0, Math.Min(1, fraction));
-                Console.WriteLine($"{Unit.GetHPFraction() - startFrac} / {1 - startFrac} = {fraction}");
+                //Console.WriteLine($"{Unit.GetHPFraction() - startFrac} / {1 - startFrac} = {fraction}");
                 UnitSetUpgradeProgress(Unit, MathRound(fraction * 100 - 0.4f));
             });
             UpdateInfo();
@@ -99,6 +99,7 @@ namespace Source.Units
                 {
                     player owner = unit.GetPlayer();
                     SetUnitOwner(unit, owner.GetHumanForAI(), false);
+                    //Console.WriteLine("Registering building: " + unit.GetName());
                 }
             }, "registering building"));
 
@@ -126,7 +127,9 @@ namespace Source.Units
             {
                 unit unit = GetTriggerUnit();
                 Building building = Get(unit);
+                //Console.WriteLine("Finished upgrading: " + unit?.GetName());
                 if (building == null) return;
+                //Console.WriteLine("Building gold: " + building.Gold);
                 building.FinishUpgrade();
 
             }, "finish upgrade"));
