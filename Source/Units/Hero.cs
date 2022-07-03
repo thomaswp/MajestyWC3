@@ -54,6 +54,7 @@ namespace Source.Units
         protected abstract ItemInfo GetBaseWeaponID();
         protected abstract ItemInfo GetBaseArmorID();
 
+
         protected override IEnumerable<int> GetWantedItemsList()
         {
             for (int i = 0; i < 2; i++)
@@ -143,32 +144,6 @@ namespace Source.Units
             if (d == null) return;
             d.OnHomeAttackedBy(attacker, building);
             TryInterruptWith(d, false);
-        }
-
-        public static readonly int[] AbilityIDs = new int[]
-        {
-            Constants.ABILITY_ENTANGLING_ROOTS_RANGER,
-            Constants.ABILITY_TRUESHOT_AURA_RANGER,
-
-        };
-
-        protected void TryLearnAbilities()
-        {
-            // TODO: It seems there's no way to know if a hero has an ability available
-            // So we have can do one of the following:
-            // - Try leveling up all hero skills, and repeat if the available points goes down (downside: can't distribute points).
-            //   Would need to probably have this trigger on level up and research, rather than each frame (not a bad idea regardless)
-            // - Add the data redundantly to each Hero class (this is probably simpler). If the redundancy is annoying, could just add the skill
-            //   manually when researched, and not put it in the editor. This would also allow each guild to have separate tech.
-            int availablePoints = GetHeroSkillPoints(Unit);
-            if (availablePoints == 0) return;
-            Console.WriteLine($"Points {Unit.GetName()}: {availablePoints}");
-            foreach (int ability in AbilityIDs)
-            {
-                int level = GetUnitAbilityLevel(Unit, ability);
-                Console.WriteLine($"Level for {Unit.GetName()} of {ability}: {level}");
-                SelectHeroSkill(Unit, ability);
-            }
         }
 
         public override void Update()

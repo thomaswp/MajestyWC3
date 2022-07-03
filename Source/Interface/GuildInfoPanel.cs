@@ -22,9 +22,14 @@ namespace Source.Interface
             Dictionary<framehandle, UnitAI> iconToUnitMap = new();
             framehandle statusText = null;
 
-            trigger trigger = CreateTrigger();
-            TriggerAddAction(trigger, () =>
+            // Don't name this trigger! It won't work for some scope/transpiling issue
+            trigger clickTrigger = CreateTrigger();
+            TriggerAddAction(clickTrigger, () =>
             {
+                Console.WriteLine("CLICK!!!");
+                // TODO: This causes an error
+                var unit = UnitInfoGetUnit(GetTriggerPlayer());
+                Console.WriteLine(unit);
                 framehandle frame = BlzGetTriggerFrame();
                 if (!iconToUnitMap.TryGetValue(frame, out var ai)) return;
                 ai.Select();
@@ -44,7 +49,8 @@ namespace Source.Interface
                     BlzFrameSetVisible(info.infoFrame, visible);
                     if (!visible) continue;
                     UnitAI hero = heroes[i];
-                    BlzFrameSetText(info.labelFrame, hero.Name);
+                    int level = GetHeroLevel(hero.Unit);
+                    BlzFrameSetText(info.labelFrame, hero.Name + " [" + level + "]");
                     BlzFrameSetText(info.textFrame, hero.ProperName);
                     string name = hero.ProperName;
                     if (name.Length > MAX_NAME) name = name.Substring(0, MAX_NAME - 3) + "...";
@@ -81,10 +87,18 @@ namespace Source.Interface
                 int row = i / 2, col = i % 2;
                 BlzFrameSetPoint(heroInfo.iconFrame, FRAMEPOINT_TOPLEFT,
                     levelBar, FRAMEPOINT_TOPLEFT, 0.005f + col * 0.09f, -statusHeight - row * 0.032f);
-                // TODO: Figure out how to make click events register, or substitute icon w/ button or something
-                BlzTriggerRegisterFrameEvent(trigger, heroInfo.textFrame, FRAMEEVENT_MOUSE_DOWN);
 
+                // TODO: Apparently only buttons can be clicked (ok I guess that makes sense),
+                // which means you eithern need an invis button on top or to recreate this...
+                var button = BlzCreateSimpleFrame("CustomUnitInfoButtonTemplate", parent, 0);
+                BlzFrameSetPoint(button, FRAMEPOINT_TOPLEFT,
+                    heroInfo.iconFrame, FRAMEPOINT_TOPLEFT, 0, 0);
+
+                Console.WriteLine("making a trigger...");
+                BlzTriggerRegisterFrameEvent(clickTrigger, button, FRAMEEVENT_CONTROL_CLICK);
+                BlzTriggerRegisterFrameEvent(clickTrigger, heroInfo.iconFrame, FRAMEEVENT_CONTROL_CLICK);
             }
+            BlzTriggerRegisterFrameEvent(clickTrigger, parent, FRAMEEVENT_MOUSE_ENTER);
         }
     }
 }

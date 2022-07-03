@@ -33,5 +33,9 @@ namespace Source.Units
             return Constants.ITEM_PLATE_ARMOR_LEVEL_1;
         }
 
+        public override int[] GetAbilityIDs()
+        {
+            return new int[] { };
+        }
     }
 }

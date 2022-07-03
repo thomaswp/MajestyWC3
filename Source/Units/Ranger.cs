@@ -32,5 +32,14 @@ namespace Source.Units
         {
             return Constants.ITEM_HIDE_ARMOR_LEVEL_1;
         }
+        
+        public override int[] GetAbilityIDs()
+        {
+            return new int[] {
+                Constants.ABILITY_ENTANGLING_ROOTS_RANGER,
+                Constants.ABILITY_TRUESHOT_AURA_RANGER,
+                Constants.ABILITY_WIND_WALK_RANGER,
+            };
+        }
     }
 }

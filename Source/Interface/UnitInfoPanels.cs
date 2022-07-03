@@ -46,7 +46,7 @@ namespace Source.Interface
 #pragma warning disable CS0626 // Method, operator, or accessor is marked external and has no attributes on it
 
         /// @CSharpLua.Template = "AddUnitInfoPanel({0}, {1}, {2})"
-        public static extern framehandle AddUnitInfoPanel(framehandle frame, Action<unit> update, Func<unit> condition = null);
+        public static extern framehandle AddUnitInfoPanel(framehandle frame, Action<unit> update, Func<unit, bool> condition = null);
         /// @CSharpLua.Template = "AddUnitInfoPanelEx({0}, {1})"
         public static extern framehandle AddUnitInfoPanelEx(Action<unit> update, Func<unit, bool> condition = null);
 
@@ -65,7 +65,7 @@ namespace Source.Interface
         //public static extern object UnitInfoCreateCustomInfo(framehandle parent, string label, string texture, Func<unit, string> code);
 
         /// @CSharpLua.Template = "UnitInfoGetUnit({0})"
-        public static extern void UnitInfoGetUnit(player player = null);
+        public static extern unit UnitInfoGetUnit(player player = null);
 
         /// @CSharpLua.Template = "UnitInfoPanelSetPage({0}, {1})"
         public static extern void UnitInfoPanelSetPage(object newPage, bool updateWanted);

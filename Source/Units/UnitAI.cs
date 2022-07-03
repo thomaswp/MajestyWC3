@@ -134,6 +134,21 @@ namespace Source.Units
                 UnitAI ai = GetAI(unit);
                 if (ai != null) ai.OnDeath();
             });
+
+            PlayerUnitEvents.Register(PlayerUnitEvent.HeroTypeLevels, Util.TryAction(() =>
+            {
+                GetAI(GetTriggerUnit())?.TryLearnAbilities();
+            }, "UnitAI.HeroTypeLeves"));
+
+            PlayerUnitEvents.Register(PlayerUnitEvent.ResearchIsFinished, Util.TryAction(() =>
+            {
+                player player = GetTriggerPlayer();
+                foreach (UnitAI ai in unitMap.Values)
+                {
+                    if (ai.HumanPlayer == player) ai.TryLearnAbilities();
+                }
+            }, "UnitAI.HeroTypeLeves"));
+
         }
 
         public static int GetHeroCount(player player)
@@ -274,6 +289,32 @@ namespace Source.Units
         {
             if (s.Length == 0) return s;
             return s.Substring(0, 1).ToUpper() + s.Substring(1);
+        }
+
+        public virtual int[] GetAbilityIDs()
+        {
+            return new int[0];
+        }
+
+        protected void TryLearnAbilities()
+        {
+            int availablePoints = GetHeroSkillPoints(Unit);
+            if (availablePoints == 0) return;
+            Console.WriteLine($"Points {Unit.GetName()}: {availablePoints}");
+
+            int[] ids = GetAbilityIDs();
+            foreach (int ability in ids.OrderBy(id => GetUnitAbilityLevel(Unit, id)))
+            {
+                SelectHeroSkill(Unit, ability);
+                // Check if we succeded in learning the ability; if so stop
+                if (availablePoints > GetHeroSkillPoints(Unit))
+                {
+                    Console.WriteLine($"{Unit.GetName()} learned: {ability}");
+                    // Go again if there are more points left
+                    if (availablePoints > 2) TryLearnAbilities();
+                    break;
+                }
+            }
         }
 
         public virtual void Update()
