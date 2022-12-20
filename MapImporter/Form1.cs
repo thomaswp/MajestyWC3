@@ -21,6 +21,7 @@ namespace MapImporter
             @"Quests", @"QuestsMX"
         }.Select(s => MajestyDir + s).ToArray();
         const string TestMap = MajestyDir + @"Quests\Bell_book_candle.q";
+        //const string TestMap = MajestyDir + @"Quests\fertile_plain.q";
 
         public Form1()
         {
@@ -32,6 +33,12 @@ namespace MapImporter
             var stream = File.OpenRead(TestMap);
             Quest quest = new MapParser(stream).ParseQuest();
             Debug.WriteLine(quest.Summarize());
+            DumpOptions options = new DumpOptions();
+            //options.MaxLevel = 100;
+            //options.SetPropertiesOnly = false;
+            options.DumpStyle = DumpStyle.CSharp;
+            options.IndentSize = 4;
+            Debug.WriteLine(ObjectDumper.Dump(quest, options));
         }
     }
 }

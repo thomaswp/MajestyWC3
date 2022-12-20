@@ -93,11 +93,11 @@ namespace MapImporter
         Player ReadPlayer()
         {
             Player player = new Player();
-            player.id = ReadInt();
-            player.name = ReadString();
-            player.isActive = ReadInt() != 0;
-            player.startingGold = ReadInt();
-            player.startingCrystals = ReadInt();
+            player.Id = ReadInt();
+            player.Name = ReadString();
+            player.IsActive = ReadInt() != 0;
+            player.StartingGold = ReadInt();
+            player.StartingCrystals = ReadInt();
             int n = ReadInt();
             player.startingUnitPatternIDs = new int[n];
             for (int i = 0; i < n; i++)
@@ -163,16 +163,16 @@ namespace MapImporter
         T ReadPattern<T>(T pattern) where T : Pattern
         {
             ReadString(8);
-            pattern.name = ReadString();
-            pattern.id1 = ReadInt();
-            pattern.id2 = ReadInt();
-            pattern.terrainShortID = ReadString(4);
-            pattern.resolution = ReadInt();
+            pattern.Name = ReadString();
+            pattern.Id1 = ReadInt();
+            pattern.Id2 = ReadInt();
+            pattern.TerrainShortID = ReadString(4);
+            pattern.Resolution = ReadInt();
             int n = ReadInt();
-            pattern.instances = new PatternInstance[n];
+            pattern.Instances = new PatternInstance[n];
             for (int i = 0; i < n; i++)
             {
-                pattern.instances[i] = ReadUnitInstance();
+                pattern.Instances[i] = ReadUnitInstance();
             }
             int zero = ReadInt();
             Debug.Assert(zero == 0); // Seems to be a 0-terminator?
@@ -193,14 +193,14 @@ namespace MapImporter
         public PatternInstance ReadUnitInstance()
         {
             PatternInstance instance = new PatternInstance();
-            instance.id = ReadString(4);
+            instance.Id = ReadString(4);
             ReadInt();
-            instance.name = ReadString();
+            instance.Name = ReadString();
             int n = ReadInt();
-            instance.tiles = new char[n];
+            instance.Tiles = new char[n];
             for (int i = 0; i < n; i++)
             {
-                instance.tiles[i] = reader.ReadChar();
+                instance.Tiles[i] = reader.ReadChar();
             }
             //Debug.WriteLine(instance.Summarize());
             return instance;
@@ -221,32 +221,32 @@ namespace MapImporter
         public Quest ParseQuest()
         {
             quest = new Quest();
-            string version = ReadString(4);
-            Debug.WriteLine("Version: " + version);
+            quest.FileVersion = ReadString(4);
+            Debug.WriteLine("Version: " + quest.FileVersion);
             ReadInt();
             ReadInt();
             ReadInt();
-            string initFn = ReadString();
-            Debug.WriteLine("InitFn: " + initFn);
+            quest.InitFunction = ReadString();
+            Debug.WriteLine("InitFn: " + quest.InitFunction);
             ReadInt();
             ReadInt();
             ReadInt();
             ReadInt();
-            int width = ReadInt();
-            int height = ReadInt();
-            Debug.WriteLine("Dimensions: {0}x{1}", width, height);
+            quest.Width = ReadInt();
+            quest.Height = ReadInt();
+            Debug.WriteLine("Dimensions: {0}x{1}", quest.Width, quest.Height);
             ReadHeaderThingList();
 
-            quest.players = ReadPlayerList();
+            quest.Players = ReadPlayerList();
 
             ReadInt(); // unknown...
             ReadInt();
             ReadInt();
             ReadRegionList();
 
-            quest.unitPatterns = ReadUnitPatternList();
+            quest.UnitPatterns = ReadUnitPatternList();
 
-            quest.forcePatterns = ReadForcePatternList();
+            quest.ForcePatterns = ReadForcePatternList();
 
             Debug.Assert(reader.BaseStream.Position == reader.BaseStream.Length);
 
