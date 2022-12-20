@@ -23,4 +23,7 @@
 		<PackageReference Include="WCSharp.Shared" Version="2.0.0" />
 		<PackageReference Include="WCSharp.Sync" Version="2.0.0" />
 	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\MapLib\MapLib.csproj" />
+	</ItemGroup>
 </Project>

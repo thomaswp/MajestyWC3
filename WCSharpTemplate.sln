@@ -12,6 +12,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Launcher", "Launcher\Launch
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Source", "Source\Source.csproj", "{F8A8DD28-974D-46AC-91A8-324E2BD1FAE6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapLib", "MapLib\MapLib.csproj", "{624CFF7C-FB10-40F2-BFFD-23D487E390AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapImporter", "MapImporter\MapImporter.csproj", "{7E683705-BE95-4125-910B-5BC5022028C5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +30,14 @@ Global
 		{F8A8DD28-974D-46AC-91A8-324E2BD1FAE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8A8DD28-974D-46AC-91A8-324E2BD1FAE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8A8DD28-974D-46AC-91A8-324E2BD1FAE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{624CFF7C-FB10-40F2-BFFD-23D487E390AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{624CFF7C-FB10-40F2-BFFD-23D487E390AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{624CFF7C-FB10-40F2-BFFD-23D487E390AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{624CFF7C-FB10-40F2-BFFD-23D487E390AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E683705-BE95-4125-910B-5BC5022028C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E683705-BE95-4125-910B-5BC5022028C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E683705-BE95-4125-910B-5BC5022028C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E683705-BE95-4125-910B-5BC5022028C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
