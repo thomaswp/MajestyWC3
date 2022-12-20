@@ -7,6 +7,7 @@ namespace MapLib
     {
         public Player[] players;
         public UnitPattern[] unitPatterns;
+        public ForcePattern[] forcePatterns;
 
         public string Summarize()
         {
@@ -32,15 +33,15 @@ namespace MapLib
         }
     }
 
-    public class UnitPattern
+    public abstract class Pattern
     {
         public string name;
         public int id1, id2; //unknown
         public string terrainShortID;
         public int resolution;
-        public UnitPatternInstance[] instances;
+        public PatternInstance[] instances;
 
-        public string Summarize()
+        public virtual string Summarize()
         {
 
             return string.Format("{0} ({1}, {2}) [terrain={3}, rez={4}]:\n{5}",
@@ -49,7 +50,16 @@ namespace MapLib
         }
     }
 
-    public class UnitPatternInstance
+    public class UnitPattern : Pattern
+    {
+    }
+
+    public class ForcePattern : Pattern
+    {
+
+    }
+
+    public class PatternInstance
     {
         public string id;
         public string name;

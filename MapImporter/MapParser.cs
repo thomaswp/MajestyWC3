@@ -155,14 +155,13 @@ namespace MapImporter
             UnitPattern[] list = new UnitPattern[n];
             for (int i = 0; i < n; i++)
             {
-                list[i] = ReadUnitPattern();
+                list[i] = ReadPattern(new UnitPattern());
             }
             return list;
         }
 
-        UnitPattern ReadUnitPattern()
+        T ReadPattern<T>(T pattern) where T : Pattern
         {
-            UnitPattern pattern = new UnitPattern();
             ReadString(8);
             pattern.name = ReadString();
             pattern.id1 = ReadInt();
@@ -170,7 +169,7 @@ namespace MapImporter
             pattern.terrainShortID = ReadString(4);
             pattern.resolution = ReadInt();
             int n = ReadInt();
-            pattern.instances = new UnitPatternInstance[n];
+            pattern.instances = new PatternInstance[n];
             for (int i = 0; i < n; i++)
             {
                 pattern.instances[i] = ReadUnitInstance();
@@ -191,9 +190,9 @@ namespace MapImporter
             return pattern;
         }
 
-        public UnitPatternInstance ReadUnitInstance()
+        public PatternInstance ReadUnitInstance()
         {
-            UnitPatternInstance instance = new UnitPatternInstance();
+            PatternInstance instance = new PatternInstance();
             instance.id = ReadString(4);
             ReadInt();
             instance.name = ReadString();
@@ -205,6 +204,18 @@ namespace MapImporter
             }
             //Debug.WriteLine(instance.Summarize());
             return instance;
+        }
+
+        ForcePattern[] ReadForcePatternList()
+        {
+            int n = ReadInt();
+            Debug.WriteLine("{0} force patterns", n);
+            ForcePattern[] list = new ForcePattern[n];
+            for (int i = 0; i < n; i++)
+            {
+                list[i] = ReadPattern(new ForcePattern());
+            }
+            return list;
         }
 
         public Quest ParseQuest()
@@ -235,6 +246,9 @@ namespace MapImporter
 
             quest.unitPatterns = ReadUnitPatternList();
 
+            quest.forcePatterns = ReadForcePatternList();
+
+            Debug.Assert(reader.BaseStream.Position == reader.BaseStream.Length);
 
             return quest;
         }
