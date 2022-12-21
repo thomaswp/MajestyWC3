@@ -61,7 +61,7 @@ namespace MapImporter
                 CSharpTranspiler visitor = new CSharpTranspiler();
                 string transpiled = "" + visitor.Visit(code);
                 Debug.WriteLine(transpiled);
-                this.textBox1.Text = transpiled;
+                this.textBox1.Text = transpiled.Replace("\n", "\r\n");
                 
                 
             } catch (Exception ex)

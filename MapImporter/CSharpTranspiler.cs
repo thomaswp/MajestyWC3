@@ -12,17 +12,53 @@ namespace MapImporter
 {
     public class CSharpTranspiler : MGPLBaseVisitor<string>
     {
+        public override string Visit(IParseTree tree)
+        {
+            return base.Visit(tree);
+        }
 
         public override string VisitFunc_dec([NotNull] MGPLParser.Func_decContext context)
         {
-            Debug.WriteLine(context.NAME());
-            return base.VisitFunc_dec(context);
+            string code = string.Format("public static void {0}({1}){2}\n\n",
+                Visit(context.NAME()), Visit(context.func_variables()), Visit(context.func_body()));
+            //Debug.WriteLine(code);
+            return code;
+        }
+
+        public override string VisitTerminal(ITerminalNode node)
+        {
+            return node.GetText();
+        }
+
+        public override string VisitFunc_variables([NotNull] MGPLParser.Func_variablesContext context)
+        {
+            string code = string.Join(", ", context.func_var_dec().Select(n => Visit(n)));
+            return code;
         }
 
         public override string VisitFunc_var_dec([NotNull] MGPLParser.Func_var_decContext context)
         {
-            Debug.WriteLine(context.NAME());
-            return base.VisitFunc_var_dec(context);
+            string type = Visit(context.type());
+            type = type.Substring(0, 1).ToUpper() + type.Substring(1);
+            string code = string.Join(", ", context.NAME().Select(n => type + " " + Visit(n)));
+            return code;
+        }
+
+        public override string VisitFunc_body([NotNull] MGPLParser.Func_bodyContext context)
+        {
+            return Visit(context.block());
+        }
+
+        public override string VisitBlock([NotNull] MGPLParser.BlockContext context)
+        {
+
+            string code = "{\n" + string.Join("\n", context.stat().Select(s => Visit(s)));
+            if (context.laststat() != null)
+            {
+                code += "\n" + Visit(context.laststat());
+            }
+            code += "\n}";
+            return code;
         }
 
         public override string VisitStat([NotNull] MGPLParser.StatContext context)
@@ -33,10 +69,10 @@ namespace MapImporter
         public override string VisitChildren(IRuleNode node)
         {
             //Debug.WriteLine("{1} {2} \"{3}\"", node, node.GetType(), node.ChildCount, node.GetText());
-            if (node.ChildCount == 1)
-            {
-                return AggregateResult(node.GetText(), base.VisitChildren(node));
-            }
+            //if (node.ChildCount == 1)
+            //{
+            //    return AggregateResult(node.GetText(), base.VisitChildren(node));
+            //}
             return base.VisitChildren(node);
         }
 
@@ -44,11 +80,6 @@ namespace MapImporter
 
         protected override string AggregateResult(string aggregate, string nextResult)
         {
-            if (nextResult == null)
-            {
-                nextResult = "";
-            }
-
             return aggregate + nextResult;
         }
 
