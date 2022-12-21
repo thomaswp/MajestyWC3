@@ -52,16 +52,27 @@ namespace MapImporter
                 CommonTokenStream commonTokenStream = new CommonTokenStream(lexer);
                 MGPLParser parser = new MGPLParser(commonTokenStream);
 
+                parser.AddErrorListener(new ErrorListener());
+
                 var code = parser.chunk();
 
-                Visitor visitor = new Visitor();
-                visitor.Visit(code);
+                Debug.WriteLine(code.GetText());
+
+                CSharpTranspiler visitor = new CSharpTranspiler();
+                string transpiled = "" + visitor.Visit(code);
+                Debug.WriteLine(transpiled);
+                this.textBox1.Text = transpiled;
                 
                 
             } catch (Exception ex)
             {
                 Debug.WriteLine(ex.ToString());
             }
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
 
         }
     }
