@@ -1,4 +1,5 @@
-﻿using MapLib;
+﻿using Antlr4.Runtime;
+using MapLib;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,6 +23,8 @@ namespace MapImporter
         }.Select(s => MajestyDir + s).ToArray();
         const string TestMap = MajestyDir + @"Quests\Bell_book_candle.q";
         //const string TestMap = MajestyDir + @"Quests\fertile_plain.q";
+        //const string QuestLogic = MajestyDir + @"SDK\OriginalQuests\GPL\Rules\epic_quest_scripts.gpl";
+        const string QuestLogic = MajestyDir + @"SDK\OriginalQuests\GPL\Rules\epic_quest_scripts_sample.gpl";
 
         public Form1()
         {
@@ -39,6 +42,27 @@ namespace MapImporter
             options.DumpStyle = DumpStyle.CSharp;
             options.IndentSize = 4;
             Debug.WriteLine(ObjectDumper.Dump(quest, options));
+
+            string questLogic = File.ReadAllText(QuestLogic);
+
+            try
+            {
+                AntlrInputStream inputStream = new AntlrInputStream(questLogic);
+                MGPLLexer lexer = new MGPLLexer(inputStream);
+                CommonTokenStream commonTokenStream = new CommonTokenStream(lexer);
+                MGPLParser parser = new MGPLParser(commonTokenStream);
+
+                var code = parser.chunk();
+
+                Visitor visitor = new Visitor();
+                visitor.Visit(code);
+                
+                
+            } catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+            }
+
         }
     }
 }

@@ -38,6 +38,9 @@ namespace Source
 			//	//Console.WriteLine($"Constructing {(unit == null ? "NONE" : name)} of player {GetPlayerId(GetOwningPlayer(unit))}");
 			//});
 
+			var quest = new Maps.BellBookCandle().getQuest();
+			Console.WriteLine(quest.Summarize());
+
 			Info.Init();
 			UnitAI.Init();
 			Bounties.Init();
