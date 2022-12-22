@@ -12,6 +12,17 @@ namespace MapImporter
 {
     public class CSharpTranspiler : MGPLBaseVisitor<string>
     {
+        private static string CamelCase(string name)
+        {
+            return string.Join("", name.Split("_").Select(w => Capitalize(w)));
+        }
+
+        private static string Capitalize(string word)
+        {
+            if (word.Length == 0) return word;
+            return word.Substring(0, 1).ToUpper() + word.Substring(1).ToLower();
+        }
+
         public override string Visit(IParseTree tree)
         {
             return base.Visit(tree);
@@ -19,8 +30,8 @@ namespace MapImporter
 
         public override string VisitFunc_dec([NotNull] MGPLParser.Func_decContext context)
         {
-            string code = string.Format("public static void {0}({1}){2}\n\n",
-                Visit(context.NAME()), Visit(context.func_variables()), Visit(context.func_body()));
+            string code = string.Format("public static void {0}({1}) {2}\n\n",
+                CamelCase(Visit(context.NAME())), Visit(context.func_variables()), Visit(context.func_body()));
             //Debug.WriteLine(code);
             return code;
         }
@@ -39,7 +50,7 @@ namespace MapImporter
         public override string VisitFunc_var_dec([NotNull] MGPLParser.Func_var_decContext context)
         {
             string type = Visit(context.type());
-            type = type.Substring(0, 1).ToUpper() + type.Substring(1);
+            type = Capitalize(type);
             string code = string.Join(", ", context.NAME().Select(n => type + " " + Visit(n)));
             return code;
         }
@@ -60,6 +71,21 @@ namespace MapImporter
             code += "\n}";
             return code;
         }
+
+        public override string VisitVar([NotNull] MGPLParser.VarContext context)
+        {
+            string code = base.VisitVar(context);
+            if (code.StartsWith("$") || code.StartsWith("#")) code = code.Substring(1);
+            return code;
+        }
+
+        //public override string VisitFunctioncall([NotNull] MGPLParser.FunctioncallContext context)
+        //{
+        //    string code = string.Format("{0}{1}",
+        //        Capitalize(Visit(context.varOrExp())),
+
+        //    return base.VisitFunctioncall(context);
+        //}
 
         public override string VisitStat([NotNull] MGPLParser.StatContext context)
         {
