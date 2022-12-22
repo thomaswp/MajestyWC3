@@ -13,6 +13,11 @@ namespace MapImporter
     public class CSharpTranspiler : MGPLBaseVisitor<string>
     {
         private List<string> vars = new List<string>();
+        private List<string> storedStats = new List<string>();
+        private Dictionary<string, string> varSubs = new Dictionary<string, string>();
+        private int indentLevel = 0;
+        public List<string> funcCalls = new List<string>();
+        public List<string> constants = new List<string>();
 
         private static string CamelCase(string name)
         {
@@ -25,6 +30,11 @@ namespace MapImporter
             return word.Substring(0, 1).ToUpper() + word.Substring(1).ToLower();
         }
 
+        private string GetIndent()
+        {
+            return new string(' ', 4 * indentLevel);
+        }
+
         public override string Visit(IParseTree tree)
         {
             return base.Visit(tree);
@@ -33,28 +43,76 @@ namespace MapImporter
         public override string VisitFunc_dec([NotNull] MGPLParser.Func_decContext context)
         {
             vars.Clear();
-            string code = string.Format("public static void {0}({1}) {2}\n\n",
-                CamelCase(Visit(context.NAME())), Visit(context.func_variables()), Visit(context.func_body()));
+            string funcName = Visit(context.NAME());
+            //string funcNameCamel = CamelCase(funcName);
+            //varSubs.Add(funcName, funcNameCamel);
+            Visit(context.func_variables());
+            string code = string.Format("public static void {0}() {1}\n\n",
+                funcName, 
+                Visit(context.func_body()));
             //Debug.WriteLine(code);
+            return code;
+        }
+
+        public override string VisitIf_stat([NotNull] MGPLParser.If_statContext context)
+        {
+            var bodies = context.stat_or_block();
+            string code = string.Format("if ({0}) {1}",
+                Visit(context.exp()),
+                Visit(bodies[0]));
+            if (bodies.Length == 2)
+            {
+                code += string.Format(" else {0} ", Visit(bodies[1]));
+            }
+
+            return code;
+        }
+
+        public override string VisitStat_or_block([NotNull] MGPLParser.Stat_or_blockContext context)
+        {
+            string code;
+            if (context.block() != null)
+            {
+                code = Visit(context.block());
+            } 
+            else
+            {
+                code = " {\n";
+                indentLevel++;
+                code += Visit(context.stat());
+                indentLevel--;
+                code += string.Format("\n{0}", GetIndent()) + "}";
+            }
             return code;
         }
 
         public override string VisitTerminal(ITerminalNode node)
         {
-            return node.GetText();
+            string code = node.GetText();
+            if (code == "<EOF>") return "";
+            return code;
         }
 
         public override string VisitFunc_variables([NotNull] MGPLParser.Func_variablesContext context)
         {
-            string code = string.Join(", ", context.func_var_dec().Select(n => Visit(n)));
-            return code;
+            foreach (var line in context.func_var_dec().Select(n => Visit(n)))
+            {
+                storedStats.Add(line);
+            }
+            return "";
+        }
+
+        private string addVar(string var)
+        {
+            vars.Add(var);
+            return var;
         }
 
         public override string VisitFunc_var_dec([NotNull] MGPLParser.Func_var_decContext context)
         {
             string type = Visit(context.type());
             type = Capitalize(type);
-            string code = string.Join(", ", context.NAME().Select(n => type + " " + Visit(n)));
+            string code = type + " " + string.Join(", ", context.NAME().Select(n => addVar(Visit(n)))) + ";";
             return code;
         }
 
@@ -66,38 +124,68 @@ namespace MapImporter
         public override string VisitBlock([NotNull] MGPLParser.BlockContext context)
         {
 
-            string code = "{\n" + string.Join("\n", context.stat().Select(s => Visit(s)));
+            indentLevel++;
+            string code = "{\n";
+            foreach (var line in storedStats)
+            {
+                code += GetIndent() + line + "\n";
+            }
+            storedStats.Clear();
+            code += string.Join("\n", context.stat().Select(s => Visit(s)));
             if (context.laststat() != null)
             {
                 code += "\n" + Visit(context.laststat());
             }
-            code += "\n}";
+            indentLevel--;
+            code += "\n" + GetIndent() + "}";
             return code;
         }
 
         public override string VisitVar([NotNull] MGPLParser.VarContext context)
         {
             string code = base.VisitVar(context);
+            string codeKey = code.ToLower();
+            if (varSubs.ContainsKey(codeKey))
+            {
+                return varSubs[codeKey];
+            }
             if (code.StartsWith("$")) code = code.Substring(1);
             if (code.StartsWith("#"))
             {
-                code = "Constants." + code.Substring(1);
+                string v = code.Substring(1);
+                if (!constants.Contains(v)) constants.Add(v);
+                code = "Constants." + v;
             }
+            varSubs[codeKey] = code;
             return code;
         }
 
-        //public override string VisitFunctioncall([NotNull] MGPLParser.FunctioncallContext context)
-        //{
-        //    string code = string.Format("{0}{1}",
-        //        Capitalize(Visit(context.varOrExp())),
+        public override string VisitPropertyAccessor([NotNull] MGPLParser.PropertyAccessorContext context)
+        {
+            string code = string.Format("[{0}]", Visit(context.@string()));
+            return code;
+        }
 
-        //    return base.VisitFunctioncall(context);
-        //}
+        public override string VisitExp([NotNull] MGPLParser.ExpContext context)
+        {
+            string code = base.VisitExp(context);
+            string lowerCode = code.ToLower();
+            if (lowerCode == "true" || lowerCode == "false") return lowerCode;
+            return code;
+        }
+
+        public override string VisitFunctioncall([NotNull] MGPLParser.FunctioncallContext context)
+        {
+            string name = Visit(context.varOrExp());
+            if (!funcCalls.Contains(name)) funcCalls.Add(name);
+            string code = base.VisitFunctioncall(context);
+            return code;
+        }
 
         public override string VisitVarlist([NotNull] MGPLParser.VarlistContext context)
         {
             string code = Visit(context.var()[0]);
-            if (!vars.Contains(code))
+            if (!code.Contains("[") && !vars.Contains(code))
             {
                 vars.Add(code);
                 code = "var " + code;
@@ -107,7 +195,10 @@ namespace MapImporter
 
         public override string VisitStat([NotNull] MGPLParser.StatContext context)
         {
-            return base.VisitStat(context);
+            string code = string.Format("{0}{1}",
+                GetIndent(),
+                base.VisitStat(context));
+            return code;
         }
 
         public override string VisitChildren(IRuleNode node)

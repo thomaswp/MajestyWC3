@@ -276,6 +276,18 @@ public partial class MGPLBaseListener : IMGPLListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitExp([NotNull] MGPLParser.ExpContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MGPLParser.propertyAccessor"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterPropertyAccessor([NotNull] MGPLParser.PropertyAccessorContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MGPLParser.propertyAccessor"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitPropertyAccessor([NotNull] MGPLParser.PropertyAccessorContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MGPLParser.prefixexp"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

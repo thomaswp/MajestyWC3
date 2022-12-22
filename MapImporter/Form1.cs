@@ -56,14 +56,24 @@ namespace MapImporter
 
                 var code = parser.chunk();
 
-                Debug.WriteLine(code.GetText());
+                //Debug.WriteLine(code.GetText());
 
                 CSharpTranspiler visitor = new CSharpTranspiler();
                 string transpiled = "" + visitor.Visit(code);
-                Debug.WriteLine(transpiled);
+                //Debug.WriteLine(transpiled);
                 this.textBox1.Text = transpiled.Replace("\n", "\r\n");
-                
-                
+
+                foreach (string name in visitor.funcCalls)
+                {
+                    //Debug.WriteLine(string.Format("protected static void {0}()", name) + "\n{\n}\n");
+                }
+
+                foreach (string name in visitor.constants)
+                {
+                    Debug.WriteLine(string.Format("public static int {0};", name));
+                }
+
+
             } catch (Exception ex)
             {
                 Debug.WriteLine(ex.ToString());

@@ -108,8 +108,13 @@ exp
     | exp operatorAnd exp
     | exp operatorOr exp
     | exp operatorBitwise exp
-    | NAME '\'s' string
+    | NAME propertyAccessor
     ;
+	
+propertyAccessor
+	: '\'s' string
+	;
+
 
 prefixexp
     : varOrExp nameAndArgs*
@@ -128,7 +133,7 @@ var
     ;
 
 varSuffix
-    : ('[' exp ']' | '\'s' string)
+    : ('[' exp ']' | propertyAccessor)
     ;
 
 nameAndArgs

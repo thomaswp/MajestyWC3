@@ -231,6 +231,16 @@ public interface IMGPLListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitExp([NotNull] MGPLParser.ExpContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MGPLParser.propertyAccessor"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterPropertyAccessor([NotNull] MGPLParser.PropertyAccessorContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MGPLParser.propertyAccessor"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitPropertyAccessor([NotNull] MGPLParser.PropertyAccessorContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MGPLParser.prefixexp"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

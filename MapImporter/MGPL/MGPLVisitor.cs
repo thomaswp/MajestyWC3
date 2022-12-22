@@ -152,6 +152,12 @@ public interface IMGPLVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitExp([NotNull] MGPLParser.ExpContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="MGPLParser.propertyAccessor"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPropertyAccessor([NotNull] MGPLParser.PropertyAccessorContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="MGPLParser.prefixexp"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
