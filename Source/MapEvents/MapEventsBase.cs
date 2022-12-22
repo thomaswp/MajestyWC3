@@ -8,7 +8,7 @@ namespace Source.MapEvents
 {
     class MapEventsBase
     {
-        protected static void disableunittype(string type)
+        protected static void Disableunittype(string type)
         {
 
         }
@@ -18,32 +18,32 @@ namespace Source.MapEvents
             return null;
         }
 
-        protected static void Setup_Quest_Music(Agent agent)
+        protected static void SetupQuestMusic(Agent agent)
         {
         }
 
-        protected static void ElvesVoice_setOperative(int isActive)
+        protected static void ElvesvoiceSetoperative(int isActive)
         {
         }
 
-        protected static void dwarvesVoice_setOperative(int isActive)
+        protected static void DwarvesvoiceSetoperative(int isActive)
         {
         }
 
-        protected static void messageflag(Agent unit, int value)
+        protected static void Messageflag(Agent unit, int value)
         {
         }
 
-        protected static void setup_random_treasure(int number, int distributionType)
+        protected static void SetupRandomTreasure(int number, int distributionType)
         {
         }
 
-        protected static void listobjects(Agent agent, string type, int limit, out List holdingList, int searchType, int otherconst = 0)
+        protected static void ListObjects(Agent agent, string type, int limit, out List holdingList, int searchType = 0, int otherconst = 0)
         {
             holdingList = null;
         }
 
-        protected static void post_message(Agent agent, int postType)
+        protected static void PostMessage(Agent agent, int postType)
         {
         }
 
@@ -52,72 +52,98 @@ namespace Source.MapEvents
 
         }
 
-        protected static void enableunittype(string type)
+        protected static void Enableunittype(string type)
         {
         }
 
-        protected static void Play_Endgame_Music(Agent agent)
+        protected static void PlayEndgameMusic(Agent agent)
         {
         }
 
-        protected static void Reset_Quest_Music(Agent agent)
+        protected static void ResetQuestMusic(Agent agent)
         {
         }
 
-        protected static void declarevictory(Agent agent, Agent agent2 = null)
+        protected static void Declarevictory(Agent agent, Agent agent2 = null)
         {
         }
 
-        protected static void KillThread(GPLAction action)
+        protected static void Killthread(GPLAction action)
         {
         }
 
-        protected static void CreateNewInventoryItem(int itemtype, Agent location)
+        protected static void Createnewinventoryitem(int itemtype, Agent location)
         {
         }
 
-        protected static void setup_starting_treasure(List list, int number)
+        protected static void SetupStartingTreasure(List list, int number, int number2)
         {
         }
 
-        protected static List listtitles(List list, string title)
+        protected static List ListTitles(List list, string title)
         {
             return list;
         }
 
-        protected static List ListPalaces()
+        protected static List Listpalaces()
         {
             return null;
         }
 
-        protected static Agent listmember(List list, int index)
+        protected static Agent ListMember(List list, int index)
         {
             return null;
         }
 
-        protected static List listsubtypes(List list, string type)
+        protected static List ListSubtypes(List list, string type)
         {
             return null;
         }
 
-        protected static List listcompleted(List list)
+        protected static List ListCompleted(List list)
         {
             return null;
         }
 
-        protected static int listsize(List list)
+        protected static int ListSize(List list)
         {
             return 0;
         }
 
-        protected static int getattribute(Agent agent, int index)
+        protected static int Getattribute(Agent agent, int index)
         {
             return 0;
         }
 
-        protected static int random_time(int max)
+        protected static int RandomTime(int max)
         {
             return 0;
+        }
+
+        protected static bool Ismessageflagpresent(int where)
+        {
+            return false;
+        }
+
+        protected static void EndGameScriptEasy()
+        {
+            // 1 - 2 monsters every 10ish days
+            Agent AIRootAgent;
+
+            AIRootAgent = RetrieveAgent("GplAIRoot");
+            SpawnMonsters(3, Constants.easyMonster);
+
+	        Setthreadinterval(AIRootAgent["VictoryCondition2"], RandomTime(600000));
+        }
+
+        protected static void SpawnMonsters(int n, int type)
+        {
+
+        }
+
+        protected static void Setthreadinterval(object action, int time)
+        {
+
         }
     }
 }

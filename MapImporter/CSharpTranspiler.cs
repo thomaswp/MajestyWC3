@@ -21,6 +21,15 @@ namespace MapImporter
 
         private static string CamelCase(string name)
         {
+            //string firstChar = name.Substring(0, 1);
+            //string rest = name.Substring(1);
+            //if (firstChar == firstChar.ToUpper() && rest != rest.ToLower())
+            //{
+            //    // If the name starts with a capital letter and the rest isn't lowercase
+            //    // it's already as good as it'll get.
+            //    return name;
+            //}
+            if (name.ToLower().StartsWith("list")) name = "List_" + name.Substring(4);
             return string.Join("", name.Split("_").Select(w => Capitalize(w)));
         }
 
@@ -44,11 +53,11 @@ namespace MapImporter
         {
             vars.Clear();
             string funcName = Visit(context.NAME());
-            //string funcNameCamel = CamelCase(funcName);
-            //varSubs.Add(funcName, funcNameCamel);
+            string funcNameCamel = CamelCase(funcName);
+            varSubs.Add(funcName, funcNameCamel);
             Visit(context.func_variables());
             string code = string.Format("public static void {0}() {1}\n\n",
-                funcName, 
+                funcNameCamel, 
                 Visit(context.func_body()));
             //Debug.WriteLine(code);
             return code;
@@ -105,14 +114,24 @@ namespace MapImporter
         private string addVar(string var)
         {
             vars.Add(var);
+            varSubs[var.ToLower()] = var;
             return var;
         }
 
         public override string VisitFunc_var_dec([NotNull] MGPLParser.Func_var_decContext context)
         {
             string type = Visit(context.type());
-            type = Capitalize(type);
-            string code = type + " " + string.Join(", ", context.NAME().Select(n => addVar(Visit(n)))) + ";";
+            string suffix = "";
+            if (type.ToLower() == "integer")
+            {
+                type = "int";
+                suffix = " = 0";
+            }
+            else
+            {
+                type = Capitalize(type);
+            }
+            string code = type + " " + string.Join(", ", context.NAME().Select(n => addVar(Visit(n)) + suffix)) + ";";
             return code;
         }
 
@@ -149,8 +168,17 @@ namespace MapImporter
             {
                 return varSubs[codeKey];
             }
-            if (code.StartsWith("$")) code = code.Substring(1);
-            if (code.StartsWith("#"))
+            if (code.StartsWith("$"))
+            {
+                code = CamelCase(code.Substring(1));
+                // Hard to distinguish delegates... may have to do manually
+                //if (!code.Contains("[") && !code.Contains("("))
+                //{
+                //    varSubs[codeKey] = code;
+                //    return string.Format("new Action(() => {0}())", code);
+                //}
+            }
+            else if (code.StartsWith("#"))
             {
                 string v = code.Substring(1);
                 if (!constants.Contains(v)) constants.Add(v);

@@ -307,7 +307,7 @@ COMMENT
     ;
 
 LINE_COMMENT
-    : '//' SingleLineInputCharacter* -> channel(HIDDEN)
+    : '//' SingleLineInputCharacter* -> channel(2)
     ;
 
 WS

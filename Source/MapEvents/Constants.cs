@@ -8,6 +8,7 @@ namespace Source.MapEvents
 {
     public class Constants
     {
+        public static int easyMonster;
         public static int QNumber_Barren_Waste;
         public static int Message_Barren_start;
         public static int default_spawn_treasure_dist;
