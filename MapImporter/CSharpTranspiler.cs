@@ -12,6 +12,8 @@ namespace MapImporter
 {
     public class CSharpTranspiler : MGPLBaseVisitor<string>
     {
+        private List<string> vars = new List<string>();
+
         private static string CamelCase(string name)
         {
             return string.Join("", name.Split("_").Select(w => Capitalize(w)));
@@ -30,6 +32,7 @@ namespace MapImporter
 
         public override string VisitFunc_dec([NotNull] MGPLParser.Func_decContext context)
         {
+            vars.Clear();
             string code = string.Format("public static void {0}({1}) {2}\n\n",
                 CamelCase(Visit(context.NAME())), Visit(context.func_variables()), Visit(context.func_body()));
             //Debug.WriteLine(code);
@@ -75,7 +78,11 @@ namespace MapImporter
         public override string VisitVar([NotNull] MGPLParser.VarContext context)
         {
             string code = base.VisitVar(context);
-            if (code.StartsWith("$") || code.StartsWith("#")) code = code.Substring(1);
+            if (code.StartsWith("$")) code = code.Substring(1);
+            if (code.StartsWith("#"))
+            {
+                code = "Constants." + code.Substring(1);
+            }
             return code;
         }
 
@@ -86,6 +93,17 @@ namespace MapImporter
 
         //    return base.VisitFunctioncall(context);
         //}
+
+        public override string VisitVarlist([NotNull] MGPLParser.VarlistContext context)
+        {
+            string code = Visit(context.var()[0]);
+            if (!vars.Contains(code))
+            {
+                vars.Add(code);
+                code = "var " + code;
+            }
+            return code;
+        }
 
         public override string VisitStat([NotNull] MGPLParser.StatContext context)
         {
