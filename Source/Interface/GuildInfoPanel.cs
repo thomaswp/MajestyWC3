@@ -28,10 +28,12 @@ namespace Source.Interface
             {
                 Console.WriteLine("CLICK!!!");
                 // TODO: This causes an error
-                var unit = UnitInfoGetUnit(GetTriggerPlayer());
-                Console.WriteLine(unit);
+                //var unit = UnitInfoGetUnit(GetTriggerPlayer());
+                //Console.WriteLine(unit);
                 framehandle frame = BlzGetTriggerFrame();
+                Console.WriteLine("!!");
                 if (!iconToUnitMap.TryGetValue(frame, out var ai)) return;
+                Console.WriteLine(ai.Name);
                 ai.Select();
             });
 

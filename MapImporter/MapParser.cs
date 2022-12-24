@@ -99,10 +99,10 @@ namespace MapImporter
             player.StartingGold = ReadInt();
             player.StartingCrystals = ReadInt();
             int n = ReadInt();
-            player.startingUnitPatternIDs = new int[n];
+            player.StartingUnitPatternIDs = new int[n];
             for (int i = 0; i < n; i++)
             {
-                player.startingUnitPatternIDs[i] = ReadInt();
+                player.StartingUnitPatternIDs[i] = ReadInt();
             }
             Debug.WriteLine(player.Summarize());
             return player;

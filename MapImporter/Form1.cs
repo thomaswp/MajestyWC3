@@ -41,7 +41,9 @@ namespace MapImporter
             //options.SetPropertiesOnly = false;
             options.DumpStyle = DumpStyle.CSharp;
             options.IndentSize = 4;
-            Debug.WriteLine(ObjectDumper.Dump(quest, options));
+            //Debug.WriteLine(ObjectDumper.Dump(quest, options));
+
+            new MapLib.Layout(new TestLayout(2, 1234), quest).Start();
 
             string questLogic = File.ReadAllText(QuestLogic);
 
@@ -70,7 +72,7 @@ namespace MapImporter
 
                 foreach (string name in visitor.constants)
                 {
-                    Debug.WriteLine(string.Format("public static int {0};", name));
+                    //Debug.WriteLine(string.Format("public static int {0};", name));
                 }
 
 

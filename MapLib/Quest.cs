@@ -34,13 +34,13 @@ namespace MapLib
         public bool IsActive { get; set; }
         public int StartingGold { get; set; }
         public int StartingCrystals { get; set; }
-        public int[] startingUnitPatternIDs { get; set; }
+        public int[] StartingUnitPatternIDs { get; set; }
 
         public string Summarize()
         {
             return string.Format("{1} (id={0}; {2}): [{3}g, {4}c] has {5}",
                 Id, Name, IsActive ? "active" : "inactive", StartingGold, StartingCrystals,
-                string.Join(", ", startingUnitPatternIDs)
+                string.Join(", ", StartingUnitPatternIDs)
                 );
         }
     }

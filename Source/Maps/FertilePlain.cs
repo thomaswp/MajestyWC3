@@ -21,7 +21,7 @@ namespace Source.Maps
                         IsActive = true,
                         StartingGold = 40000,
                         StartingCrystals = 6000,
-                        startingUnitPatternIDs = new int[]
+                        StartingUnitPatternIDs = new int[]
                         {
                             0
                         }
@@ -33,7 +33,7 @@ namespace Source.Maps
                         IsActive = false,
                         StartingGold = 0,
                         StartingCrystals = 0,
-                        startingUnitPatternIDs = new int[]
+                        StartingUnitPatternIDs = new int[]
                         {
                         }
                     },
@@ -44,7 +44,7 @@ namespace Source.Maps
                         IsActive = false,
                         StartingGold = 0,
                         StartingCrystals = 0,
-                        startingUnitPatternIDs = new int[]
+                        StartingUnitPatternIDs = new int[]
                         {
                         }
                     },
@@ -55,7 +55,7 @@ namespace Source.Maps
                         IsActive = false,
                         StartingGold = 0,
                         StartingCrystals = 0,
-                        startingUnitPatternIDs = new int[]
+                        StartingUnitPatternIDs = new int[]
                         {
                         }
                     },
@@ -66,7 +66,7 @@ namespace Source.Maps
                         IsActive = false,
                         StartingGold = 0,
                         StartingCrystals = 0,
-                        startingUnitPatternIDs = new int[]
+                        StartingUnitPatternIDs = new int[]
                         {
                         }
                     },
@@ -77,7 +77,7 @@ namespace Source.Maps
                         IsActive = false,
                         StartingGold = 0,
                         StartingCrystals = 0,
-                        startingUnitPatternIDs = new int[]
+                        StartingUnitPatternIDs = new int[]
                         {
                         }
                     },
@@ -88,7 +88,7 @@ namespace Source.Maps
                         IsActive = false,
                         StartingGold = 0,
                         StartingCrystals = 0,
-                        startingUnitPatternIDs = new int[]
+                        StartingUnitPatternIDs = new int[]
                         {
                         }
                     },
@@ -99,7 +99,7 @@ namespace Source.Maps
                         IsActive = true,
                         StartingGold = 0,
                         StartingCrystals = 0,
-                        startingUnitPatternIDs = new int[]
+                        StartingUnitPatternIDs = new int[]
                         {
                             1,
                             2,

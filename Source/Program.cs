@@ -38,9 +38,6 @@ namespace Source
 			//	//Console.WriteLine($"Constructing {(unit == null ? "NONE" : name)} of player {GetPlayerId(GetOwningPlayer(unit))}");
 			//});
 
-			var quest = new Maps.BellBookCandle().getQuest();
-			Console.WriteLine(quest.Summarize());
-
 			Info.Init();
 			UnitAI.Init();
 			Bounties.Init();
@@ -49,8 +46,7 @@ namespace Source
 			Guilds.Init();
 			Buildings.Init();
 
-            SetPlayerState(GetLocalPlayer(), PLAYER_STATE_RESOURCE_GOLD, 50000);
-			SetPlayerState(GetLocalPlayer(), PLAYER_STATE_RESOURCE_LUMBER, 1000);
+			new MapLib.Layout(new Maps.MapMaker(), new Maps.BellBookCandle().getQuest()).Start();
 
 			ForGroup(GetUnitsOfPlayerAll(Player(0)), () =>
 			{
@@ -66,7 +62,7 @@ namespace Source
 
 			try
 			{
-				Spawners.SpawCamps();
+				//Spawners.SpawCamps();
 			}
 			catch (Exception e)
             {
