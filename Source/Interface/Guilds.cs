@@ -36,7 +36,7 @@ namespace Source.Interface
 
         public static void Init()
         {
-            PlayerUnitEvents.Register(PlayerUnitEvent.PlayerSelectsUnitType, Util.TryAction(() =>
+            PlayerUnitEvents.Register(PlayerEvent.SelectsUnit, Util.TryAction(() =>
             {
                 unit building = GetTriggerUnit();
                 //Console.WriteLine($"Start select: {building.GetName()}");
@@ -61,7 +61,7 @@ namespace Source.Interface
                 //OwnUnits();
             }, "selecting guild"));
 
-            PlayerUnitEvents.Register(PlayerUnitEvent.PlayerDeselectsUnitType, Util.TryAction(() =>
+            PlayerUnitEvents.Register(PlayerEvent.DeselectsUnit, Util.TryAction(() =>
             {
                 unit building = GetTriggerUnit();
                 //Console.WriteLine($"Start deselect: {building.GetName()}");
@@ -75,7 +75,7 @@ namespace Source.Interface
             }, "deselecting guild"));
 
             // Stop a unit training when there's no room, regardless of food cap
-            PlayerUnitEvents.Register(PlayerUnitEvent.UnitTypeStartsBeingTrained, Util.TryAction(() =>
+            PlayerUnitEvents.Register(UnitTypeEvent.StartsBeingTrained, Util.TryAction(() =>
             {
                 unit building = GetTriggerUnit();
                 //Console.WriteLine($"Start construct: {building.GetName()}");
@@ -85,7 +85,7 @@ namespace Source.Interface
                 CheckCancel(building);
             }, "recruiting at guild"));
 
-            PlayerUnitEvents.Register(PlayerUnitEvent.SpellCast, Util.TryAction(() =>
+            PlayerUnitEvents.Register(SpellEvent.Cast, Util.TryAction(() =>
             {
                 int index = selectAbilityIDs.IndexOf(GetSpellAbilityId());
                 if (index < 0) return;

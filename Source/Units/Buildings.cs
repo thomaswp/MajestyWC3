@@ -91,7 +91,7 @@ namespace Source.Units
 
         public static void Init()
         {
-            PlayerUnitEvents.Register(PlayerUnitEvent.UnitTypeFinishesBeingConstructed, Util.TryAction(() =>
+            PlayerUnitEvents.Register(UnitTypeEvent.FinishesBeingConstructed, Util.TryAction(() =>
             {
                 // TODO: Handle upgrades?
                 unit unit = GetTriggerUnit();
@@ -103,7 +103,7 @@ namespace Source.Units
                 }
             }, "registering building"));
 
-            PlayerUnitEvents.Register(PlayerUnitEvent.UnitTypeStartsBeingConstructed, Util.TryAction(() =>
+            PlayerUnitEvents.Register(UnitTypeEvent.StartsBeingConstructed, Util.TryAction(() =>
             {
                 unit unit = GetTriggerUnit();
                 if (!unit.IsStructure()) return;
@@ -114,7 +114,7 @@ namespace Source.Units
 
             }, "start construction"));
 
-            PlayerUnitEvents.Register(PlayerUnitEvent.UnitTypeStartsUpgrade, Util.TryAction(() =>
+            PlayerUnitEvents.Register(UnitTypeEvent.StartsUpgrade, Util.TryAction(() =>
             {
                 unit unit = GetTriggerUnit();
                 Building building = Get(unit);
@@ -123,7 +123,7 @@ namespace Source.Units
 
             }, "start upgrade"));
 
-            PlayerUnitEvents.Register(PlayerUnitEvent.UnitTypeFinishesUpgrade, Util.TryAction(() =>
+            PlayerUnitEvents.Register(UnitTypeEvent.FinishesUpgrade, Util.TryAction(() =>
             {
                 unit unit = GetTriggerUnit();
                 Building building = Get(unit);
@@ -134,7 +134,7 @@ namespace Source.Units
 
             }, "finish upgrade"));
 
-            PlayerUnitEvents.Register(PlayerUnitEvent.UnitTypeDies, Util.TryAction(() =>
+            PlayerUnitEvents.Register(UnitTypeEvent.Dies, Util.TryAction(() =>
             {
                 unit building = GetTriggerUnit();
                 TryRemove(building);

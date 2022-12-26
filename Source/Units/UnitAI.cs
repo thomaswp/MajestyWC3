@@ -84,7 +84,7 @@ namespace Source.Units
 
         public static void Init()
         {
-            PlayerUnitEvents.Register(PlayerUnitEvent.UnitTypeIsCreated, () =>
+            PlayerUnitEvents.Register(UnitTypeEvent.IsCreated, () =>
             {
                 unit unit = GetTriggerUnit();
                 try
@@ -112,7 +112,7 @@ namespace Source.Units
                 }
             });
 
-            PlayerUnitEvents.Register(PlayerUnitEvent.UnitTypeFinishesTraining, () =>
+            PlayerUnitEvents.Register(UnitTypeEvent.FinishesTraining, () =>
             {
                 //Console.WriteLine($"Trained: {GetTriggerUnit().GetName()}, {GetTrainedUnit().GetName()}");
                 unit unit = GetTrainedUnit();
@@ -123,8 +123,8 @@ namespace Source.Units
 
             AnyUnitEvents.Register(EVENT_PLAYER_UNIT_ATTACKED, () =>
             {
-                Trigger(PlayerUnitEvent.UnitTypeAttacks, GetAttacker());
-                Trigger(PlayerUnitEvent.UnitTypeIsAttacked, GetAttackedUnitBJ());
+                Trigger(UnitTypeEvent.Attacks, GetAttacker());
+                Trigger(UnitTypeEvent.IsAttacked, GetAttackedUnitBJ());
                 TriggerHomeAttacked(GetAttackedUnitBJ(), GetAttacker());
             });
 
@@ -135,12 +135,12 @@ namespace Source.Units
                 if (ai != null) ai.OnDeath();
             });
 
-            PlayerUnitEvents.Register(PlayerUnitEvent.HeroTypeLevels, Util.TryAction(() =>
+            PlayerUnitEvents.Register(HeroTypeEvent.Levels, Util.TryAction(() =>
             {
                 GetAI(GetTriggerUnit())?.TryLearnAbilities();
             }, "UnitAI.HeroTypeLeves"));
 
-            PlayerUnitEvents.Register(PlayerUnitEvent.ResearchIsFinished, Util.TryAction(() =>
+            PlayerUnitEvents.Register(ResearchEvent.IsFinished, Util.TryAction(() =>
             {
                 player player = GetTriggerPlayer();
                 foreach (UnitAI ai in unitMap.Values)
@@ -570,7 +570,7 @@ namespace Source.Units
 
         }
 
-        public static void Trigger(PlayerUnitEvent ev, unit unit)
+        public static void Trigger(UnitTypeEvent ev, unit unit)
         {
             if (!unitMap.ContainsKey(unit)) return;
             UnitAI ai = unitMap[unit];
@@ -578,10 +578,10 @@ namespace Source.Units
             {
                 switch (ev)
                 {
-                    case PlayerUnitEvent.UnitTypeAttacks:
+                    case UnitTypeEvent.Attacks:
                         ai.OnAttack(GetAttackedUnitBJ());
                         break;
-                    case PlayerUnitEvent.UnitTypeIsAttacked:
+                    case UnitTypeEvent.IsAttacked:
                         ai.OnAttacked(GetAttacker());
                         break;
 

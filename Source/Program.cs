@@ -12,7 +12,8 @@ namespace Source
 	public static class Program
 	{
 
-		
+		const string version = "0.0.1";
+
 		public static void Main()
 		{
 			// Delay a little since some stuff can break otherwise
@@ -38,6 +39,8 @@ namespace Source
 			//	//Console.WriteLine($"Constructing {(unit == null ? "NONE" : name)} of player {GetPlayerId(GetOwningPlayer(unit))}");
 			//});
 
+
+
 			Info.Init();
 			UnitAI.Init();
 			Bounties.Init();
@@ -46,9 +49,12 @@ namespace Source
 			Guilds.Init();
 			Buildings.Init();
 
-			new MapLib.Layout(new Maps.MapMaker(), new Maps.BellBookCandle().getQuest()).Start();
 
-			ForGroup(GetUnitsOfPlayerAll(Player(0)), () =>
+            SetPlayerState(GetLocalPlayer(), PLAYER_STATE_RESOURCE_GOLD, 50000);
+            SetPlayerState(GetLocalPlayer(), PLAYER_STATE_RESOURCE_LUMBER, 1000);
+            //new MapLib.Layout(new Maps.MapMaker(), new Maps.BellBookCandle().getQuest()).Start();
+
+            ForGroup(GetUnitsOfPlayerAll(Player(0)), () =>
 			{
 				unit unit = GetEnumUnit();
 				UnitAI.RegisterUnit(unit);
@@ -62,7 +68,7 @@ namespace Source
 
 			try
 			{
-				//Spawners.SpawCamps();
+				Spawners.SpawCamps();
 			}
 			catch (Exception e)
             {
@@ -71,7 +77,7 @@ namespace Source
 
 			try
 			{
-				Console.WriteLine("Hello, Azeroth!");
+				Console.WriteLine("Welcome to WCMajesty v" + version);
 			}
 			catch (Exception ex)
 			{

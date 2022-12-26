@@ -53,8 +53,8 @@ namespace Source.Maps
         {
             if (playerID == Layout.MONSTER_OWNER_ID || playerID == Layout.NEUTRAL_OWNER_ID) return;
             player player = GetPlayerByID(playerID);
-            SetPlayerState(player, PLAYER_STATE_RESOURCE_GOLD, 50000);
-            SetPlayerState(player, PLAYER_STATE_RESOURCE_LUMBER, 1000);
+            SetPlayerState(player, PLAYER_STATE_RESOURCE_GOLD, gold);
+            SetPlayerState(player, PLAYER_STATE_RESOURCE_LUMBER, crystals);
         }
 
         public bool TryPlaceUnit(string name, string id, int ownerID, Point location)

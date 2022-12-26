@@ -21,7 +21,7 @@ namespace Source.Interface
 
         public static void Init()
         {
-            PlayerUnitEvents.Register(PlayerUnitEvent.SpellEffect, () =>
+            PlayerUnitEvents.Register(SpellEvent.Effect, () =>
             {
                 try
                 {
@@ -37,7 +37,7 @@ namespace Source.Interface
                 }
             }, Constants.ABILITY_INCREASE_BOUNTY);
 
-            PlayerUnitEvents.Register(PlayerUnitEvent.SpellCast, () =>
+            PlayerUnitEvents.Register(SpellEvent.Cast, () =>
             {
                 Console.WriteLine("Decrease..." + GetSpellAbilityId());
                 try
@@ -56,7 +56,7 @@ namespace Source.Interface
                 }
             }, Constants.ABILITY_DECREASE_BOUNTY);
 
-            PlayerUnitEvents.Register(PlayerUnitEvent.SpellCast, () =>
+            PlayerUnitEvents.Register(SpellEvent.Cast, () =>
             {
                 try
                 {
@@ -71,7 +71,7 @@ namespace Source.Interface
                 }
             }, Constants.ABILITY_DESTROY_FLAG);
 
-            PlayerUnitEvents.Register(PlayerUnitEvent.SpellCast, () =>
+            PlayerUnitEvents.Register(SpellEvent.Cast, () =>
             {
                 unit target = GetSpellTargetUnit();
                 unit caster = GetTriggerUnit();
@@ -96,19 +96,19 @@ namespace Source.Interface
                 });
             }, Constants.ABILITY_ATTACK_FLAG);
 
-            PlayerUnitEvents.Register(PlayerUnitEvent.UnitTypeDies, () =>
+            PlayerUnitEvents.Register(UnitTypeEvent.Dies, () =>
             {
                 DestroyText(GetTriggerUnit());
             }, Constants.UNIT_EXPLORE_FLAG);
 
-            PlayerUnitEvents.Register(PlayerUnitEvent.UnitTypeDies, () =>
+            PlayerUnitEvents.Register(UnitTypeEvent.Dies, () =>
             {
                 unit flag = GetTriggerUnit();
                 DestroyText(flag);
                 bountyTargetMap.Remove(flag);
             }, Constants.UNIT_ATTACK_FLAG);
 
-            PlayerUnitEvents.Register(PlayerUnitEvent.UnitTypeIsSelected, () =>
+            PlayerUnitEvents.Register(UnitTypeEvent.IsSelected, () =>
             {
                 unit flag = GetTriggerUnit();
                 if (updateTimerMap.ContainsKey(flag)) return;
@@ -128,7 +128,7 @@ namespace Source.Interface
                 });
             }, Constants.UNIT_ATTACK_FLAG);
 
-            PlayerUnitEvents.Register(PlayerUnitEvent.UnitTypeIsDeselected, () =>
+            PlayerUnitEvents.Register(UnitTypeEvent.IsDeselected, () =>
             {
                 //Console.WriteLine("Deselect");
                 unit flag = GetTriggerUnit();
