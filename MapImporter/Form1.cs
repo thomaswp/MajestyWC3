@@ -21,8 +21,8 @@ namespace MapImporter
         {
             @"Quests", @"QuestsMX"
         }.Select(s => MajestyDir + s).ToArray();
-        const string TestMap = MajestyDir + @"Quests\Bell_book_candle.q";
-        //const string TestMap = MajestyDir + @"Quests\fertile_plain.q";
+        //const string TestMap = MajestyDir + @"Quests\Bell_book_candle.q";
+        const string TestMap = MajestyDir + @"Quests\fertile_plain.q";
         //const string QuestLogic = MajestyDir + @"SDK\OriginalQuests\GPL\Rules\epic_quest_scripts.gpl";
         const string QuestLogic = MajestyDir + @"SDK\OriginalQuests\GPL\Rules\epic_quest_scripts_sample.gpl";
 
@@ -41,7 +41,7 @@ namespace MapImporter
             //options.SetPropertiesOnly = false;
             options.DumpStyle = DumpStyle.CSharp;
             options.IndentSize = 4;
-            //Debug.WriteLine(ObjectDumper.Dump(quest, options));
+            Debug.WriteLine(ObjectDumper.Dump(quest, options));
 
             new MapLib.Layout(new TestLayout(2, 1234), quest).Start();
 

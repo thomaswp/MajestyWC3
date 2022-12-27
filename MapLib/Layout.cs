@@ -118,7 +118,7 @@ namespace MapLib
         {
             Transformer t = Transformers[maker.RandInt(0, Transformers.Length - 1)];
             bool[] taken = new bool[GRID_SIZE * GRID_SIZE];
-            for (int i = 0; i < pattern.Instances.Length; i++)
+            for (int i = 0; i < pattern.Instances.Count; i++)
             {
                 var instance = pattern.Instances[i];
                 var availablePoints = instance.Tiles
@@ -162,7 +162,7 @@ namespace MapLib
                 int ownerID = -1;
                 if (forceToPlayerMap.TryGetValue(index, out int id)) ownerID = id;
 
-                maker.Debug("Laying out {0} at {1}", instance.Name, scaledLocation);
+                maker.Debug($"Laying out {instance.Name} at {scaledLocation}");
                 LayoutUnitPattern(instance.Name, scaledLocation, ownerID);
                 return true;
             });

@@ -10,13 +10,14 @@ namespace Source.Maps
     {
         const int MIN_X = -5376, MIN_Y = MIN_X;
         const int SIZE = 13824;
+        const int TILE_SIZE = 64;
 
-        public int SizeInTiles => SIZE / 64;
+        public int SizeInTiles => SIZE / TILE_SIZE;
         public float TileScale => 2;
 
-        public void Debug(string format, params object[] args)
+        public void Debug(string message)
         {
-            Console.WriteLine(format, args);
+            Console.WriteLine(message);
         }
 
         public int RandInt(int min, int max)
@@ -44,13 +45,14 @@ namespace Source.Maps
         private Point ToWC3(Point point)
         {
             point.Y *= -1;
-            point.X += (MIN_X + SIZE) / 2;
-            point.Y += (MIN_Y + SIZE) / 2;
+            point.X = point.X * TILE_SIZE + (MIN_X + SIZE) / 2;
+            point.Y = point.Y * TILE_SIZE + (MIN_Y + SIZE) / 2;
             return point;
         }
 
         public void SetPlayerStartingResources(int playerID, int gold, int crystals)
         {
+            Console.WriteLine($"Setting player {playerID}'s gold to {gold} and crystals to {crystals}");
             if (playerID == Layout.MONSTER_OWNER_ID || playerID == Layout.NEUTRAL_OWNER_ID) return;
             player player = GetPlayerByID(playerID);
             SetPlayerState(player, PLAYER_STATE_RESOURCE_GOLD, gold);
@@ -61,6 +63,7 @@ namespace Source.Maps
         {
             player player = GetPlayerByID(ownerID);
             Point wc3Location = ToWC3(location);
+            Console.WriteLine($"Creating unit {name} for player {ownerID} at {location} --> {wc3Location}");
             int unitID = GetUnitID(name, id);
             CreateUnit(player, unitID, wc3Location.X, wc3Location.Y, 0);
             return true;

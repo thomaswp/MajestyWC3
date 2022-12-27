@@ -10,9 +10,9 @@ namespace MapLib
         public string InitFunction { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
-        public Player[] Players { get; set; }
-        public UnitPattern[] UnitPatterns { get; set; }
-        public ForcePattern[] ForcePatterns { get; set; }
+        public List<Player> Players { get; set; }
+        public List<UnitPattern> UnitPatterns { get; set; }
+        public List<ForcePattern> ForcePatterns { get; set; }
 
         public string Summarize()
         {
@@ -52,7 +52,7 @@ namespace MapLib
         public int Id2 { get; set; } // unknown
         public string TerrainShortID { get; set; }
         public int Resolution { get; set; }
-        public PatternInstance[] Instances { get; set; }
+        public List<PatternInstance> Instances { get; set; }
 
         public virtual string Summarize()
         {

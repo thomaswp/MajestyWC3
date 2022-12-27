@@ -78,14 +78,14 @@ namespace MapImporter
             }
         }
 
-        Player[] ReadPlayerList()
+        List<Player> ReadPlayerList()
         {
             int n = ReadInt();
             Debug.WriteLine("{0} players", n);
-            Player[] list = new Player[n];
+            var list = new List<Player>();
             for (int i = 0; i < n; i++)
             {
-                list[i] = ReadPlayer();
+                list.Add(ReadPlayer());
             }
             return list;
         }
@@ -148,14 +148,14 @@ namespace MapImporter
             Debug.WriteLine("Region Patch {0}: {1}/{2}/{3}", id, landscape, terrain, fractal);
         }
 
-        UnitPattern[] ReadUnitPatternList()
+        List<UnitPattern> ReadUnitPatternList()
         {
             int n = ReadInt();
             Debug.WriteLine("{0} unit patterns", n);
-            UnitPattern[] list = new UnitPattern[n];
+            var list = new List<UnitPattern>();
             for (int i = 0; i < n; i++)
             {
-                list[i] = ReadPattern(new UnitPattern());
+                list.Add(ReadPattern(new UnitPattern()));
             }
             return list;
         }
@@ -169,10 +169,10 @@ namespace MapImporter
             pattern.TerrainShortID = ReadString(4);
             pattern.Resolution = ReadInt();
             int n = ReadInt();
-            pattern.Instances = new PatternInstance[n];
+            pattern.Instances = new List<PatternInstance>();
             for (int i = 0; i < n; i++)
             {
-                pattern.Instances[i] = ReadUnitInstance();
+                pattern.Instances.Add(ReadUnitInstance());
             }
             int zero = ReadInt();
             Debug.Assert(zero == 0); // Seems to be a 0-terminator?
@@ -206,14 +206,14 @@ namespace MapImporter
             return instance;
         }
 
-        ForcePattern[] ReadForcePatternList()
+        List<ForcePattern> ReadForcePatternList()
         {
             int n = ReadInt();
             Debug.WriteLine("{0} force patterns", n);
-            ForcePattern[] list = new ForcePattern[n];
+            List<ForcePattern> list = new List<ForcePattern>();
             for (int i = 0; i < n; i++)
             {
-                list[i] = ReadPattern(new ForcePattern());
+                list.Add(ReadPattern(new ForcePattern()));
             }
             return list;
         }

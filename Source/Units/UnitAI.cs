@@ -452,7 +452,7 @@ namespace Source.Units
                 }
                 if (ai != null)
                 {
-                    Console.WriteLine($"Creating new AI for {unit.GetName()}");
+                    //Console.WriteLine($"Creating new AI for {unit.GetName()}");
                     ai.Init(unit);
                     unitMap[unit] = ai;
                 }

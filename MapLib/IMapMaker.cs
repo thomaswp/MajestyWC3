@@ -14,6 +14,6 @@ namespace MapLib
         void SetPlayerStartingResources(int playerID, int gold, int crystals);
         int RandInt(int min, int max);
         bool TryPlaceUnit(string name, string id, int ownerID, Point location);
-        void Debug(string format, params object[] args);
+        void Debug(string message);
     }
 }

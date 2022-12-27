@@ -50,11 +50,11 @@ namespace Source
 			Buildings.Init();
 
 
-            SetPlayerState(GetLocalPlayer(), PLAYER_STATE_RESOURCE_GOLD, 50000);
-            SetPlayerState(GetLocalPlayer(), PLAYER_STATE_RESOURCE_LUMBER, 1000);
-            //new MapLib.Layout(new Maps.MapMaker(), new Maps.BellBookCandle().getQuest()).Start();
+            //SetPlayerState(GetLocalPlayer(), PLAYER_STATE_RESOURCE_GOLD, 50000);
+            //SetPlayerState(GetLocalPlayer(), PLAYER_STATE_RESOURCE_LUMBER, 1000);
+            new MapLib.Layout(new Maps.MapMaker(), new Maps.BellBookCandle().getQuest()).Start();
 
-            ForGroup(GetUnitsOfPlayerAll(Player(0)), () =>
+			ForGroup(GetUnitsOfPlayerAll(Player(0)), () =>
 			{
 				unit unit = GetEnumUnit();
 				UnitAI.RegisterUnit(unit);
@@ -68,7 +68,7 @@ namespace Source
 
 			try
 			{
-				Spawners.SpawCamps();
+				//Spawners.SpawCamps();
 			}
 			catch (Exception e)
             {
