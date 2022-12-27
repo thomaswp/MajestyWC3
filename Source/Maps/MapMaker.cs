@@ -8,12 +8,16 @@ namespace Source.Maps
 {
     class MapMaker : IMapMaker
     {
-        const int MIN_X = -5376, MIN_Y = MIN_X;
-        const int SIZE = 13824;
-        const int TILE_SIZE = 64;
-
-        public int SizeInTiles => SIZE / TILE_SIZE;
-        public float TileScale => 2;
+        // Size of a "tile" in WC3 (which I believe has a 4x4 subgrid)
+        const int WC3_TILE_SIZE = 128;
+        // Min X and Y for the map in tiles
+        const int CENTER_X = 0, CENTER_Y = CENTER_X;
+        // Map size in pixels
+        const int SIZE = WC3_TILE_SIZE * 468;
+        // Size of a Majesty Tile (max 512) on the WC3 map
+        const int MAJESTY_TILE_SIZE = SIZE / Layout.MAX_SIZE;
+        
+        public float UnitPatternScale => 1;
 
         public void Debug(string message)
         {
@@ -45,8 +49,8 @@ namespace Source.Maps
         private Point ToWC3(Point point)
         {
             point.Y *= -1;
-            point.X = point.X * TILE_SIZE + (MIN_X + SIZE) / 2;
-            point.Y = point.Y * TILE_SIZE + (MIN_Y + SIZE) / 2;
+            point.X = point.X * MAJESTY_TILE_SIZE + CENTER_X;
+            point.Y = point.Y * MAJESTY_TILE_SIZE + CENTER_Y;
             return point;
         }
 

@@ -22,11 +22,11 @@ namespace MapImporter
 
         public int SizeInTiles => BASE_SCALE * scale;
 
-        public float TileScale => scale;
+        public float UnitPatternScale => scale;
 
-        public void Debug(string format, params object[] args)
+        public void Debug(string format)
         {
-            System.Diagnostics.Debug.WriteLine(format, args);
+            System.Diagnostics.Debug.WriteLine(format);
         }
 
         public int RandInt(int min, int max)

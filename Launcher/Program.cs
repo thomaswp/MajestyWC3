@@ -42,7 +42,8 @@ namespace Launcher
 			Console.WriteLine("1. Generate constants");
 			Console.WriteLine("2. Compile map");
 			Console.WriteLine("3. Compile and run map");
-			MakeDecision();
+            Console.WriteLine("4. Run last compiled map");
+            MakeDecision();
 		}
 
 		private static void MakeDecision()
@@ -62,7 +63,10 @@ namespace Launcher
 				case ConsoleKey.D3:
 					Build(true);
 					break;
-				default:
+                case ConsoleKey.D4:
+                    Launch();
+					break;
+                default:
 					Console.WriteLine($"{Environment.NewLine}Invalid input. Please choose again.");
 					MakeDecision();
 					break;
@@ -122,37 +126,42 @@ namespace Launcher
 
 			// Launch if that option was selected
 			if (launch)
-			{
-				var wc3exe = ConfigurationManager.AppSettings["wc3exe"];
-				if (File.Exists(wc3exe))
-				{
-					var commandLineArgs = new StringBuilder();
-					var isReforged = Version.Parse(FileVersionInfo.GetVersionInfo(wc3exe).FileVersion) >= new Version(1, 32);
-					if (isReforged)
-					{
-						commandLineArgs.Append(" -launch");
-					}
-					else if (GRAPHICS_API != null)
-					{
-						commandLineArgs.Append($" -graphicsapi {GRAPHICS_API}");
-					}
+            {
+                Launch();
+            }
+        }
 
-					if (!PAUSE_GAME_ON_LOSE_FOCUS)
-					{
-						commandLineArgs.Append(" -nowfpause");
-					}
+        private static void Launch()
+        {
+            var wc3exe = ConfigurationManager.AppSettings["wc3exe"];
+            if (File.Exists(wc3exe))
+            {
+                var commandLineArgs = new StringBuilder();
+                var isReforged = Version.Parse(FileVersionInfo.GetVersionInfo(wc3exe).FileVersion) >= new Version(1, 32);
+                if (isReforged)
+                {
+                    commandLineArgs.Append(" -launch");
+                }
+                else if (GRAPHICS_API != null)
+                {
+                    commandLineArgs.Append($" -graphicsapi {GRAPHICS_API}");
+                }
 
-					var mapPath = Path.Combine(OUTPUT_FOLDER_PATH, OUTPUT_MAP_NAME);
-					var absoluteMapPath = new FileInfo(mapPath).FullName;
-					commandLineArgs.Append($" -loadfile \"{absoluteMapPath}\"");
+                if (!PAUSE_GAME_ON_LOSE_FOCUS)
+                {
+                    commandLineArgs.Append(" -nowfpause");
+                }
 
-					Process.Start(wc3exe, commandLineArgs.ToString());
-				}
-				else
-				{
-					throw new Exception("Please set wc3exe in Launcher/app.config to the path of your Warcraft III executable.");
-				}
-			}
-		}
-	}
+                var mapPath = Path.Combine(OUTPUT_FOLDER_PATH, OUTPUT_MAP_NAME);
+                var absoluteMapPath = new FileInfo(mapPath).FullName;
+                commandLineArgs.Append($" -loadfile \"{absoluteMapPath}\"");
+
+                Process.Start(wc3exe, commandLineArgs.ToString());
+            }
+            else
+            {
+                throw new Exception("Please set wc3exe in Launcher/app.config to the path of your Warcraft III executable.");
+            }
+        }
+    }
 }

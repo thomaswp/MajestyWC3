@@ -54,7 +54,8 @@ namespace MapLib
         public const int MONSTER_OWNER_ID = 7;
         public const int NEUTRAL_OWNER_ID = -1;
 
-        public const int MAX_SIZE = 512;
+        // Technically 512, but these may not play well...
+        public const int MAX_SIZE = 256;
         public const int MAX_REZ = 10;
         public const int GRID_SIZE = 5;
         //public const int TILE_SIZE = 32;
@@ -62,7 +63,7 @@ namespace MapLib
         private IMapMaker maker;
         private Quest quest;
         private readonly float mapSize;
-        private readonly float tileScale;
+        private readonly float unitPatternScale;
 
         private Dictionary<int, int> forceToPlayerMap = new Dictionary<int, int>();
 
@@ -75,8 +76,8 @@ namespace MapLib
         {
             this.maker = mapMaker;
             this.quest = quest;
-            tileScale = maker.TileScale;
-            mapSize = (float)mapMaker.SizeInTiles * quest.Width / MAX_SIZE;
+            unitPatternScale = maker.UnitPatternScale;
+            mapSize = quest.Width;
         }
 
         public void Start()
@@ -177,7 +178,7 @@ namespace MapLib
                 return;
             }
             var pattern = patterns[0];
-            float gridTiles = pattern.Resolution * tileScale * GRID_SIZE;
+            float gridTiles = pattern.Resolution * unitPatternScale * GRID_SIZE;
             LayoutPattern(pattern, (instance, index, relLoc) =>
             {
                 Point scaledLocation = new Point(

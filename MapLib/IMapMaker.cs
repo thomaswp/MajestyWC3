@@ -8,8 +8,7 @@ namespace MapLib
 {
     public interface IMapMaker
     {
-        int SizeInTiles { get; }
-        float TileScale { get; }
+        float UnitPatternScale { get; }
 
         void SetPlayerStartingResources(int playerID, int gold, int crystals);
         int RandInt(int min, int max);
