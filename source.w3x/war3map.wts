@@ -775,3 +775,39 @@ STRING 156
 (Ranger)
 }
 
+STRING 157
+// Units: n00B (Inn), Name (Name)
+{
+Inn
+}
+
+STRING 158
+// Units: h00Q (Trading Post), Name (Name)
+{
+Trading Post
+}
+
+STRING 159
+// Units: o002 (Treasure Chest), Name (Name)
+{
+Treasure Chest
+}
+
+STRING 160
+// Units: n00P (Rogue's Guild), Name (Name)
+{
+Rogue's Guild
+}
+
+STRING 161
+// Units: h00B (Guardhouse - Level 1), Name (Name)
+{
+Guardhouse - Level 1
+}
+
+STRING 162
+// Units: h00C (Guardhouse - Level 2), Name (Name)
+{
+Guardhouse - Level 2
+}
+

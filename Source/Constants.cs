@@ -63,6 +63,12 @@ public static class Constants
 	public const int UNIT_CASTLE_LEVEL_2 = 1747988537;
 	public const int UNIT_TAX_COLLECTOR = 1848651855;
 	public const int UNIT_HOUSE = 1747988545;
+	public const int UNIT_INN = 1848651842;
+	public const int UNIT_TRADING_POST = 1747988561;
+	public const int UNIT_TREASURE_CHEST = 1865429042;
+	public const int UNIT_ROGUE_S_GUILD = 1848651856;
+	public const int UNIT_GUARDHOUSE_LEVEL_1 = 1747988546;
+	public const int UNIT_GUARDHOUSE_LEVEL_2 = 1747988547;
 	public const int UPGRADE_HEALTH_POTIONS = 1378889776;
 	public const int UPGRADE_MARKET_DAY = 1378889777;
 	public const int UPGRADE_LEVEL_3_WEAPONS = 1378889778;

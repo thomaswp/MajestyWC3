@@ -3,6 +3,8 @@ using static War3Api.Common;
 using static War3Api.Blizzard;
 using MapLib;
 using Source.Units.Monsters;
+using System.Numerics;
+using Source.Units;
 
 namespace Source.Maps
 {
@@ -17,7 +19,7 @@ namespace Source.Maps
         // Size of a Majesty Tile (max 512) on the WC3 map
         const int MAJESTY_TILE_SIZE = SIZE / Layout.MAX_SIZE;
         
-        public float UnitPatternScale => 1;
+        public float UnitPatternScale => 1.5f;
 
         public void Debug(string message)
         {
@@ -41,8 +43,7 @@ namespace Source.Maps
             }
             else
             {
-                // Offset by 1
-                return Player(ownerID + 1);
+                return Player(ownerID * 2);
             }
         }
 
@@ -65,17 +66,45 @@ namespace Source.Maps
 
         public bool TryPlaceUnit(string name, string id, int ownerID, Point location)
         {
-            player player = GetPlayerByID(ownerID);
-            Point wc3Location = ToWC3(location);
-            Console.WriteLine($"Creating unit {name} for player {ownerID} at {location} --> {wc3Location}");
             int unitID = GetUnitID(name, id);
-            CreateUnit(player, unitID, wc3Location.X, wc3Location.Y, 0);
+            player player = GetPlayerByID(ownerID);
+            // Non-building are owned by AIs
+            if (!IsUnitIdType(unitID, UNIT_TYPE_STRUCTURE)) player = player.GetAIForHuman();
+            Point wc3Location = ToWC3(location);
+            if (unitID == 0)
+            {
+                Console.WriteLine($"Skipping unknown unit {name} {id}");
+                return true;
+            }
+            Console.WriteLine($"Creating unit {name} for player {ownerID} at {location} --> {wc3Location}");
+            unit unit = CreateUnit(player, unitID, wc3Location.X, wc3Location.Y, 0);
+            UnitAI.RegisterUnit(unit);
+            if (unit.IsStructure() && player == Monster.Player)
+            {
+                Spawners.RegisterSpawnCamp(unit);
+            }
             return true;
         }
 
         private int GetUnitID(string name, string id)
         {
-            return Constants.UNIT_DRAENEI_WARRIOR;
+            switch (name)
+            {
+                case "Trading Post": return Constants.UNIT_TRADING_POST;
+                case "Palace": return Constants.UNIT_CASTLE_LEVEL_1;
+                case "Blacksmith": return Constants.UNIT_BLACKSMITH_LEVEL_1;
+                case "Guardhouse": return Constants.UNIT_GUARDHOUSE_LEVEL_1;
+                case "Rogues Guild": return Constants.UNIT_ROGUE_S_GUILD;
+                case "Inn": return Constants.UNIT_INN;
+                case "Treasure Chest": return Constants.UNIT_TREASURE_CHEST;
+                case "Ruined Keep": return Constants.UNIT_DRAENEI_CAMP;
+                case "Zombie": return Constants.UNIT_DRAENEI_WARRIOR;
+                case "Ruined Shrine": return Constants.UNIT_FOREST_TROLL_CAMP;
+                case "Medusa": return Constants.UNIT_FOREST_TROLL_WARRIOR;
+                case "Ruined Altar": return Constants.UNIT_KOBOLD_CAMP;
+                case "Giant Spider": return Constants.UNIT_KOBOLD_WARRIOR;
+            }
+            return 0;
         }
     }
 }

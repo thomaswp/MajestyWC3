@@ -50,9 +50,17 @@ namespace Source
 			Buildings.Init();
 
 
-            //SetPlayerState(GetLocalPlayer(), PLAYER_STATE_RESOURCE_GOLD, 50000);
-            //SetPlayerState(GetLocalPlayer(), PLAYER_STATE_RESOURCE_LUMBER, 1000);
-            new MapLib.Layout(new Maps.MapMaker(), new Maps.BellBookCandle().getQuest()).Start();
+			//SetPlayerState(GetLocalPlayer(), PLAYER_STATE_RESOURCE_GOLD, 50000);
+			//SetPlayerState(GetLocalPlayer(), PLAYER_STATE_RESOURCE_LUMBER, 1000);
+
+			try
+			{
+				new MapLib.Layout(new Maps.MapMaker(), new Maps.BellBookCandle().getQuest()).Start();
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine("Error laying out: " + e.Message);
+			}
 
 			ForGroup(GetUnitsOfPlayerAll(Player(0)), () =>
 			{

@@ -82,7 +82,7 @@ namespace Source.Units.Monsters
                 int buildingID = ENEMY_BUILDINGS[buildingIndex];
                 //Console.WriteLine($"Trying to spawn camp #{buildingIndex}");
 
-                unit building = CreateSpawnCamp(buildingID, spawnLoc, playerDis);
+                unit building = CreateSpawnCamp(buildingID, spawnLoc);
                 if (building == null)
                 {
                     //Console.WriteLine($"Failed, retrying");
@@ -98,7 +98,7 @@ namespace Source.Units.Monsters
                     if (extras <= 0) break;
                     //Console.WriteLine($"Trying to spawn extra camp");
                     location extraLoc = GetRandomLocInRect(extraRect);
-                    unit extraBuilding = CreateSpawnCamp(buildingID, extraLoc, playerDis);
+                    unit extraBuilding = CreateSpawnCamp(buildingID, extraLoc);
                     if (extraBuilding == null) continue;
                     extras--;
                 }
@@ -116,12 +116,21 @@ namespace Source.Units.Monsters
             return playerLocations.Select(l => DistanceBetweenPoints(l, loc)).Min();
         }
 
-        private static unit CreateSpawnCamp(int campID, location location, float playerDistance)
+        public static bool RegisterSpawnCamp(unit camp)
         {
-            unit camp = CreateUnitAtLoc(MonsterPlayer, campID, location, 0);
+            if (!BUILDINGS.ContainsKey(camp.GetTypeID())) return false;
+            location loc = GetUnitLoc(camp);
+            float playerDistance = DistanceToClosestPlayer(loc);
             float delay = DELAY_BASE + (playerDistance - MIN_SPAWN_DISTANCE) * DIS_DELAY_FACTOR;
             delay *= Util.RandBetween(0.75f, 1.25f);
             SpawnIn(camp, delay);
+            return true;
+        }
+
+        private static unit CreateSpawnCamp(int campID, location location)
+        {
+            unit camp = CreateUnitAtLoc(MonsterPlayer, campID, location, 0);
+            RegisterSpawnCamp(camp);
             return camp;
         }
 

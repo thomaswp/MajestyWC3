@@ -54,8 +54,7 @@ namespace MapLib
         public const int MONSTER_OWNER_ID = 7;
         public const int NEUTRAL_OWNER_ID = -1;
 
-        // Technically 512, but these may not play well...
-        public const int MAX_SIZE = 256;
+        public const int MAX_SIZE = 512;
         public const int MAX_REZ = 10;
         public const int GRID_SIZE = 5;
         //public const int TILE_SIZE = 32;
@@ -178,7 +177,7 @@ namespace MapLib
                 return;
             }
             var pattern = patterns[0];
-            float gridTiles = pattern.Resolution * unitPatternScale * GRID_SIZE;
+            float gridTiles = pattern.Resolution * unitPatternScale;
             LayoutPattern(pattern, (instance, index, relLoc) =>
             {
                 Point scaledLocation = new Point(
