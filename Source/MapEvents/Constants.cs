@@ -34,5 +34,11 @@ namespace Source.MapEvents
         public static int message_bbc_found_book;
         public static int message_bbc_found_bell;
         public static int message_bbc_found_candle;
+
+        public static string GetTextConstant(int value)
+        {
+            Console.WriteLine("Unknown text constant: " + value);
+            return "";
+        }
     }
 }

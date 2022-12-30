@@ -811,3 +811,9 @@ STRING 162
 Guardhouse - Level 2
 }
 
+STRING 163
+// Units: o003 (Message Flag), Name (Name)
+{
+Message Flag
+}
+

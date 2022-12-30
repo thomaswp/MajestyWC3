@@ -3,39 +3,81 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static War3Api.Common;
+using static War3Api.Blizzard;
+using static Source.Util;
+using WCSharp.Events;
 
 namespace Source.MapEvents
 {
     class MapEventsBase
     {
+        public static int MajestyUnitToWC3Unit(string type)
+        {
+            Console.WriteLine("Unknown unit type: " + type);
+            return 0;
+        }
+
+        protected static void Enableunittype(string type)
+        {
+            SetUnitEnabled(type, true);
+        }
+
         protected static void Disableunittype(string type)
         {
-
+            SetUnitEnabled(type, false);
         }
+
+        private static void SetUnitEnabled(string type, bool enabled)
+        {
+            int wc3Type = MajestyUnitToWC3Unit(type);
+            if (wc3Type == 0) return;
+            SetPlayerUnitAvailableBJ(wc3Type, enabled, GetLocalPlayer());
+        }
+
+        static Agent GPLRootAgent = new Agent();
 
         protected static Agent RetrieveAgent(string name)
         {
+            if ("GplAIRoot".Equals(name, StringComparison.CurrentCultureIgnoreCase)) return GPLRootAgent;
+            Console.WriteLine($"Unknown Agent: {name}");
             return null;
         }
 
         protected static void SetupQuestMusic(Agent agent)
         {
+            // NOOP
         }
 
         protected static void ElvesvoiceSetoperative(int isActive)
         {
+            // NOOP
         }
 
         protected static void DwarvesvoiceSetoperative(int isActive)
         {
+            // NOOP
+        }
+
+        protected static void PlayEndgameMusic(Agent agent)
+        {
+            // NOOP
+        }
+
+        protected static void ResetQuestMusic(Agent agent)
+        {
+            // NOOP
         }
 
         protected static void Messageflag(Agent unit, int value)
         {
+            unit wc3Unit = unit.ToUnit();
+            MessageFlags.CreateMessageFlag(wc3Unit.GetLocation(), wc3Unit.GetPlayer(), Constants.GetTextConstant(value));
         }
 
         protected static void SetupRandomTreasure(int number, int distributionType)
         {
+            // TODO: Neeg to figire out what this does
         }
 
         protected static void ListObjects(Agent agent, string type, int limit, out List holdingList, int searchType = 0, int otherconst = 0)
@@ -45,39 +87,46 @@ namespace Source.MapEvents
 
         protected static void PostMessage(Agent agent, int postType)
         {
+            // TODO: I think this sets a message on a sign unit (different than a message flag)
         }
+
+        protected static Dictionary<Action, trigger> threadMap = new();
 
         protected static void NewThread(object action, int frequency)
         {
-
+            if (!(action is GPLAction))
+            {
+                Console.WriteLine($"NewThread called with non-action: " + action);
+                return;
+            }
+            Action action1= (Action)action;
+            trigger t = CreateTrigger();
+            TriggerAddAction(t, action1);
+            TriggerRegisterTimerEventPeriodic(t, frequency); // TODO: may need to convert
+            threadMap[action1] = t;
         }
 
-        protected static void Enableunittype(string type)
+        protected static void Killthread(Action action)
         {
-        }
-
-        protected static void PlayEndgameMusic(Agent agent)
-        {
-        }
-
-        protected static void ResetQuestMusic(Agent agent)
-        {
+            if (!threadMap.ContainsKey(action)) return;
+            trigger t = threadMap[action];
+            threadMap.Remove(action);
+            DestroyTrigger(t);
         }
 
         protected static void Declarevictory(Agent agent, Agent agent2 = null)
         {
-        }
-
-        protected static void Killthread(GPLAction action)
-        {
+            CustomVictoryDialogBJ(agent.ToUnit().GetPlayer());
         }
 
         protected static void Createnewinventoryitem(int itemtype, Agent location)
         {
+            UnitAddItemById(location.ToUnit(), itemtype);
         }
 
         protected static void SetupStartingTreasure(List list, int number, int number2)
         {
+            // TODO: Need to figure out what this does
         }
 
         protected static List ListTitles(List list, string title)

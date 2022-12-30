@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static War3Api.Common;
+using static War3Api.Blizzard;
 
 namespace Source.MapEvents
 {
@@ -14,6 +16,12 @@ namespace Source.MapEvents
         {
             get => null;
             set { }
+        }
+
+        public unit ToUnit()
+        {
+            // TODO
+            return null;
         }
     }
 
