@@ -182,7 +182,7 @@ namespace MapImporter
             {
                 string v = code.Substring(1);
                 if (!constants.Contains(v)) constants.Add(v);
-                code = "Constants." + v;
+                code = "MGPLConstants." + v;
             }
             varSubs[codeKey] = code;
             return code;

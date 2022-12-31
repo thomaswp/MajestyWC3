@@ -13,8 +13,8 @@ namespace Source.MapEvents
             Agent AIRootAgent, palace, sign;
             List palaces, signs;
             AIRootAgent = RetrieveAgent("GplAIRoot");
-            AIRootAgent["Quest_Number"] = Constants.QNumber_Barren_Waste;
-            palaces = Listpalaces();
+            AIRootAgent["Quest_Number"] = MGPLConstants.QNumber_Barren_Waste;
+            palaces = ListPalaces();
             palace = ListMember(palaces, 1);
             SetupQuestMusic(AIRootAgent);
             Disableunittype("Wizards_guild1");
@@ -24,33 +24,33 @@ namespace Source.MapEvents
             Disableunittype("fairgrounds");
             ElvesvoiceSetoperative(0);
             DwarvesvoiceSetoperative(0);
-            Messageflag(palace, Constants.Message_Barren_start);
-            SetupRandomTreasure(20, Constants.default_spawn_treasure_dist);
-            ListObjects(palace, "color", -1, out signs, Constants.NoHiddenMap);
+            Messageflag(palace, MGPLConstants.Message_Barren_start);
+            SetupRandomTreasure(20, MGPLConstants.default_spawn_treasure_dist);
+            ListObjects(palace, "color", -1, out signs, MGPLConstants.NoHiddenMap);
             signs = ListTitles(signs, "Banner_wood");
             sign = ListMember(signs, 1);
-            PostMessage(sign, Constants.sign_barren);
+            PostMessage(sign, MGPLConstants.sign_barren);
             AIRootAgent = RetrieveAgent("GplAIRoot");
             AIRootAgent["VictoryCondition"] = new Action(BarrenVictory);
-            NewThread(AIRootAgent["VictoryCondition"], Constants.VictoryCondition_callback_frequency);
+            NewThread(AIRootAgent["VictoryCondition"], MGPLConstants.VictoryCondition_callback_frequency);
         }
 
 
         public static void BarrenVictory()
         {
-            Agent AIRootAgent, palace, bldg;
+            Agent AIRootAgent, palace;
             List palaces, bldgs;
             AIRootAgent = RetrieveAgent("GplAIRoot");
-            palaces = Listpalaces();
+            palaces = ListPalaces();
             palace = ListMember(palaces, 1);
             if (AIRootAgent["Quest_Flag_1"] == false)
             {
-                ListObjects(palace, "building", -1, out bldgs, Constants.MyPlayer);
+                ListObjects(palace, "building", -1, out bldgs, MGPLConstants.MyPlayer);
                 bldgs = ListSubtypes(bldgs, "guild");
                 bldgs = ListCompleted(bldgs);
                 if (ListSize(bldgs) > 0)
                 {
-                    Messageflag(ListMember(bldgs, 1), Constants.message_barren_guild_built);
+                    Messageflag(ListMember(bldgs, 1), MGPLConstants.message_barren_guild_built);
                     AIRootAgent["Quest_Flag_1"] = true;
                 }
             }
@@ -58,9 +58,9 @@ namespace Source.MapEvents
             {
                 if (AIRootAgent["Quest_Flag_2"] == false)
                 {
-                    if ((palace["level"] == 2) && (Getattribute(palace, Constants.ATTRIB_currentstagebuilt) == 1))
+                    if ((palace["level"] == 2) && (Getattribute(palace, MGPLConstants.ATTRIB_currentstagebuilt) == 1))
                     {
-                        Messageflag(palace, Constants.message_barren_Palace_Upgraded);
+                        Messageflag(palace, MGPLConstants.message_barren_Palace_Upgraded);
                         AIRootAgent["Quest_Flag_2"] = true;
                     }
                 }
@@ -68,9 +68,9 @@ namespace Source.MapEvents
                 {
                     if (AIRootAgent["Quest_Flag_3"] == false)
                     {
-                        if ((palace["level"] == 3) && (Getattribute(palace, Constants.ATTRIB_currentstagebuilt) == 1))
+                        if ((palace["level"] == 3) && (Getattribute(palace, MGPLConstants.ATTRIB_currentstagebuilt) == 1))
                         {
-                            Messageflag(palace, Constants.message_barren_Palace_third);
+                            Messageflag(palace, MGPLConstants.message_barren_Palace_third);
                             AIRootAgent["Quest_Flag_3"] = true;
                         }
                     }
@@ -78,11 +78,11 @@ namespace Source.MapEvents
                     {
                         if (AIRootAgent["Quest_Flag_4"] == false)
                         {
-                            ListObjects(palace, "lair", -1, out bldgs, Constants.NotMyPlayer, Constants.NoHiddenMap);
+                            ListObjects(palace, "lair", -1, out bldgs, MGPLConstants.NotMyPlayer, MGPLConstants.NoHiddenMap);
                             bldgs = ListTitles(bldgs, "Dark_castle");
                             if (ListSize(bldgs) == 0)
                             {
-                                Messageflag(palace, Constants.message_barren_fairground);
+                                Messageflag(palace, MGPLConstants.message_barren_fairground);
                                 Enableunittype("fairgrounds");
                                 AIRootAgent["Quest_Flag_4"] = true;
                                 PlayEndgameMusic(AIRootAgent);
@@ -92,7 +92,7 @@ namespace Source.MapEvents
                         {
                             if (AIRootAgent["Quest_Flag_5"] == false)
                             {
-                                ListObjects(palace, "building", -1, out bldgs, Constants.MyPlayer);
+                                ListObjects(palace, "building", -1, out bldgs, MGPLConstants.MyPlayer);
                                 bldgs = ListTitles(bldgs, "fairgrounds");
                                 bldgs = ListCompleted(bldgs);
                                 if (ListSize(bldgs) > 0)

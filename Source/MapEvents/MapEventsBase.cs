@@ -7,11 +7,18 @@ using static War3Api.Common;
 using static War3Api.Blizzard;
 using static Source.Util;
 using WCSharp.Events;
+using Source.Units;
+using Source.Interface;
 
 namespace Source.MapEvents
 {
     class MapEventsBase
     {
+        public static player QuestPlayer
+        {
+            get { return GetLocalPlayer(); }
+        }
+
         public static int MajestyUnitToWC3Unit(string type)
         {
             Console.WriteLine("Unknown unit type: " + type);
@@ -32,10 +39,10 @@ namespace Source.MapEvents
         {
             int wc3Type = MajestyUnitToWC3Unit(type);
             if (wc3Type == 0) return;
-            SetPlayerUnitAvailableBJ(wc3Type, enabled, GetLocalPlayer());
+            SetPlayerUnitAvailableBJ(wc3Type, enabled, QuestPlayer);
         }
 
-        static Agent GPLRootAgent = new Agent();
+        static Agent GPLRootAgent = new Agent(null);
 
         protected static Agent RetrieveAgent(string name)
         {
@@ -71,8 +78,8 @@ namespace Source.MapEvents
 
         protected static void Messageflag(Agent unit, int value)
         {
-            unit wc3Unit = unit.ToUnit();
-            MessageFlags.CreateMessageFlag(wc3Unit.GetLocation(), wc3Unit.GetPlayer(), Constants.GetTextConstant(value));
+            unit wc3Unit = unit.Unit;
+            MessageFlags.CreateMessageFlag(wc3Unit.GetLocation(), wc3Unit.GetPlayer(), MGPLConstants.GetTextConstant(value));
         }
 
         protected static void SetupRandomTreasure(int number, int distributionType)
@@ -102,8 +109,18 @@ namespace Source.MapEvents
             Action action1= (Action)action;
             trigger t = CreateTrigger();
             TriggerAddAction(t, action1);
-            TriggerRegisterTimerEventPeriodic(t, frequency); // TODO: may need to convert
             threadMap[action1] = t;
+        }
+
+        protected static void Setthreadinterval(object action, int time)
+        {
+            if (!threadMap.TryGetValue(action as Action, out trigger t))
+            {
+                Console.WriteLine($"NewThread called with non-action: " + action);
+                return;
+            }
+            // TODO: Need to release any existing time register
+            TriggerRegisterTimerEventPeriodic(t, time); // TODO: may need to convert
         }
 
         protected static void Killthread(Action action)
@@ -116,12 +133,12 @@ namespace Source.MapEvents
 
         protected static void Declarevictory(Agent agent, Agent agent2 = null)
         {
-            CustomVictoryDialogBJ(agent.ToUnit().GetPlayer());
+            CustomVictoryDialogBJ(agent.Unit.GetPlayer());
         }
 
         protected static void Createnewinventoryitem(int itemtype, Agent location)
         {
-            UnitAddItemById(location.ToUnit(), itemtype);
+            UnitAddItemById(location.Unit, itemtype);
         }
 
         protected static void SetupStartingTreasure(List list, int number, int number2)
@@ -131,46 +148,63 @@ namespace Source.MapEvents
 
         protected static List ListTitles(List list, string title)
         {
-            return list;
+            return new List(list.items.Where(agent => agent.Title == title).ToList());
         }
 
-        protected static List Listpalaces()
+        protected static List ListPalaces()
         {
-            return null;
+            BuildingInfo castleInfo = Constants.UNIT_CASTLE_LEVEL_1;
+            List list = new List();
+            foreach (int id in castleInfo.UpgradeChain)
+            {
+                list.items.AddRange(GetUnitsOfTypeIdAll(id).ToList().Select(u => new Agent(u)));
+            }
+            return list;
         }
 
         protected static Agent ListMember(List list, int index)
         {
-            return null;
+            // MGPL lists are 1-indexed
+            return list.items[index - 1];
         }
 
         protected static List ListSubtypes(List list, string type)
         {
-            return null;
+            if (type.ToLower() == "guid")
+            {
+                return new List(list.items.Where(agent => Guilds.IsGuild(agent)).ToList());
+            }
+            Console.WriteLine("Unknown subtype: " + type);
+            return new List();
         }
 
         protected static List ListCompleted(List list)
         {
-            return null;
+            // Hack: don't know how to check construction progress (other than keeping track of all starts and finishes)
+            // So I'm just saying it needs to be at full health.
+            return new List(list.items.Where(a => a.Unit.IsStructure() && a.Unit.GetHPFraction() > 0.99f).ToList());
         }
 
         protected static int ListSize(List list)
         {
-            return 0;
+            return list.items.Count;
         }
 
         protected static int Getattribute(Agent agent, int index)
         {
+            // TODO
             return 0;
         }
 
         protected static int RandomTime(int max)
         {
+            // TODO
             return 0;
         }
 
         protected static bool Ismessageflagpresent(int where)
         {
+            // TODO
             return false;
         }
 
@@ -180,19 +214,14 @@ namespace Source.MapEvents
             Agent AIRootAgent;
 
             AIRootAgent = RetrieveAgent("GplAIRoot");
-            SpawnMonsters(3, Constants.easyMonster);
+            SpawnMonsters(3, MGPLConstants.easyMonster);
 
 	        Setthreadinterval(AIRootAgent["VictoryCondition2"], RandomTime(600000));
         }
 
         protected static void SpawnMonsters(int n, int type)
         {
-
-        }
-
-        protected static void Setthreadinterval(object action, int time)
-        {
-
+            // TODO
         }
     }
 }

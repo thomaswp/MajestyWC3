@@ -12,31 +12,31 @@ namespace Source.MapEvents
         {
             Agent AIRootAgent;
             Agent palace, booksite, bellsite, candlesite;
-            List palaces, lairs, lairs2, buildings, chests;
+            List palaces, lairs, lairs2, chests;
             Disableunittype("Warriors_guild");
             Disableunittype("Wizards_guild1");
             AIRootAgent = RetrieveAgent("GplAIRoot");
             AIRootAgent["VictoryCondition"] = new Action(BbcVictory);
-            NewThread(AIRootAgent["VictoryCondition"], Constants.VictoryCondition_callback_frequency);
-            AIRootAgent["Quest_Number"] = Constants.QNumber_Bell_Book;
-            palaces = Listpalaces();
+            NewThread(AIRootAgent["VictoryCondition"], MGPLConstants.VictoryCondition_callback_frequency);
+            AIRootAgent["Quest_Number"] = MGPLConstants.QNumber_Bell_Book;
+            palaces = ListPalaces();
             palace = ListMember(palaces, 1);
             SetupQuestMusic(AIRootAgent);
-            ListObjects(palace, "lair", -1, out lairs, Constants.NoHiddenMap);
+            ListObjects(palace, "lair", -1, out lairs, MGPLConstants.NoHiddenMap);
             lairs2 = ListTitles(lairs, "ruined_altar1");
             booksite = ListMember(lairs2, 1);
             booksite["title"] = "booksite";
-            Createnewinventoryitem(Constants.QItem_Book, booksite);
+            Createnewinventoryitem(MGPLConstants.QItem_Book, booksite);
             lairs2 = ListTitles(lairs, "ruined_shrine1");
             bellsite = ListMember(lairs2, 1);
             bellsite["title"] = "bellsite";
-            Createnewinventoryitem(Constants.QItem_Bell, bellsite);
+            Createnewinventoryitem(MGPLConstants.QItem_Bell, bellsite);
             lairs2 = ListTitles(lairs, "ruined_keep1");
             candlesite = ListMember(lairs2, 1);
             candlesite["title"] = "candlesite";
-            Createnewinventoryitem(Constants.QItem_Candle, candlesite);
-            Messageflag(palace, Constants.message_bbc_intro);
-            ListObjects(palace, "special_item", -1, out chests, Constants.NoHiddenMap);
+            Createnewinventoryitem(MGPLConstants.QItem_Candle, candlesite);
+            Messageflag(palace, MGPLConstants.message_bbc_intro);
+            ListObjects(palace, "special_item", -1, out chests, MGPLConstants.NoHiddenMap);
             chests = ListTitles(chests, "treasure_chest");
             SetupStartingTreasure(chests, 100, 100);
             AIRootAgent["Quest_Flag_1"] = false;
@@ -52,19 +52,19 @@ namespace Source.MapEvents
             Agent AIRootAgent;
             int sites_gone = 0;
             AIRootAgent = RetrieveAgent("GplAIRoot");
-            palaces = Listpalaces();
+            palaces = ListPalaces();
             palace = ListMember(palaces, 1);
-            ListObjects(palace, "lair", -1, out lairs, Constants.NoHiddenMap);
-            ListObjects(palace, "building", -1, out buildings, Constants.NoHiddenMap);
+            ListObjects(palace, "lair", -1, out lairs, MGPLConstants.NoHiddenMap);
+            ListObjects(palace, "building", -1, out buildings, MGPLConstants.NoHiddenMap);
             if (AIRootAgent["Message_Check_1"] == false)
             {
-                if (Ismessageflagpresent(Constants.message_bbc_intro) == false)
+                if (Ismessageflagpresent(MGPLConstants.message_bbc_intro) == false)
                 {
                     buildings = ListTitles(buildings, "blacksmith");
                     if (ListSize(buildings) > 0)
                     {
                         bldg = ListMember(buildings, 1);
-                        Messageflag(bldg, Constants.message_bbc_blacksmith);
+                        Messageflag(bldg, MGPLConstants.message_bbc_blacksmith);
                     }
                     AIRootAgent["Message_Check_1"] = true;
                 }
@@ -73,13 +73,13 @@ namespace Source.MapEvents
             {
                 if (AIRootAgent["Message_Check_2"] == false)
                 {
-                    if (Ismessageflagpresent(Constants.message_bbc_blacksmith) == false)
+                    if (Ismessageflagpresent(MGPLConstants.message_bbc_blacksmith) == false)
                     {
                         buildings = ListTitles(buildings, "guardhouse");
                         if (ListSize(buildings) > 0)
                         {
                             bldg = ListMember(buildings, 1);
-                            Messageflag(bldg, Constants.message_bbc_guardhouse);
+                            Messageflag(bldg, MGPLConstants.message_bbc_guardhouse);
                         }
                         AIRootAgent["Message_Check_2"] = true;
                     }
@@ -88,13 +88,13 @@ namespace Source.MapEvents
                 {
                     if (AIRootAgent["Message_Check_3"] == false)
                     {
-                        if (Ismessageflagpresent(Constants.message_bbc_guardhouse) == false)
+                        if (Ismessageflagpresent(MGPLConstants.message_bbc_guardhouse) == false)
                         {
                             buildings = ListTitles(buildings, "Inn");
                             if (ListSize(buildings) > 0)
                             {
                                 bldg = ListMember(buildings, 1);
-                                Messageflag(bldg, Constants.message_bbc_inn);
+                                Messageflag(bldg, MGPLConstants.message_bbc_inn);
                             }
                             AIRootAgent["Message_Check_3"] = true;
                         }
@@ -103,13 +103,13 @@ namespace Source.MapEvents
                     {
                         if (AIRootAgent["Message_Check_4"] == false)
                         {
-                            if (Ismessageflagpresent(Constants.message_bbc_inn) == false)
+                            if (Ismessageflagpresent(MGPLConstants.message_bbc_inn) == false)
                             {
                                 buildings = ListTitles(buildings, "Trading_post");
                                 if (ListSize(buildings) > 0)
                                 {
                                     bldg = ListMember(buildings, 1);
-                                    Messageflag(bldg, Constants.message_bbc_trading_post);
+                                    Messageflag(bldg, MGPLConstants.message_bbc_trading_post);
                                 }
                                 AIRootAgent["Message_Check_4"] = true;
                             }
@@ -171,7 +171,7 @@ namespace Source.MapEvents
                     if (ListSize(lairs2) > 0)
                     {
                         bldg = ListMember(lairs2, 1);
-                        Messageflag(bldg, Constants.message_bbc_found_book);
+                        Messageflag(bldg, MGPLConstants.message_bbc_found_book);
                         AIRootAgent["Quest_Flag_1"] = true;
                     }
                 }
@@ -181,7 +181,7 @@ namespace Source.MapEvents
                     if (ListSize(lairs2) > 0)
                     {
                         bldg = ListMember(lairs2, 1);
-                        Messageflag(bldg, Constants.message_bbc_found_bell);
+                        Messageflag(bldg, MGPLConstants.message_bbc_found_bell);
                         AIRootAgent["Quest_Flag_2"] = true;
                     }
                 }
@@ -191,7 +191,7 @@ namespace Source.MapEvents
                     if (ListSize(lairs2) > 0)
                     {
                         bldg = ListMember(lairs2, 1);
-                        Messageflag(bldg, Constants.message_bbc_found_candle);
+                        Messageflag(bldg, MGPLConstants.message_bbc_found_candle);
                         AIRootAgent["Quest_Flag_3"] = true;
                     }
                 }

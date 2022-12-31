@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Source.MapEvents
 {
-    public class Constants
+    public class MGPLConstants
     {
         public static int easyMonster;
         public static int QNumber_Barren_Waste;
