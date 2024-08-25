@@ -9,6 +9,7 @@ using static Source.Util;
 using WCSharp.Events;
 using Source.Units;
 using Source.Interface;
+using Source.Units.Monsters;
 
 namespace Source.MapEvents
 {
@@ -87,9 +88,42 @@ namespace Source.MapEvents
             // TODO: Neeg to figire out what this does
         }
 
-        protected static void ListObjects(Agent agent, string type, int limit, out List holdingList, int searchType = 0, int otherconst = 0)
+        protected static void ListObjects(Agent agent, string type, int limit, out List holdingList, int flag1 = -1, int flag2 = -1)
         {
-            holdingList = null;
+            holdingList = new List();
+            List<player> players = new List<player>();
+            HashSet<int> flags = new HashSet<int>
+            {
+                flag1,
+                flag2
+            };
+
+            // TODO: Handle allies and not allies too
+            if (!flags.Contains(MGPLConstants.Myplayer))
+            {
+                players.Add(Player(0));
+                players.Add(Player(1));
+            }
+            if (!flags.Contains(MGPLConstants.Notmyplayer))
+            {
+                players.Add(Monster.Player);
+            }
+
+            List<unit> units = new List<unit>();
+            foreach (player p in players)
+            {
+                units.AddRange(GetUnitsOfPlayerAll(p).ToList());
+            }
+
+            // No clear what this means... don't think it just means visible to the player
+            if (flags.Contains(MGPLConstants.Nohiddenmap))
+            {
+
+            }
+
+            // TODO add units with type filter type, up to the limit
+            // TODO filter also by flags like visibility
+            // TODO - may need to convert these to agents? and store a map of them to not recreate them?
         }
 
         protected static void PostMessage(Agent agent, int postType)
@@ -99,17 +133,13 @@ namespace Source.MapEvents
 
         protected static Dictionary<Action, trigger> threadMap = new();
 
-        protected static void NewThread(object action, int frequency)
+        protected static void NewThread(Action action, int frequency)
         {
-            if (!(action is GPLAction))
-            {
-                Console.WriteLine($"NewThread called with non-action: " + action);
-                return;
-            }
-            Action action1= (Action)action;
             trigger t = CreateTrigger();
-            TriggerAddAction(t, action1);
-            threadMap[action1] = t;
+            TriggerAddAction(t, action);
+            // May need to add a conversion (e.g. s to ms?)
+            TriggerRegisterTimerEventPeriodic(t, frequency);
+            threadMap[action] = t;
         }
 
         protected static void Setthreadinterval(object action, int time)
@@ -214,7 +244,7 @@ namespace Source.MapEvents
             Agent AIRootAgent;
 
             AIRootAgent = RetrieveAgent("GplAIRoot");
-            SpawnMonsters(3, MGPLConstants.easyMonster);
+            SpawnMonsters(3, MGPLConstants.Easymonster);
 
 	        Setthreadinterval(AIRootAgent["VictoryCondition2"], RandomTime(600000));
         }

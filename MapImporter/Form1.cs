@@ -9,6 +9,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -25,6 +26,19 @@ namespace MapImporter
         const string TestMap = MajestyDir + @"Quests\fertile_plain.q";
         //const string QuestLogic = MajestyDir + @"SDK\OriginalQuests\GPL\Rules\epic_quest_scripts.gpl";
         const string QuestLogic = MajestyDir + @"SDK\OriginalQuests\GPL\Rules\epic_quest_scripts_sample.gpl";
+
+        const string ConstantsFilesDir = MajestyDir + @"SDK\OriginalQuests\GPL\";
+        static readonly string[] ConstantsFiles = new string[]
+        {
+            "defines.gpl",
+            "globals.gpl",
+            "LowLevel.gpl",
+            "QItems.gpl",
+            @"Rules\epic_quest_scripts.gpl",
+            @"Rules\victory_conditions.gpl",
+            @"TaskModules\Buildings\tax_spawner.gpl",
+            @"TaskModules\Subtasks\Spells.gpl",
+        };
 
         public Form1()
         {
@@ -79,6 +93,26 @@ namespace MapImporter
             } catch (Exception ex)
             {
                 Debug.WriteLine(ex.ToString());
+            }
+
+            Regex pattern = new Regex(@"\s*expression\s+#([a-zA-Z0-9_-]+)\s+([0-9]*)");
+            foreach (string path in ConstantsFiles)
+            {
+                string text = File.ReadAllText(ConstantsFilesDir + path);
+                string[] lines = text.Split('\n');
+                foreach (string line in lines)
+                {
+                    var match = pattern.Match(line);
+                    if (match.Success)
+                    {
+                        string name = CSharpTranspiler.CamelCase(match.Groups[1].Value.Trim());
+                        string expr = match.Groups[2].Value.Trim();
+                        Debug.WriteLine("public const int " + name + " = " + expr + ";");
+                    } else if (line.Contains("expression") && line.Contains("#"))
+                    {
+                        Debug.WriteLine("// " + line);
+                    }
+                }
             }
 
         }

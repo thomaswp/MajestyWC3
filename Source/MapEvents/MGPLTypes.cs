@@ -9,22 +9,22 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Source.MapEvents
 {
-    public delegate void GPLAction();
 
     public class Agent
     {
         // Can be null
         public readonly unit Unit;
+        private Dictionary<string, AgentProperty> properties = new Dictionary<string, AgentProperty>();
 
         public Agent(unit unit)
         {
             this.Unit = unit;
         }
 
-        public dynamic this[string key]
+        public AgentProperty this[string key]
         {
-            get => null;
-            set { }
+            get => properties[key];
+            set { properties[key] = value; }
         }
 
         public static implicit operator unit(Agent agent)

@@ -19,7 +19,7 @@ namespace MapImporter
         public List<string> funcCalls = new List<string>();
         public List<string> constants = new List<string>();
 
-        private static string CamelCase(string name)
+        public static string CamelCase(string name, bool keepUnderscore = false)
         {
             //string firstChar = name.Substring(0, 1);
             //string rest = name.Substring(1);
@@ -30,7 +30,7 @@ namespace MapImporter
             //    return name;
             //}
             if (name.ToLower().StartsWith("list")) name = "List_" + name.Substring(4);
-            return string.Join("", name.Split("_").Select(w => Capitalize(w)));
+            return string.Join(keepUnderscore ? "_" : "", name.Split("_").Select(w => Capitalize(w)));
         }
 
         private static string Capitalize(string word)
@@ -181,6 +181,7 @@ namespace MapImporter
             else if (code.StartsWith("#"))
             {
                 string v = code.Substring(1);
+                v = CamelCase(v);
                 if (!constants.Contains(v)) constants.Add(v);
                 code = "MGPLConstants." + v;
             }
